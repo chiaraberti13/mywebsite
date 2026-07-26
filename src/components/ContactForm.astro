@@ -1,0 +1,150 @@
+---
+import { site } from "@/config/site";
+import { useTranslations } from "@/i18n/ui";
+import type { Locale } from "@/config/site";
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+<form
+  class="contact-form card"
+  id="contact-form"
+  novalidate
+  data-success={t("contact.success")}
+  data-error={t("contact.error")}
+  data-sending={t("contact.sending")}
+  data-send={t("contact.send")}
+  data-email={site.email}
+>
+  <div class="field">
+    <label for="cf-name">{t("contact.name")}</label>
+    <input id="cf-name" name="name" type="text" required autocomplete="name" maxlength="120" />
+  </div>
+
+  <div class="field">
+    <label for="cf-email">{t("contact.email")}</label>
+    <input id="cf-email" name="email" type="email" required autocomplete="email" maxlength="200" />
+  </div>
+
+  <div class="field">
+    <label for="cf-message">{t("contact.message")}</label>
+    <textarea id="cf-message" name="message" required rows="5" maxlength="4000"></textarea>
+  </div>
+
+  <!-- Honeypot anti-spam: invisibile agli umani, ignorato dagli screen reader -->
+  <div class="hp" aria-hidden="true">
+    <label for="cf-company">Company</label>
+    <input id="cf-company" name="company" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <button type="submit" class="btn btn--primary" id="cf-submit">
+    {t("contact.send")}
+  </button>
+
+  <p class="form-status" id="cf-status" role="status" aria-live="polite"></p>
+  <p class="muted privacy-note">{t("contact.privacyNote")}</p>
+</form>
+
+<script>
+  const form = document.getElementById("contact-form") as HTMLFormElement | null;
+  const statusEl = document.getElementById("cf-status");
+  const submitBtn = document.getElementById("cf-submit") as HTMLButtonElement | null;
+
+  if (form && statusEl && submitBtn) {
+    const cfg = form.dataset;
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = cfg.sending ?? "…";
+      statusEl.textContent = "";
+      statusEl.className = "form-status";
+
+      const data = Object.fromEntries(new FormData(form).entries());
+      try {
+        const res = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error("bad status");
+        form.reset();
+        statusEl.textContent = cfg.success ?? "OK";
+        statusEl.classList.add("ok");
+      } catch {
+        const mail = cfg.email ?? "";
+        const link = document.createElement("a");
+        link.href = "mailto:" + mail;
+        link.textContent = mail;
+        statusEl.textContent = (cfg.error ?? "Error") + " ";
+        statusEl.appendChild(link);
+        statusEl.classList.add("err");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = cfg.send ?? "Send";
+      }
+    });
+  }
+</script>
+
+<style>
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    max-width: 34rem;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .field label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  input,
+  textarea {
+    font: inherit;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.7rem 0.85rem;
+    width: 100%;
+    resize: vertical;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .btn--primary {
+    align-self: flex-start;
+  }
+  .form-status {
+    font-size: 0.95rem;
+    min-height: 1.2em;
+  }
+  .form-status.ok {
+    color: var(--success);
+  }
+  .form-status.err {
+    color: var(--danger);
+  }
+  .privacy-note {
+    font-size: 0.8rem;
+  }
+</style>
