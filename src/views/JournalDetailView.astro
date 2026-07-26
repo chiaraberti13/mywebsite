@@ -2,9 +2,11 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Prose from "@/components/Prose.astro";
 import Icon from "@/components/Icon.astro";
+import ClusitArticle from "@/components/article/ClusitArticle.astro";
 import { render, type CollectionEntry } from "astro:content";
 import { type Locale } from "@/config/site";
 import { useTranslations, localePath } from "@/i18n/ui";
+import { slugOf } from "@/lib/content";
 
 interface Props {
   lang: Locale;
@@ -13,8 +15,17 @@ interface Props {
 const { lang, post } = Astro.props;
 const t = useTranslations(lang);
 const { title, description, date, tags } = post.data;
-const { Content } = await render(post);
 const locale = lang === "it" ? "it-IT" : "en-US";
+
+// Articoli interattivi con layout personalizzato (per slug)
+const slug = slugOf(post.id);
+const interactive: Record<string, boolean> = {
+  "cybersecurity-clusit-2024-2026": true,
+};
+const isInteractive = interactive[slug] === true;
+const { Content } = isInteractive
+  ? { Content: null }
+  : await render(post);
 ---
 <BaseLayout lang={lang} title={title} description={description}>
   <article class="section">
@@ -24,23 +35,31 @@ const locale = lang === "it" ? "it-IT" : "en-US";
         {t("nav.journal")}
       </a>
 
-      <header class="detail-head">
-        <p class="post-date">
-          {date.toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" })}
-        </p>
-        <h1>{title}</h1>
-        {
-          tags.length > 0 && (
-            <ul class="detail-tags" role="list">
-              {tags.map((tg) => <li class="tag">{tg}</li>)}
-            </ul>
-          )
-        }
-      </header>
+      {
+        isInteractive ? (
+          <ClusitArticle lang={lang} />
+        ) : (
+          <>
+            <header class="detail-head">
+              <p class="post-date">
+                {date.toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" })}
+              </p>
+              <h1>{title}</h1>
+              {tags.length > 0 && (
+                <ul class="detail-tags" role="list">
+                  {tags.map((tg) => <li class="tag">{tg}</li>)}
+                </ul>
+              )}
+            </header>
 
-      <Prose class="detail-body">
-        <Content />
-      </Prose>
+            {Content && (
+              <Prose class="detail-body">
+                <Content />
+              </Prose>
+            )}
+          </>
+        )
+      }
     </div>
   </article>
 </BaseLayout>
