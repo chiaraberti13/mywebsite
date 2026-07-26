@@ -3,8 +3,10 @@ title: "PHP Image Converter"
 summary: "A single-file PHP web app to convert, resize and crop images in the browser — including HEIC/TIFF — with local processing and privacy by design."
 lang: "en"
 date: 2026-02-15
-featured: true
+featured: false
 tags: ["PHP 8", "Image processing", "Privacy"]
+links:
+  github: "https://github.com/chiaraberti13/php-image-converter"
 ---
 
 A web app that converts images between formats (JPG, PNG, WEBP, BMP, TIFF, GIF

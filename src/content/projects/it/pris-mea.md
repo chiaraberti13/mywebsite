@@ -5,6 +5,8 @@ lang: "it"
 date: 2026-04-05
 featured: true
 tags: ["PHP", "Full-stack", "Sicurezza", "Century Italia"]
+links:
+  github: "https://github.com/chiaraberti13/pris-mea"
 ---
 
 PRIS MEA permette a installatori, architetti, distributori e clienti finali di

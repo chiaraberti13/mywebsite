@@ -3,8 +3,10 @@ title: "PHP Image Converter"
 summary: "Web app in un unico file PHP per convertire, ridimensionare e ritagliare immagini nel browser — inclusi HEIC/TIFF — con elaborazione locale e privacy per design."
 lang: "it"
 date: 2026-02-15
-featured: true
+featured: false
 tags: ["PHP 8", "Image processing", "Privacy"]
+links:
+  github: "https://github.com/chiaraberti13/php-image-converter"
 ---
 
 Un'applicazione web che converte immagini da un formato all'altro (JPG, PNG,

@@ -5,6 +5,8 @@ lang: "en"
 date: 2026-01-20
 featured: false
 tags: ["JavaScript", "Algorithms", "Privacy"]
+links:
+  github: "https://github.com/chiaraberti13/barcode-eps-generator"
 ---
 
 A web app that generates **EAN-13 barcodes in vectorial EPS format** from an Excel
