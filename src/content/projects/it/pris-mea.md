@@ -1,10 +1,10 @@
 ---
 title: "PRIS MEA — Configuratore LED"
-summary: "Configuratore web (per Century Italia) per progettare online sistemi di illuminazione LED su misura, generare un preventivo PDF in pochi secondi e instradare il lead al distributore di zona."
+summary: "Configuratore web per progettare online sistemi di illuminazione LED su misura, generare un preventivo PDF in pochi secondi e instradare il lead al distributore di zona."
 lang: "it"
 date: 2026-04-05
 featured: true
-tags: ["PHP", "Full-stack", "Sicurezza", "Century Italia"]
+tags: ["PHP", "Full-stack", "Sicurezza"]
 links:
   github: "https://github.com/chiaraberti13/pris-mea"
 ---

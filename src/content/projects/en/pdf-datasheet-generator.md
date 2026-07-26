@@ -1,10 +1,10 @@
 ---
 title: "PDF Datasheet Generator"
-summary: "An app that automatically generates product datasheets as PDFs, in 6 languages, from an Excel file — a modern, secure rewrite of an old, vulnerable PHP script (for Century Italia)."
+summary: "An app that automatically generates product datasheets as PDFs, in 6 languages, from an Excel file — a modern, secure rewrite of an old, vulnerable PHP script."
 lang: "en"
 date: 2026-05-01
 featured: true
-tags: ["Node.js", "Puppeteer", "Security", "Century Italia"]
+tags: ["Node.js", "Puppeteer", "Security"]
 links:
   github: "https://github.com/chiaraberti13/pdf-datasheet-generator"
 ---

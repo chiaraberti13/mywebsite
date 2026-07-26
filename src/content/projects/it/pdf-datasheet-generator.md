@@ -1,10 +1,10 @@
 ---
 title: "Generatore schede tecniche PDF"
-summary: "Applicazione che genera automaticamente le schede tecniche di prodotto in PDF, in 6 lingue, partendo da un Excel — riscrittura moderna e sicura di un vecchio script PHP vulnerabile (per Century Italia)."
+summary: "Applicazione che genera automaticamente le schede tecniche di prodotto in PDF, in 6 lingue, partendo da un Excel — riscrittura moderna e sicura di un vecchio script PHP vulnerabile."
 lang: "it"
 date: 2026-05-01
 featured: true
-tags: ["Node.js", "Puppeteer", "Sicurezza", "Century Italia"]
+tags: ["Node.js", "Puppeteer", "Sicurezza"]
 links:
   github: "https://github.com/chiaraberti13/pdf-datasheet-generator"
 ---

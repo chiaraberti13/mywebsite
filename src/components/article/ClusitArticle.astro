@@ -12,8 +12,8 @@ const { lang } = Astro.props;
 const T = {
   it: {
     eyebrow: "Journal · Analisi dati",
-    title: "Cybersecurity 2024–2026: cosa ci dicono davvero tre anni di Rapporto CLUSIT",
-    meta: "20 luglio 2026 · 4 min di lettura",
+    title: "Cybersecurity 2024–2026: cosa ci raccontano davvero tre anni di Rapporto CLUSIT",
+    meta: "20 luglio 2026 · 5 min di lettura",
     stats: [
       { target: 5265, dec: 0, suffix: "", label: "Incidenti gravi nel 2025" },
       { target: 48.7, dec: 1, prefix: "+", suffix: "%", label: "Rispetto al 2024" },
@@ -22,25 +22,35 @@ const T = {
     ],
     tabs: ["Panoramica", "La crescita", "L'impatto", "L'Italia"],
     overview: [
-      "Ogni anno il Rapporto CLUSIT fotografa lo stato delle minacce informatiche analizzando migliaia di incidenti reali. La domanda di fondo è semplice: il panorama sta davvero peggiorando, o abbiamo solo imparato a rilevare più attacchi?",
-      "Confrontando le edizioni 2024, 2025 e 2026 emerge un quadro chiaro: gli attacchi non crescono solo di numero, ma diventano più organizzati, frequenti e dannosi. La cybersecurity è ormai un rischio concreto per qualsiasi organizzazione digitale.",
+      "Ogni anno il Rapporto CLUSIT rappresenta uno dei punti di riferimento più importanti per comprendere l'evoluzione della cybersecurity. È una fotografia dello stato delle minacce informatiche, costruita analizzando migliaia di incidenti reali avvenuti in tutto il mondo. Dietro grafici, statistiche e percentuali si nasconde però una domanda molto semplice: il panorama della sicurezza informatica sta davvero peggiorando oppure abbiamo semplicemente imparato a rilevare più attacchi?",
+      "Per rispondere non basta osservare un singolo rapporto: è necessario confrontare i dati nel tempo. Ho quindi analizzato le edizioni 2024, 2025 e 2026 del Rapporto CLUSIT cercando di capire non solo quanto siano aumentati gli incidenti, ma soprattutto come siano cambiate le minacce, gli obiettivi degli attaccanti e l'impatto sulle organizzazioni.",
+      "Quello che emerge è un quadro molto chiaro. Gli attacchi informatici non stanno crescendo soltanto di numero: stanno diventando più organizzati, più frequenti e, soprattutto, molto più dannosi. La cybersecurity non è più un tema che riguarda esclusivamente gli specialisti del settore: oggi rappresenta un rischio concreto per qualsiasi organizzazione che utilizzi strumenti digitali.",
     ],
+    growthHead: "La crescita degli attacchi non è più un fenomeno occasionale",
     growth: [
-      "Non è più una crescita graduale, ma un'accelerazione. Nel 2025 sono stati censiti 5.265 incidenti gravi nel mondo (+48,7% sul 2024): la crescita più alta di sempre.",
-      "Nel medio periodo la media mensile è passata da 171 incidenti (2021) a 439 (2025): +256% in cinque anni. Oggi, mediamente, viene reso pubblico un incidente grave ogni poche ore.",
+      "Negli ultimi anni si è parlato spesso dell'aumento degli attacchi informatici. È una notizia che ormai compare con regolarità e che, proprio per questo, rischia quasi di passare inosservata. Eppure, confrontando i tre rapporti, si nota un cambiamento importante: non siamo più di fronte a una crescita graduale, ma a una vera accelerazione del fenomeno.",
+      "Già il Rapporto CLUSIT 2024 descriveva uno scenario in cui il cybercrime aveva assunto una dimensione industriale. Gli attacchi aumentavano con continuità e colpivano organizzazioni di qualsiasi dimensione, dalle grandi aziende alle piccole imprese, passando per enti pubblici e infrastrutture critiche.",
+      "L'edizione 2025 confermava questa tendenza. I numeri continuavano a salire, ma cambiava anche il profilo degli attaccanti: sempre più spesso gli incidenti erano riconducibili a gruppi strutturati, capaci di pianificare campagne su larga scala e di sfruttare vulnerabilità comuni per colpire centinaia di organizzazioni contemporaneamente.",
+      "È però il Rapporto CLUSIT 2026 a segnare un punto di svolta. Nel corso del 2025 sono stati censiti 5.265 incidenti cyber gravi a livello mondiale, con un incremento del 48,7% rispetto all'anno precedente: la crescita più elevata registrata negli ultimi anni, difficilmente interpretabile come una semplice oscillazione statistica.",
+      "Ancora più interessante è l'andamento nel medio periodo. Nel 2021 la media era di circa 171 incidenti gravi al mese; nel 2025 ha raggiunto i 439 mensili, con un incremento complessivo del 256% in soli cinque anni. Oggi, mediamente, viene reso pubblico un incidente grave ogni poche ore.",
+      "Questi numeri raccontano una realtà molto diversa da quella di qualche anno fa. Il cybercrime non è più composto soltanto da singoli attaccanti o piccoli gruppi isolati: è diventato un ecosistema organizzato, capace di sviluppare strumenti sempre più efficaci, condividere competenze e colpire un numero crescente di vittime. L'aumento degli incidenti è quindi la conseguenza di un cambiamento strutturale del panorama delle minacce, non di un fenomeno temporaneo.",
     ],
     growthChart: "Media mensile di incidenti gravi",
+    impactHead: "Non cresce solo il numero: cresce l'impatto",
     impact: [
-      "Non cresce solo il numero: cresce la gravità. L'84% degli incidenti è di livello High o Critical, in aumento rispetto al 79% del 2024.",
-      "Per la prima volta il Rapporto 2026 introduce la categoria Extreme (2,7% del totale) per eventi dalle conseguenze sistemiche: alcuni attacchi non sono più descrivibili con le categorie tradizionali.",
+      "Se il primo elemento che colpisce è l'aumento degli attacchi, il secondo è probabilmente ancora più importante. Confrontando i tre rapporti emerge infatti che gli incidenti non stanno diventando soltanto più frequenti, ma anche molto più gravi.",
+      "Negli anni passati un attacco informatico poteva tradursi nella compromissione di un singolo computer o nel blocco temporaneo di alcuni servizi. Oggi gli effetti sono spesso molto più estesi: un incidente può interrompere la produzione di un'azienda, fermare un ospedale, rendere indisponibili servizi pubblici o causare la diffusione di grandi quantità di dati riservati.",
+      "Questa evoluzione è così evidente che il Rapporto CLUSIT 2026 introduce, per la prima volta, una nuova categoria di gravità denominata Extreme: alcuni incidenti hanno raggiunto un livello di impatto tale da non poter più essere descritti con le categorie tradizionali. Parallelamente, l'84% degli attacchi rientra nelle categorie di gravità più elevate (High/Critical), in aumento rispetto al 79% del 2024.",
+      "In altre parole, oggi la probabilità che un attacco provochi conseguenze operative, economiche o reputazionali importanti è molto più alta rispetto a pochi anni fa. È questo, più ancora della crescita numerica, il dato che dovrebbe far riflettere imprese, pubbliche amministrazioni e cittadini.",
     ],
     impactChart: "Incidenti High o Critical sul totale",
     impactWas: "Era 79% nel 2024",
     extreme: "Nuova categoria «Extreme»",
     extremeVal: "2,7% del totale",
+    italyHead: "L'Italia nel mirino",
     italy: [
-      "L'Italia resta nel mirino: 507 incidenti gravi nel 2025 (erano 357 nel 2024, +42%), pari al 9,6% del totale mondiale.",
-      "È quarta al mondo e prima in Europa per numero di attacchi subiti.",
+      "L'Italia resta uno dei bersagli principali: nel 2025 sono stati registrati 507 incidenti gravi contro obiettivi italiani, contro i 357 del 2024, con un aumento del 42% su base annua.",
+      "Il nostro Paese arriva così a rappresentare il 9,6% del totale mondiale, collocandosi al quarto posto a livello globale e al primo in Europa per numero di attacchi subiti.",
     ],
     italyStats: [
       { target: 507, dec: 0, suffix: "", label: "Incidenti in Italia (2025)" },
@@ -55,7 +65,7 @@ const T = {
   en: {
     eyebrow: "Journal · Data analysis",
     title: "Cybersecurity 2024–2026: what three years of the CLUSIT Report really tell us",
-    meta: "July 20, 2026 · 4 min read",
+    meta: "July 20, 2026 · 5 min read",
     stats: [
       { target: 5265, dec: 0, suffix: "", label: "Serious incidents in 2025" },
       { target: 48.7, dec: 1, prefix: "+", suffix: "%", label: "Compared to 2024" },
@@ -64,25 +74,35 @@ const T = {
     ],
     tabs: ["Overview", "The growth", "The impact", "Italy"],
     overview: [
-      "Every year the CLUSIT Report captures the state of cyber threats by analyzing thousands of real incidents. The underlying question is simple: is the landscape really getting worse, or have we just learned to detect more attacks?",
-      "Comparing the 2024, 2025 and 2026 editions, a clear picture emerges: attacks are not only growing in number, they are becoming more organized, more frequent and more damaging. Cybersecurity is now a concrete risk for any digital organization.",
+      "Every year the CLUSIT Report is one of the most important references for understanding how cybersecurity evolves. It's a snapshot of the state of cyber threats, built by analyzing thousands of real incidents from all over the world. Behind charts, statistics and percentages hides a very simple question: is the security landscape really getting worse, or have we simply learned to detect more attacks?",
+      "To answer it, one report isn't enough: you need to compare data over time. So I analyzed the 2024, 2025 and 2026 editions of the CLUSIT Report, trying to understand not only how much incidents grew, but above all how threats, attackers' targets and the impact on organizations have changed.",
+      "What emerges is a very clear picture. Cyber attacks are not only growing in number: they are becoming more organized, more frequent and, above all, far more damaging. Cybersecurity is no longer a topic only for specialists: today it's a concrete risk for any organization that uses digital tools.",
     ],
+    growthHead: "The growth of attacks is no longer an occasional phenomenon",
     growth: [
-      "It's no longer gradual growth, but acceleration. In 2025, 5,265 serious incidents were recorded worldwide (+48.7% over 2024): the highest increase ever.",
-      "Over the medium term the monthly average went from 171 incidents (2021) to 439 (2025): +256% in five years. Today, on average, a serious incident is disclosed every few hours.",
+      "In recent years we've often heard about the rise in cyber attacks. It's news that now appears regularly and, precisely for that reason, risks going almost unnoticed. Yet, comparing the three reports, an important change stands out: this is no longer gradual growth, but a real acceleration.",
+      "The 2024 CLUSIT Report already described a scenario in which cybercrime had taken on an industrial scale. Attacks grew steadily and hit organizations of every size, from large companies to small businesses, through public bodies and critical infrastructure.",
+      "The 2025 edition confirmed the trend. The numbers kept rising, but the attackers' profile changed too: more and more incidents were traced to structured groups, able to plan large-scale campaigns and exploit common vulnerabilities to hit hundreds of organizations at once.",
+      "But it's the 2026 CLUSIT Report that marks a turning point. During 2025, 5,265 serious cyber incidents were recorded worldwide, up 48.7% on the previous year: the highest increase of recent years, hard to read as a mere statistical fluctuation.",
+      "Even more telling is the medium-term trend. In 2021 the average was about 171 serious incidents per month; in 2025 it reached 439, a 256% increase in just five years. Today, on average, a serious incident is disclosed every few hours.",
+      "These numbers describe a very different reality from a few years ago. Cybercrime is no longer made only of lone attackers or small isolated groups: it's an organized ecosystem, able to build ever more effective tools, share expertise and hit a growing number of victims. The rise in incidents is therefore the consequence of a structural change in the threat landscape, not a temporary phenomenon.",
     ],
     growthChart: "Monthly average of serious incidents",
+    impactHead: "It's not just the number growing: the impact is too",
     impact: [
-      "It's not just the number growing: severity is too. 84% of incidents are High or Critical, up from 79% in 2024.",
-      "For the first time, the 2026 Report introduces the Extreme category (2.7% of the total) for events with systemic consequences: some attacks can no longer be described with the traditional categories.",
+      "If the first striking element is the rise in attacks, the second is probably even more important. Comparing the three reports, incidents are becoming not only more frequent, but also far more severe.",
+      "In the past a cyber attack could mean the compromise of a single computer or a temporary outage of some services. Today the effects are often much broader: an incident can halt a company's production, stop a hospital, take public services offline or cause the leak of large amounts of confidential data.",
+      "This evolution is so evident that the 2026 CLUSIT Report introduces, for the first time, a new severity category called Extreme: some incidents have reached a level of impact that can no longer be described with the traditional categories. In parallel, 84% of attacks fall into the highest severity categories (High/Critical), up from 79% in 2024.",
+      "In other words, today the probability that an attack causes significant operational, economic or reputational consequences is much higher than a few years ago. This, even more than the growth in numbers, is the figure that should make companies, public administrations and citizens think.",
     ],
     impactChart: "High or Critical incidents out of the total",
     impactWas: "Was 79% in 2024",
     extreme: "New «Extreme» category",
     extremeVal: "2.7% of the total",
+    italyHead: "Italy in the crosshairs",
     italy: [
-      "Italy remains a target: 507 serious incidents in 2025 (up from 357 in 2024, +42%), i.e. 9.6% of the global total.",
-      "It ranks fourth worldwide and first in Europe by number of attacks suffered.",
+      "Italy remains one of the main targets: in 2025, 507 serious incidents were recorded against Italian targets, versus 357 in 2024 — a 42% year-on-year increase.",
+      "The country thus accounts for 9.6% of the global total, ranking fourth worldwide and first in Europe by number of attacks suffered.",
     ],
     italyStats: [
       { target: 507, dec: 0, suffix: "", label: "Incidents in Italy (2025)" },
@@ -97,8 +117,6 @@ const T = {
 }[lang];
 
 const locale = lang === "it" ? "it-IT" : "en-US";
-// altezze relative barre: 171 e 439 su max 439
-const h2021 = Math.round((171 / 439) * 100);
 ---
 <article class="clusit" data-locale={locale}>
   <header class="clusit-head">
@@ -107,7 +125,6 @@ const h2021 = Math.round((171 / 439) * 100);
     <p class="clusit-meta">{T.meta}</p>
   </header>
 
-  <!-- Stat tiles animate -->
   <div class="stat-row" data-io>
     {
       T.stats.map((s) => (
@@ -125,7 +142,6 @@ const h2021 = Math.round((171 / 439) * 100);
     }
   </div>
 
-  <!-- Tabs -->
   <div class="tabs" role="tablist" aria-label={T.eyebrow}>
     {
       T.tabs.map((tab, i) => (
@@ -143,45 +159,50 @@ const h2021 = Math.round((171 / 439) * 100);
     }
   </div>
 
-  <!-- Panels -->
+  <!-- Panoramica -->
   <section class="panel active" id="panel-0" role="tabpanel" aria-labelledby="tab-0" data-panel="0">
     <div class="panel-text stack">
       {T.overview.map((p) => <p>{p}</p>)}
     </div>
   </section>
 
+  <!-- La crescita -->
   <section class="panel" id="panel-1" role="tabpanel" aria-labelledby="tab-1" data-panel="1" hidden>
+    <h2 class="panel-title">{T.growthHead}</h2>
     <div class="panel-grid">
       <div class="panel-text stack">
         {T.growth.map((p) => <p>{p}</p>)}
       </div>
-      <figure class="chart">
+      <figure class="chart chart--sticky">
         <figcaption class="chart-cap">{T.growthChart}</figcaption>
         <div class="barchart" aria-hidden="true">
           <div class="bar-col">
-            <div class="bar-track"><div class="bar" style={`--h:${h2021}%`}></div></div>
+            <div class="bar-track"><div class="bar bar-2021"></div></div>
             <span class="bar-val">171</span>
             <span class="bar-lab">{T.axis2021}</span>
           </div>
           <div class="bar-col">
-            <div class="bar-track"><div class="bar bar--accent" style="--h:100%"></div></div>
+            <div class="bar-track"><div class="bar bar--accent bar-2025"></div></div>
             <span class="bar-val">439</span>
             <span class="bar-lab">{T.axis2025}</span>
           </div>
         </div>
+        <p class="chart-note">+256% in cinque anni</p>
       </figure>
     </div>
   </section>
 
+  <!-- L'impatto -->
   <section class="panel" id="panel-2" role="tabpanel" aria-labelledby="tab-2" data-panel="2" hidden>
+    <h2 class="panel-title">{T.impactHead}</h2>
     <div class="panel-grid">
       <div class="panel-text stack">
         {T.impact.map((p) => <p>{p}</p>)}
       </div>
-      <figure class="chart">
+      <figure class="chart chart--sticky">
         <figcaption class="chart-cap">{T.impactChart}</figcaption>
         <div class="hbar" aria-hidden="true">
-          <div class="hbar-fill" style="--w:84%"><span>84%</span></div>
+          <div class="hbar-fill"><span>84%</span></div>
         </div>
         <p class="chart-note">{T.impactWas}</p>
         <div class="extreme">
@@ -195,11 +216,13 @@ const h2021 = Math.round((171 / 439) * 100);
     </div>
   </section>
 
+  <!-- L'Italia -->
   <section class="panel" id="panel-3" role="tabpanel" aria-labelledby="tab-3" data-panel="3" hidden>
+    <h2 class="panel-title">{T.italyHead}</h2>
     <div class="panel-text stack">
       {T.italy.map((p) => <p>{p}</p>)}
     </div>
-    <div class="stat-row stat-row--sub" data-io>
+    <div class="stat-row stat-row--sub">
       {
         T.italyStats.map((s) => (
           <div class="stat">
@@ -226,13 +249,13 @@ const h2021 = Math.round((171 / 439) * 100);
 
 <style>
   .clusit {
-    max-width: 60rem;
+    max-width: 62rem;
     margin-inline: auto;
   }
   .clusit-title {
     font-size: var(--step-3);
     margin-top: 0.7rem;
-    max-width: 24ch;
+    max-width: 26ch;
   }
   .clusit-meta {
     font-family: var(--font-mono);
@@ -241,7 +264,6 @@ const h2021 = Math.round((171 / 439) * 100);
     margin-top: 0.9rem;
   }
 
-  /* Stat tiles */
   .stat-row {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -278,7 +300,6 @@ const h2021 = Math.round((171 / 439) * 100);
     margin-top: 0.3rem;
   }
 
-  /* Tabs */
   .tabs {
     display: flex;
     flex-wrap: wrap;
@@ -286,6 +307,11 @@ const h2021 = Math.round((171 / 439) * 100);
     margin-top: 2.5rem;
     border-bottom: 1px solid var(--border);
     padding-bottom: 0.6rem;
+    position: sticky;
+    top: 4.25rem;
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter: blur(8px);
+    z-index: 5;
   }
   .tab {
     font: inherit;
@@ -308,7 +334,6 @@ const h2021 = Math.round((171 / 439) * 100);
     background: var(--accent);
   }
 
-  /* Panels */
   .panel {
     padding-top: 1.75rem;
     animation: fade 0.35s ease both;
@@ -320,22 +345,33 @@ const h2021 = Math.round((171 / 439) * 100);
     from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: translateY(0); }
   }
+  .panel-title {
+    font-size: var(--step-2);
+    max-width: 24ch;
+    margin-bottom: 1.4rem;
+  }
   .panel-text {
-    max-width: 60ch;
+    max-width: 62ch;
     line-height: 1.7;
+  }
+  .panel-text p {
+    font-size: 0.98rem;
   }
   .panel-grid {
     display: grid;
-    gap: clamp(1.5rem, 1rem + 3vw, 3rem);
-    align-items: center;
+    gap: clamp(1.5rem, 1rem + 3vw, 2.5rem);
+    align-items: start;
   }
-  @media (min-width: 780px) {
+  @media (min-width: 820px) {
     .panel-grid {
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 1.15fr 0.85fr;
+    }
+    .chart--sticky {
+      position: sticky;
+      top: 8.5rem;
     }
   }
 
-  /* Chart shared */
   .chart {
     margin: 0;
     background: var(--surface);
@@ -352,12 +388,11 @@ const h2021 = Math.round((171 / 439) * 100);
     margin-bottom: 1.1rem;
   }
 
-  /* Bar chart */
   .barchart {
     display: flex;
     align-items: flex-end;
     gap: 2rem;
-    height: 190px;
+    height: 175px;
     padding-inline: 0.5rem;
   }
   .bar-col {
@@ -377,17 +412,22 @@ const h2021 = Math.round((171 / 439) * 100);
   }
   .bar {
     width: 100%;
-    height: var(--h);
     background: var(--border);
     border-radius: 8px 8px 0 0;
     transform: scaleY(0);
     transform-origin: bottom;
     transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
   }
+  .bar-2021 {
+    height: 39%;
+  }
+  .bar-2025 {
+    height: 100%;
+  }
   .bar--accent {
     background: linear-gradient(180deg, var(--accent), var(--accent-hover));
   }
-  .in .bar {
+  .panel.in .bar {
     transform: scaleY(1);
   }
   .bar-val {
@@ -401,7 +441,6 @@ const h2021 = Math.round((171 / 439) * 100);
     color: var(--muted);
   }
 
-  /* Horizontal bar */
   .hbar {
     height: 34px;
     background: var(--surface-2);
@@ -422,8 +461,8 @@ const h2021 = Math.round((171 / 439) * 100);
     font-size: 0.85rem;
     transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .in .hbar-fill {
-    width: var(--w);
+  .panel.in .hbar-fill {
+    width: 84%;
   }
   .chart-note {
     font-size: 0.8rem;
@@ -502,14 +541,16 @@ const h2021 = Math.round((171 / 439) * 100);
       requestAnimationFrame(step);
     }
 
-    function activatePanel(panel: Element) {
+    function activatePanel(panel: HTMLElement) {
+      // forza un reflow così le transizioni dei grafici partono dallo stato iniziale
+      void panel.offsetWidth;
       panel.classList.add("in");
       panel.querySelectorAll<HTMLElement>(".count").forEach(animateCount);
     }
 
-    // Tabs
     const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>(".tab"));
     const panels = Array.from(root.querySelectorAll<HTMLElement>(".panel"));
+
     tabs.forEach((tab) => {
       tab.addEventListener("click", () => {
         const idx = tab.dataset.tab;
@@ -522,33 +563,37 @@ const h2021 = Math.round((171 / 439) * 100);
           const on = p.dataset.panel === idx;
           p.hidden = !on;
           p.classList.toggle("active", on);
-          if (on) activatePanel(p);
+          if (on) requestAnimationFrame(() => activatePanel(p));
         });
       });
     });
 
-    // Stat tiles + first panel via IntersectionObserver
-    const ioTargets = root.querySelectorAll<HTMLElement>("[data-io], .panel.active");
-    if ("IntersectionObserver" in window) {
-      const io = new IntersectionObserver(
-        (entries, obs) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) {
-              const el = e.target as HTMLElement;
-              el.classList.add("in");
-              el.querySelectorAll<HTMLElement>(".count").forEach(animateCount);
-              obs.unobserve(el);
-            }
-          });
-        },
-        { threshold: 0.3 },
-      );
-      ioTargets.forEach((t) => io.observe(t));
-    } else {
-      ioTargets.forEach((t) => {
-        t.classList.add("in");
-        t.querySelectorAll<HTMLElement>(".count").forEach(animateCount);
-      });
-    }
+    // Contatori delle stat tiles + primo pannello quando entrano in viewport
+    const statRow = root.querySelector<HTMLElement>("[data-io]");
+    const firstPanel = root.querySelector<HTMLElement>(".panel.active");
+    const observeAndCount = (el: HTMLElement | null) => {
+      if (!el) return;
+      if ("IntersectionObserver" in window) {
+        const io = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                const t = e.target as HTMLElement;
+                t.classList.add("in");
+                t.querySelectorAll<HTMLElement>(".count").forEach(animateCount);
+                obs.unobserve(t);
+              }
+            });
+          },
+          { threshold: 0.25 },
+        );
+        io.observe(el);
+      } else {
+        el.classList.add("in");
+        el.querySelectorAll<HTMLElement>(".count").forEach(animateCount);
+      }
+    };
+    observeAndCount(statRow);
+    if (firstPanel) firstPanel.classList.add("in");
   }
 </script>
