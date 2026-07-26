@@ -1,0 +1,115 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SectionHeader from "@/components/SectionHeader.astro";
+import { type Locale } from "@/config/site";
+import { content } from "@/data/content";
+import { useTranslations } from "@/i18n/ui";
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const experience = content[lang].experience;
+const desc =
+  lang === "it"
+    ? "Esperienze lavorative di Chiara Berti: dal design allo sviluppo e all'automazione."
+    : "Chiara Berti's work experience: from design to development and automation.";
+const intro =
+  lang === "it"
+    ? "Oltre dieci anni tra design, sviluppo software e automazione dei processi."
+    : "Over ten years across design, software development and process automation.";
+---
+<BaseLayout lang={lang} title={t("section.experience")} description={desc}>
+  <section class="section">
+    <div class="container">
+      <SectionHeader eyebrow={t("nav.experience")} title={t("section.experience")} intro={intro} />
+
+      <ol class="timeline" role="list">
+        {
+          experience.map((item) => (
+            <li class="timeline-item">
+              <div class="timeline-marker" aria-hidden="true" />
+              <div class="timeline-content card">
+                <p class="timeline-period">{item.period}{item.location ? ` · ${item.location}` : ""}</p>
+                <h3 class="timeline-role">{item.role}</h3>
+                {item.org && <p class="timeline-org">{item.org}</p>}
+                <div class="stack timeline-body">
+                  {item.paragraphs.map((p) => <p class="muted">{p}</p>)}
+                </div>
+                {item.tags && item.tags.length > 0 && (
+                  <ul class="timeline-tags" role="list">
+                    {item.tags.map((tg) => (
+                      <li class="tag">{tg}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+  .timeline-item {
+    position: relative;
+    padding-left: 2rem;
+    padding-bottom: 1.75rem;
+  }
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 0.4rem;
+    bottom: -0.4rem;
+    width: 2px;
+    background: var(--border);
+  }
+  .timeline-item:last-child::before {
+    display: none;
+  }
+  .timeline-marker {
+    position: absolute;
+    left: 0;
+    top: 0.4rem;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+  .timeline-period {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+  .timeline-role {
+    font-size: var(--step-1);
+  }
+  .timeline-org {
+    color: var(--accent);
+    font-weight: 550;
+    margin: 0.15rem 0 0.8rem;
+  }
+  .timeline-body {
+    max-width: 68ch;
+    font-size: 0.95rem;
+  }
+  .timeline-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 0;
+  }
+</style>

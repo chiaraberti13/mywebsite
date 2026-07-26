@@ -13,8 +13,8 @@ const t = useTranslations(lang);
 const allRoutes = [
   { key: "nav.home", path: "/" },
   { key: "nav.cv", path: "/cv" },
+  { key: "nav.experience", path: "/esperienze" },
   { key: "nav.projects", path: "/projects" },
-  { key: "nav.coverLetter", path: "/cover-letter", feature: "coverLetter" },
   { key: "nav.journal", path: "/journal", feature: "journal" },
   { key: "nav.contact", path: "/contact" },
 ] as { key: UIKey; path: string; feature?: keyof typeof site.features }[];

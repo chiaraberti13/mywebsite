@@ -21,6 +21,16 @@ const desc = content[lang].hero.subheadline;
   <Hero lang={lang} />
   <div class="hr container"></div>
   <About lang={lang} />
+
+  <section class="section section--tight" id="valori">
+    <div class="container">
+      <SectionHeader eyebrow={t("nav.about")} title={t("section.values")} />
+      <div class="stack values-text">
+        {content[lang].values.paragraphs.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
   <Skills lang={lang} />
 
   {
@@ -64,6 +74,9 @@ const desc = content[lang].hero.subheadline;
 </BaseLayout>
 
 <style>
+  .values-text {
+    max-width: 62ch;
+  }
   .see-all {
     margin-top: 2rem;
   }
