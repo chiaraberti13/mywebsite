@@ -2,32 +2,33 @@
 title: "Cover letter"
 lang: "en"
 page: "cover-letter"
-updated: 2026-01-15
+updated: 2026-07-01
 ---
 
 Dear team,
 
 my name is **Chiara Berti** and I'm determinedly building my path toward
 **cybersecurity and ethical hacking**. I'm not starting from scratch: I bring
-years of experience in design and development, where I learned to read code,
-design interfaces and automate processes. It's exactly this cross-disciplinary
-perspective — technical, analytical and people-aware — that I want to put at the
-service of security.
+more than ten years in design, during which every repetitive task became a chance
+to write code. That's how Python, Bash, PHP, Linux, SQL and web development came
+into my work, and how I learned to **analyze a problem, connect different
+technologies and design automations** that reduce errors and improve the way we
+work.
 
-I believe that defending a system means, first of all, **understanding it**: how
-it's built, how it's used and where it can fail. My analytical mindset, combined
-with attention to detail and a strong work ethic, lets me approach security
-problems methodically and responsibly.
+It was this curiosity that led me, naturally, toward security. In 2024 I decided
+to turn it into a professional path; in 2026 I earned the **CompTIA Security+
+(SY0-701)** certification, and I keep deepening my knowledge of Linux, networking
+and offensive security through constant study and hands-on labs.
 
-I'm investing in focused training, hands-on labs and personal projects to
-consolidate skills in penetration testing, vulnerability analysis and system
-hardening. I'm looking for an environment where I can grow, contribute and learn
-every day, leveraging both my new skills and my background as a designer and
-developer.
+I believe the best way to defend a system is to **understand it all the way to
+its limits** — that's why my goal is to grow into Penetration Testing and Red
+Teaming. I bring an analytical mindset, attention to detail, a solid technical
+foundation and a strong work ethic.
+
+I'm looking for an environment where I can contribute, learn every day and
+leverage both my security skills and my background as a designer and developer.
 
 I'd be glad to tell you more about my motivation and my projects in person.
 
 Thank you for your consideration,
 **Chiara Berti**
-
-> ⚠️ Placeholder text: tailor tone, experience and goals.

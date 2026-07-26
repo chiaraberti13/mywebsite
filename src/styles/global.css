@@ -3,11 +3,11 @@
    Palette: neutri + accento GIALLO OCRA. Tema chiaro/scuro.
    ═══════════════════════════════════════════════════════════════ */
 :root {
-  /* Accento ocra (un solo punto di verità: cambialo e cambia tutto) */
-  --accent: #c8901a;
-  --accent-hover: #a8760f;
-  --accent-soft: rgba(200, 144, 26, 0.12);
-  --accent-contrast: #16161a; /* testo leggibile sopra l'ocra */
+  /* Accento giallo-oro (un solo punto di verità: cambialo e cambia tutto) */
+  --accent: #d7a521;
+  --accent-hover: #b98b16;
+  --accent-soft: rgba(215, 165, 33, 0.13);
+  --accent-contrast: #16161a; /* testo leggibile sopra il giallo */
 
   /* Superfici e testo — tema CHIARO */
   --bg: #faf9f6;
@@ -47,9 +47,9 @@
 }
 
 :root[data-theme="dark"] {
-  --accent: #e0a82e;
-  --accent-hover: #f0bd4a;
-  --accent-soft: rgba(224, 168, 46, 0.14);
+  --accent: #ecbc44;
+  --accent-hover: #f5cd63;
+  --accent-soft: rgba(236, 188, 68, 0.15);
   --accent-contrast: #14140f;
 
   --bg: #0f0f11;

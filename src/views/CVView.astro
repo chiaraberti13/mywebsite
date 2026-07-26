@@ -40,6 +40,13 @@ const desc =
                 <h3 class="timeline-role">{item.role}</h3>
                 <p class="timeline-org">{item.org}</p>
                 <p class="muted timeline-desc">{item.description}</p>
+                {item.bullets && item.bullets.length > 0 && (
+                  <ul class="timeline-bullets" role="list">
+                    {item.bullets.map((b) => (
+                      <li>{b}</li>
+                    ))}
+                  </ul>
+                )}
                 {item.tags && item.tags.length > 0 && (
                   <ul class="timeline-tags" role="list">
                     {item.tags.map((tg) => (
@@ -159,6 +166,26 @@ const desc =
   }
   .timeline-desc {
     font-size: 0.95rem;
+  }
+  .timeline-bullets {
+    list-style: none;
+    margin: 0.9rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .timeline-bullets li {
+    position: relative;
+    padding-left: 1.25rem;
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+  .timeline-bullets li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
   }
   .timeline-tags {
     display: flex;
