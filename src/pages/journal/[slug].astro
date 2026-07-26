@@ -1,0 +1,14 @@
+---
+import JournalDetailView from "@/views/JournalDetailView.astro";
+import { getJournal, slugOf } from "@/lib/content";
+
+export async function getStaticPaths() {
+  const posts = await getJournal("it");
+  return posts.map((post) => ({
+    params: { slug: slugOf(post.id) },
+    props: { post },
+  }));
+}
+const { post } = Astro.props;
+---
+<JournalDetailView lang="it" post={post} />

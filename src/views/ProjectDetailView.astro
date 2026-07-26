@@ -1,0 +1,120 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Prose from "@/components/Prose.astro";
+import Icon from "@/components/Icon.astro";
+import { render, type CollectionEntry } from "astro:content";
+import { type Locale } from "@/config/site";
+import { useTranslations, localePath } from "@/i18n/ui";
+
+interface Props {
+  lang: Locale;
+  project: CollectionEntry<"projects">;
+}
+const { lang, project } = Astro.props;
+const t = useTranslations(lang);
+const { title, summary, tags, links, cover } = project.data;
+const { Content } = await render(project);
+
+const platformIcon: Record<string, string> = {
+  github: "github",
+  behance: "behance",
+  x: "x",
+  instagram: "instagram",
+  live: "external",
+};
+const platformLabel: Record<string, string> = {
+  github: "GitHub",
+  behance: "Behance",
+  x: "X",
+  instagram: "Instagram",
+  live: "Live",
+};
+const linkEntries = Object.entries(links).filter(([, v]) => Boolean(v)) as [string, string][];
+---
+<BaseLayout lang={lang} title={title} description={summary} image={cover}>
+  <article class="section">
+    <div class="container">
+      <a class="back" href={localePath(lang, "/projects")}>
+        <Icon name="chevronRight" size={16} class="flip" />
+        {t("nav.projects")}
+      </a>
+
+      <header class="detail-head">
+        <h1>{title}</h1>
+        <p class="lead">{summary}</p>
+        {
+          tags.length > 0 && (
+            <ul class="detail-tags" role="list">
+              {tags.map((tg) => <li class="tag">{tg}</li>)}
+            </ul>
+          )
+        }
+        {
+          linkEntries.length > 0 && (
+            <div class="detail-links">
+              {linkEntries.map(([platform, url]) => (
+                <a class="btn btn--ghost" href={url} target="_blank" rel="noopener noreferrer">
+                  <Icon name={platformIcon[platform] ?? "link"} size={18} />
+                  {platformLabel[platform] ?? platform}
+                </a>
+              ))}
+            </div>
+          )
+        }
+      </header>
+
+      {cover && <img class="detail-cover" src={cover} alt="" loading="lazy" />}
+
+      <Prose class="detail-body">
+        <Content />
+      </Prose>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--muted);
+    font-weight: 550;
+    margin-bottom: 1.5rem;
+  }
+  .back:hover {
+    color: var(--accent);
+  }
+  .back :global(.flip) {
+    transform: rotate(180deg);
+  }
+  .detail-head h1 {
+    font-size: var(--step-3);
+    max-width: 20ch;
+  }
+  .detail-head .lead {
+    margin-top: 1rem;
+  }
+  .detail-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    margin: 1.25rem 0 0;
+    padding: 0;
+  }
+  .detail-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+  }
+  .detail-cover {
+    width: 100%;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+  .detail-body {
+    margin-top: 2rem;
+  }
+</style>

@@ -1,0 +1,49 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SectionHeader from "@/components/SectionHeader.astro";
+import Prose from "@/components/Prose.astro";
+import { render } from "astro:content";
+import { type Locale } from "@/config/site";
+import { useTranslations } from "@/i18n/ui";
+import { getLongform } from "@/lib/content";
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const entry = await getLongform(lang, "privacy");
+const desc =
+  lang === "it"
+    ? "Informativa sulla privacy del sito."
+    : "Privacy policy of the website.";
+const rendered = entry ? await render(entry) : null;
+const Content = rendered ? rendered.Content : null;
+const updated = entry?.data.updated;
+---
+<BaseLayout lang={lang} title={t("privacy.title")} description={desc} noindex={true}>
+  <section class="section">
+    <div class="container">
+      <SectionHeader title={t("privacy.title")} />
+      {
+        updated && (
+          <p class="muted updated">
+            {lang === "it" ? "Ultimo aggiornamento" : "Last updated"}:{" "}
+            {updated.toLocaleDateString(lang === "it" ? "it-IT" : "en-US")}
+          </p>
+        )
+      }
+      {Content && (
+        <Prose>
+          <Content />
+        </Prose>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .updated {
+    font-size: 0.85rem;
+    margin-top: -1.5rem;
+    margin-bottom: 1.5rem;
+  }
+</style>
