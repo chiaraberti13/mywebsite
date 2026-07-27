@@ -21,11 +21,11 @@
   --danger: #b23b3b;
   --success: #2f7d54;
 
-  /* Tipografia */
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif;
-  --font-mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", "Fira Code",
-    Menlo, Consolas, monospace;
+  /* Tipografia — font "tech" self-hostati (Space Grotesk + JetBrains Mono) */
+  --font-sans: "Space Grotesk Variable", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular",
+    "Fira Code", Menlo, Consolas, monospace;
 
   /* Scala tipografica fluida */
   --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.9rem);
@@ -137,6 +137,17 @@ h3 {
 }
 p {
   text-wrap: pretty;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+/* Le intro brevi restano allineate a sinistra: la giustificazione su poche
+   righe crea spazi troppo larghi. */
+.lead,
+.eyebrow {
+  text-align: left;
+  hyphens: manual;
 }
 
 /* Focus accessibile e visibile ovunque */
