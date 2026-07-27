@@ -9,9 +9,9 @@ const { class: cls = "" } = Astro.props;
 
 <style>
   .prose {
-    max-width: 68ch;
+    max-width: 78ch;
     font-size: var(--step-0);
-    line-height: 1.75;
+    line-height: 1.8;
     color: var(--text);
   }
   .prose :global(h2) {
@@ -25,7 +25,11 @@ const { class: cls = "" } = Astro.props;
     margin-bottom: 0.5rem;
   }
   .prose :global(p) {
-    margin-block: 1rem;
+    margin-block: 1.15rem;
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
   }
   .prose :global(ul),
   .prose :global(ol) {
