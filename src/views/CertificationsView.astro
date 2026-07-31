@@ -23,12 +23,14 @@ const desc =
         title={t("section.certifications")}
         intro={cert.lead}
       />
-      <div class="grid grid--2">
+      <div class="grid grid--2" data-reveal-group>
         {
           cert.items.map((c) => (
             <div class="card cv-block">
               <div class="cert-top">
-                <span class="cv-period">{c.year}</span>
+                <span class="cert-badge" aria-hidden="true">
+                  <Icon name={c.icon ?? "shieldCheck"} size={22} />
+                </span>
                 {c.url && (
                   <a
                     class="cert-verify"
@@ -41,6 +43,7 @@ const desc =
                   </a>
                 )}
               </div>
+              <span class="cv-period">{c.year}</span>
               <h3 class="cv-block-title">{c.title}</h3>
               <p class="cv-org">{c.org}</p>
               {c.description && <p class="muted cert-desc">{c.description}</p>}
@@ -49,7 +52,7 @@ const desc =
         }
       </div>
 
-      <div class="beyond">
+      <div class="beyond" data-reveal>
         <h3 class="beyond-title">{t("section.beyondCerts")}</h3>
         <div class="stack beyond-text">
           {cert.beyond.paragraphs.map((p) => <p class="muted">{p}</p>)}
@@ -78,8 +81,19 @@ const desc =
   }
   .cert-top {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
+    margin-bottom: 0.9rem;
+  }
+  .cert-badge {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 12px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
   }
   .cert-verify {
     color: var(--muted);

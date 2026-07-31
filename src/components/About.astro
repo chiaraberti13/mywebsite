@@ -13,12 +13,12 @@ const about = content[lang].about;
   <div class="container about-grid">
     <div>
       <SectionHeader eyebrow={t("nav.about")} title={t("section.about")} />
-      <div class="stack about-text">
+      <div class="stack about-text" data-reveal>
         {about.paragraphs.map((p) => <p>{p}</p>)}
       </div>
     </div>
 
-    <aside class="about-highlights">
+    <aside class="about-highlights" data-reveal-group>
       {
         about.highlights.map((h) => (
           <div class="card highlight">

@@ -12,7 +12,7 @@ const groups = content[lang].skills;
 <section class="section" id="skills">
   <div class="container">
     <SectionHeader eyebrow={t("nav.skills")} title={t("section.skills")} />
-    <div class="grid grid--3">
+    <div class="grid grid--3" data-reveal-group>
       {
         groups.map((g) => (
           <div class="card skill-card">

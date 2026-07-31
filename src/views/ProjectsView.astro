@@ -23,7 +23,7 @@ const intro =
   <section class="section">
     <div class="container">
       <SectionHeader eyebrow={t("nav.projects")} title={t("section.projects")} intro={intro} />
-      <div class="grid grid--3">
+      <div class="grid grid--3" data-reveal-group>
         {
           projects.map((p) => (
             <ProjectCard project={p} href={localePath(lang, `/projects/${slugOf(p.id)}`)} />

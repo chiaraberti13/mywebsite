@@ -28,6 +28,8 @@ export interface CertItem {
   year: string;
   description?: string;
   url?: string;
+  /** Nome icona (vedi Icon.astro) che rappresenta l'ambito della certificazione */
+  icon?: string;
 }
 export interface SkillGroup {
   name: string;
@@ -168,6 +170,7 @@ export const content: Record<Locale, PageContent> = {
         items: [
           {
             title: "CompTIA Security+",
+            icon: "shieldCheck",
             org: "CompTIA",
             year: "2026",
             description:
@@ -175,6 +178,7 @@ export const content: Record<Locale, PageContent> = {
           },
           {
             title: "Linux Essentials",
+            icon: "terminal",
             org: "Linux Professional Institute (LPI)",
             year: "2024",
             url: LPI_LINUX,
@@ -183,6 +187,7 @@ export const content: Record<Locale, PageContent> = {
           },
           {
             title: "Web Development Essentials",
+            icon: "code",
             org: "Linux Professional Institute (LPI)",
             year: "2025",
             url: LPI_WEB,
@@ -191,6 +196,7 @@ export const content: Record<Locale, PageContent> = {
           },
           {
             title: "Pre Security",
+            icon: "flag",
             org: "TryHackMe",
             year: "2026",
             description:
@@ -339,6 +345,7 @@ export const content: Record<Locale, PageContent> = {
         items: [
           {
             title: "CompTIA Security+",
+            icon: "shieldCheck",
             org: "CompTIA",
             year: "2026",
             description:
@@ -346,6 +353,7 @@ export const content: Record<Locale, PageContent> = {
           },
           {
             title: "Linux Essentials",
+            icon: "terminal",
             org: "Linux Professional Institute (LPI)",
             year: "2024",
             url: LPI_LINUX,
@@ -354,6 +362,7 @@ export const content: Record<Locale, PageContent> = {
           },
           {
             title: "Web Development Essentials",
+            icon: "code",
             org: "Linux Professional Institute (LPI)",
             year: "2025",
             url: LPI_WEB,
@@ -362,6 +371,7 @@ export const content: Record<Locale, PageContent> = {
           },
           {
             title: "Pre Security",
+            icon: "flag",
             org: "TryHackMe",
             year: "2026",
             description:
