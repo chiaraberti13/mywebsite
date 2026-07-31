@@ -29,7 +29,7 @@ const desc =
           )
         }
       </div>
-      <div class="stack cv-intro">
+      <div class="stack cv-intro" data-reveal>
         {cur.intro.map((p) => <p>{p}</p>)}
       </div>
     </div>
@@ -38,7 +38,7 @@ const desc =
   <section class="section section--tight">
     <div class="container">
       <SectionHeader eyebrow="Education" title={t("section.education")} intro={cur.education.lead} />
-      <div class="stack">
+      <div class="stack" data-reveal-group>
         {
           cur.education.items.map((ed) => (
             <div class="card cv-block">
