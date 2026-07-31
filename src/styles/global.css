@@ -347,3 +347,19 @@ main {
   .reveal-ready [data-reveal-group].is-visible > *:nth-child(6) { transition-delay: 0.30s; }
   .reveal-ready [data-reveal-group].is-visible > *:nth-child(n + 7) { transition-delay: 0.36s; }
 }
+
+/* Con "riduci movimento": niente scorrimento, ma un fade morbido resta
+   (l'opacità non è movimento vestibolare). Il !important supera la regola
+   globale che azzera le transizioni. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-ready [data-reveal],
+  .reveal-ready [data-reveal-group] > * {
+    opacity: 0;
+    transition: opacity 0.5s ease !important;
+    transform: none !important;
+  }
+  .reveal-ready [data-reveal].is-visible,
+  .reveal-ready [data-reveal-group].is-visible > * {
+    opacity: 1;
+  }
+}
