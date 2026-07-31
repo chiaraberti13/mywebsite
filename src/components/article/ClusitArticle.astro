@@ -325,56 +325,38 @@ const locale = lang === "it" ? "it-IT" : "en-US";
   <!-- L'Italia -->
   <section class="panel" id="panel-3" role="tabpanel" aria-labelledby="tab-3" data-panel="3" hidden>
     <h2 class="panel-title">{T.italyHead}</h2>
-    <div class="panel-grid">
-      <div class="panel-text stack">
-        {T.italy.map((p) => <p>{p}</p>)}
-      </div>
-      <figure class="chart chart--sticky">
-        <div class="chart-block">
-          <figcaption class="chart-cap">{T.itTrendCap}</figcaption>
-          <div class="barchart" aria-hidden="true">
-            <div class="bar-col">
-              <div class="bar-track"><div class="bar h70"></div></div>
-              <span class="bar-val">{T.vItaly2024}</span>
-              <span class="bar-lab">{T.y2024}</span>
-            </div>
-            <div class="bar-col">
-              <div class="bar-track"><div class="bar bar--accent"></div></div>
-              <span class="bar-val">{T.vItaly2025}</span>
-              <span class="bar-lab">{T.y2025}</span>
-            </div>
-          </div>
-          <p class="chart-note">{T.itTrendNote}</p>
-        </div>
-
-        <div class="chart-block chart-block--sep">
-          <figcaption class="chart-cap">{T.itShareCap}</figcaption>
-          <div class="donut-wrap">
-            <svg class="donut" viewBox="0 0 120 120" aria-hidden="true">
-              <circle class="donut-track" cx="60" cy="60" r="52" />
-              <circle class="donut-val p96" cx="60" cy="60" r="52" />
-            </svg>
-            <div class="donut-center"><strong>{T.vShare}</strong><span>{T.y2025}</span></div>
-          </div>
-          <p class="chart-note">{T.itShareNote}</p>
-        </div>
-      </figure>
+    <div class="panel-text stack italy-intro">
+      {T.italy.map((p) => <p>{p}</p>)}
     </div>
-    <div class="stat-row stat-row--sub">
-      {
-        T.italyStats.map((s) => (
-          <div class="stat">
-            <span
-              class="stat-num count"
-              data-target={s.target}
-              data-dec={s.dec}
-              data-prefix={s.prefix ?? ""}
-              data-suffix={s.suffix ?? ""}
-            >0</span>
-            <span class="stat-label">{s.label}</span>
+    <div class="italy-charts">
+      <figure class="chart">
+        <figcaption class="chart-cap">{T.itTrendCap}</figcaption>
+        <div class="barchart" aria-hidden="true">
+          <div class="bar-col">
+            <div class="bar-track"><div class="bar h70"></div></div>
+            <span class="bar-val">{T.vItaly2024}</span>
+            <span class="bar-lab">{T.y2024}</span>
           </div>
-        ))
-      }
+          <div class="bar-col">
+            <div class="bar-track"><div class="bar bar--accent"></div></div>
+            <span class="bar-val">{T.vItaly2025}</span>
+            <span class="bar-lab">{T.y2025}</span>
+          </div>
+        </div>
+        <p class="chart-note">{T.itTrendNote}</p>
+      </figure>
+
+      <figure class="chart italy-share">
+        <figcaption class="chart-cap">{T.itShareCap}</figcaption>
+        <div class="donut-wrap">
+          <svg class="donut" viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="donut-track" cx="60" cy="60" r="52" />
+            <circle class="donut-val p96" cx="60" cy="60" r="52" />
+          </svg>
+          <div class="donut-center"><strong>{T.vShare}</strong><span>{T.y2025}</span></div>
+        </div>
+        <p class="chart-note">{T.itShareNote}</p>
+      </figure>
     </div>
   </section>
 
@@ -677,6 +659,28 @@ const locale = lang === "it" ? "it-IT" : "en-US";
     width: var(--w);
   }
   .strip-fill.w27 { --w: 2.7%; }
+
+  /* Sezione Italia: intro a tutta larghezza + due grafici affiancati */
+  .italy-intro {
+    max-width: 62ch;
+    margin-bottom: clamp(1.5rem, 1rem + 2vw, 2.4rem);
+  }
+  .italy-charts {
+    display: grid;
+    gap: clamp(1rem, 0.5rem + 2vw, 1.6rem);
+  }
+  @media (min-width: 640px) {
+    .italy-charts {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .italy-share {
+    display: flex;
+    flex-direction: column;
+  }
+  .italy-share .donut-wrap {
+    margin-block: auto;
+  }
 
   @media (prefers-reduced-motion: reduce) {
     .bar,
