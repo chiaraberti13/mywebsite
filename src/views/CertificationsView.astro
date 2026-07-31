@@ -2,67 +2,30 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import SectionHeader from "@/components/SectionHeader.astro";
 import Icon from "@/components/Icon.astro";
-import { site, type Locale } from "@/config/site";
+import { type Locale } from "@/config/site";
 import { content } from "@/data/content";
 import { useTranslations } from "@/i18n/ui";
 
 interface Props { lang: Locale }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-const cur = content[lang].curriculum;
+const cert = content[lang].curriculum.certifications;
 const desc =
   lang === "it"
-    ? "Curriculum di Chiara Berti: percorso, istruzione e certificazioni."
-    : "Chiara Berti's curriculum: journey, education and certifications.";
+    ? "Certificazioni di Chiara Berti: CompTIA Security+, Linux Essentials, Web Development Essentials, TryHackMe."
+    : "Chiara Berti's certifications: CompTIA Security+, Linux Essentials, Web Development Essentials, TryHackMe.";
 ---
-<BaseLayout lang={lang} title={t("nav.cv")} description={desc}>
+<BaseLayout lang={lang} title={t("nav.certifications")} description={desc}>
   <section class="section">
-    <div class="container">
-      <div class="cv-head">
-        <SectionHeader eyebrow={t("nav.cv")} title={t("section.path")} />
-        {
-          site.features.cvDownload && (
-            <a class="btn btn--primary" href={site.cvFile} download>
-              <Icon name="download" size={18} />
-              {t("cta.downloadCv")}
-            </a>
-          )
-        }
-      </div>
-      <div class="stack cv-intro">
-        {cur.intro.map((p) => <p>{p}</p>)}
-      </div>
-    </div>
-  </section>
-
-  <section class="section section--tight">
-    <div class="container">
-      <SectionHeader eyebrow="Education" title={t("section.education")} intro={cur.education.lead} />
-      <div class="stack">
-        {
-          cur.education.items.map((ed) => (
-            <div class="card cv-block">
-              {ed.period && <p class="cv-period">{ed.period}</p>}
-              <h3 class="cv-block-title">{ed.title}</h3>
-              <p class="cv-org">{ed.org}</p>
-              {ed.description && <p class="muted">{ed.description}</p>}
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <section class="section section--tight">
     <div class="container">
       <SectionHeader
         eyebrow="Certifications"
         title={t("section.certifications")}
-        intro={cur.certifications.lead}
+        intro={cert.lead}
       />
       <div class="grid grid--2">
         {
-          cur.certifications.items.map((c) => (
+          cert.items.map((c) => (
             <div class="card cv-block">
               <div class="cert-top">
                 <span class="cv-period">{c.year}</span>
@@ -89,7 +52,7 @@ const desc =
       <div class="beyond">
         <h3 class="beyond-title">{t("section.beyondCerts")}</h3>
         <div class="stack beyond-text">
-          {cur.certifications.beyond.paragraphs.map((p) => <p class="muted">{p}</p>)}
+          {cert.beyond.paragraphs.map((p) => <p class="muted">{p}</p>)}
         </div>
       </div>
     </div>
@@ -97,16 +60,6 @@ const desc =
 </BaseLayout>
 
 <style>
-  .cv-head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-  .cv-intro {
-    max-width: 65ch;
-  }
   .cv-period {
     font-family: var(--font-mono);
     font-size: 0.78rem;
