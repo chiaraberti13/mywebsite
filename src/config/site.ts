@@ -55,9 +55,6 @@ export const site = {
     { platform: "linkedin", url: "https://www.linkedin.com/in/chiaraberti13", handle: "@chiaraberti13" },
     { platform: "x", url: "https://x.com/SocratesSatoshi", handle: "@SocratesSatoshi" },
     { platform: "instagram", url: "https://instagram.com/chiaraberti_13", handle: "@chiaraberti_13" },
-    { platform: "behance", url: "https://www.behance.net/chiaraberti", handle: "Behance" },
-    { platform: "telegram", url: "https://t.me/chiaraberti13", handle: "@chiaraberti13" },
-    { platform: "email", url: "mailto:chiaraberti13@icloud.com", handle: "chiaraberti13@icloud.com" },
   ] satisfies SocialLink[],
 
   /**
@@ -66,7 +63,7 @@ export const site = {
   features: {
     journal: true, // blog / articoli
     coverLetter: true, // lettera di presentazione
-    cvDownload: true, // pulsante "Scarica CV (PDF)"
+    cvDownload: false, // pulsante "Scarica CV (PDF)" — riattivare a true dopo aver caricato il PDF in /public
   },
 
   /** Percorso del CV scaricabile (mettere il file in /public) */

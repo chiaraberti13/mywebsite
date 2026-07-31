@@ -70,7 +70,7 @@ export const content: Record<Locale, PageContent> = {
       headline: "Non mi interessa usare la tecnologia. Mi interessa capirla davvero.",
       subheadline:
         "Dal design all'automazione fino alla cybersecurity: capire come funziona la tecnologia, per usarla in modo consapevole e proteggerla.",
-      roles: ["Process Automation", "CompTIA Security+", "Penetration Testing", "Red Team"],
+      roles: ["Process Automation", "Penetration Testing", "Red Team"],
     },
     about: {
       paragraphs: [
@@ -85,6 +85,7 @@ export const content: Record<Locale, PageContent> = {
         { label: "Focus", value: "Cybersecurity" },
         { label: "Certificazione", value: "CompTIA Security+" },
         { label: "Background", value: "10+ anni Design → Dev" },
+        { label: "Impatto", value: "−80% tempi di lavorazione" },
       ],
     },
     values: {
@@ -240,7 +241,7 @@ export const content: Record<Locale, PageContent> = {
       headline: "I'm not interested in using technology. I'm interested in truly understanding it.",
       subheadline:
         "From design to automation to cybersecurity: understanding how technology works, to use it consciously and protect it.",
-      roles: ["Process Automation", "CompTIA Security+", "Penetration Testing", "Red Team"],
+      roles: ["Process Automation", "Penetration Testing", "Red Team"],
     },
     about: {
       paragraphs: [
@@ -255,6 +256,7 @@ export const content: Record<Locale, PageContent> = {
         { label: "Focus", value: "Cybersecurity" },
         { label: "Certification", value: "CompTIA Security+" },
         { label: "Background", value: "10+ yrs Design → Dev" },
+        { label: "Impact", value: "−80% processing time" },
       ],
     },
     values: {
