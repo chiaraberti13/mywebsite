@@ -1,6 +1,6 @@
 ---
 import Icon from "./Icon.astro";
-import { site } from "@/config/site";
+import { site, type SocialLink } from "@/config/site";
 
 interface Props {
   size?: number;
@@ -22,7 +22,7 @@ const labels: Record<string, string> = {
 ---
 <ul class={`socials ${cls}`} role="list">
   {
-    links.map((s) => (
+    links.map((s: SocialLink) => (
       <li>
         <a
           href={s.url}

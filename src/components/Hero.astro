@@ -27,6 +27,12 @@ const h = content[lang].hero;
       }
     </p>
 
+    <p class="hero-badge">
+      <span class="hero-badge-dot" aria-hidden="true"></span>
+      <span class="hero-badge-name">CompTIA Security+</span>
+      <span class="hero-badge-sub">SY0-701</span>
+    </p>
+
     <p class="lead hero-sub">{h.subheadline}</p>
 
     <div class="hero-actions">
@@ -82,6 +88,34 @@ const h = content[lang].hero;
   }
   .hero-roles .dot {
     color: var(--accent);
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.1rem;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    background: var(--accent-soft);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    width: fit-content;
+  }
+  .hero-badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .hero-badge-name {
+    font-weight: 650;
+    color: var(--accent);
+  }
+  .hero-badge-sub {
+    color: var(--muted);
+    letter-spacing: 0.04em;
   }
   .hero-sub {
     margin-top: 1.5rem;
