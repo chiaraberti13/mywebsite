@@ -70,7 +70,7 @@ export const content: Record<Locale, PageContent> = {
       headline: "Non mi interessa usare la tecnologia. Mi interessa capirla davvero.",
       subheadline:
         "Dal design all'automazione fino alla cybersecurity: capire come funziona la tecnologia, per usarla in modo consapevole e proteggerla.",
-      roles: ["Penetration Testing", "Red Team", "Automation", "Designer che programma"],
+      roles: ["Process Automation", "CompTIA Security+", "Penetration Testing", "Red Team"],
     },
     about: {
       paragraphs: [
@@ -240,7 +240,7 @@ export const content: Record<Locale, PageContent> = {
       headline: "I'm not interested in using technology. I'm interested in truly understanding it.",
       subheadline:
         "From design to automation to cybersecurity: understanding how technology works, to use it consciously and protect it.",
-      roles: ["Penetration Testing", "Red Team", "Automation", "Designer who codes"],
+      roles: ["Process Automation", "CompTIA Security+", "Penetration Testing", "Red Team"],
     },
     about: {
       paragraphs: [
