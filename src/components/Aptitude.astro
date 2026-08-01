@@ -1,0 +1,192 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+import { content } from "@/data/content";
+import type { Locale } from "@/config/site";
+import { useTranslations } from "@/i18n/ui";
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const apt = content[lang].aptitude;
+const languages = content[lang].languages;
+const interests = content[lang].interests;
+---
+<section class="section" id="aptitude">
+  <div class="container">
+    <SectionHeader eyebrow={t("section.aptitudeKicker")} title={t("section.aptitude")} intro={apt.lead} />
+
+    <div class="apt-grid">
+      <div class="apt-bars" data-reveal-group>
+        {
+          apt.strengths.map((s) => (
+            <div class="apt-row">
+              <span class="apt-label">{s.label}</span>
+              <div class="apt-track" aria-hidden="true">
+                <div class:list={["apt-fill", `w${s.value}`]} />
+              </div>
+              <span class="apt-val">{s.value}</span>
+            </div>
+          ))
+        }
+      </div>
+
+      <aside class="apt-working" data-reveal-group>
+        <p class="apt-working-label">{apt.workingOnLabel}</p>
+        {
+          apt.workingOn.map((w) => (
+            <div class="card apt-card">
+              <h3 class="apt-card-title">
+                <span class="apt-dot" aria-hidden="true" />
+                {w.title}
+              </h3>
+              <p class="muted">{w.text}</p>
+            </div>
+          ))
+        }
+      </aside>
+    </div>
+
+    <div class="apt-meta" data-reveal>
+      <div class="apt-meta-col">
+        <p class="apt-meta-label">{t("section.languages")}</p>
+        <ul class="apt-langs" role="list">
+          {languages.map((l) => (
+            <li><strong>{l.name}</strong> <span class="muted">— {l.level}</span></li>
+          ))}
+        </ul>
+      </div>
+      <div class="apt-meta-col">
+        <p class="apt-meta-label">{t("section.interests")}</p>
+        <ul class="apt-interests" role="list">
+          {interests.map((i) => <li class="tag">{i}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .apt-grid {
+    display: grid;
+    gap: clamp(1.5rem, 1rem + 3vw, 3rem);
+  }
+  @media (min-width: 860px) {
+    .apt-grid {
+      grid-template-columns: 1.5fr 1fr;
+      align-items: start;
+    }
+  }
+
+  .apt-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .apt-row {
+    display: grid;
+    grid-template-columns: minmax(6.5rem, 11rem) 1fr 2rem;
+    align-items: center;
+    gap: 0.6rem 1rem;
+  }
+  .apt-label {
+    font-size: 0.95rem;
+  }
+  .apt-track {
+    height: 12px;
+    background: var(--surface-2);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .apt-fill {
+    height: 100%;
+    width: 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent-hover), var(--accent));
+    transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  /* Le larghezze arrivano da classi (la CSP blocca gli style inline) e
+     partono quando la sezione entra in viewport. */
+  .apt-bars.is-visible .apt-fill {
+    width: var(--w);
+  }
+  .apt-fill.w84 { --w: 84%; }
+  .apt-fill.w86 { --w: 86%; }
+  .apt-fill.w88 { --w: 88%; }
+  .apt-fill.w90 { --w: 90%; }
+  .apt-fill.w92 { --w: 92%; }
+  .apt-val {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  .apt-working {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .apt-working-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .apt-card {
+    padding: 1.1rem 1.25rem;
+  }
+  .apt-card-title {
+    font-size: var(--step-0);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.3rem;
+  }
+  .apt-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex: none;
+  }
+
+  .apt-meta {
+    margin-top: clamp(2rem, 1rem + 3vw, 3rem);
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--border);
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 640px) {
+    .apt-meta {
+      grid-template-columns: minmax(8rem, auto) 1fr;
+      gap: 3rem;
+    }
+  }
+  .apt-meta-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.7rem;
+  }
+  .apt-langs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .apt-interests {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+</style>

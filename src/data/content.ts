@@ -30,6 +30,8 @@ export interface CertItem {
   url?: string;
   /** Nome icona (vedi Icon.astro) che rappresenta l'ambito della certificazione */
   icon?: string;
+  /** Credential ID / codice di verifica pubblico */
+  credential?: string;
 }
 export interface SkillGroup {
   name: string;
@@ -60,6 +62,14 @@ export interface PageContent {
     };
   };
   experience: ExperienceItem[];
+  aptitude: {
+    lead: string;
+    strengths: { label: string; value: number }[];
+    workingOnLabel: string;
+    workingOn: { title: string; text: string }[];
+  };
+  languages: { name: string; level: string }[];
+  interests: string[];
 }
 
 const LPI_LINUX = "https://lpi.org/v/LPI000606561/2jtytje6tw";
@@ -100,37 +110,57 @@ export const content: Record<Locale, PageContent> = {
     },
     skills: [
       {
-        name: "Sicurezza",
+        name: "Cybersecurity & sicurezza",
         items: [
           "CompTIA Security+ (SY0-701)",
-          "Linux",
-          "Networking",
-          "Sicurezza offensiva",
-          "OWASP Top 10",
-          "OSINT",
-          "Penetration testing (in crescita)",
+          "Minacce e gestione del rischio",
+          "Crittografia",
+          "Sicurezza offensiva (TryHackMe)",
+          "Sicurezza applicativa (CSRF, XSS)",
+          "Validazione input & credenziali",
+          "Hardening",
         ],
       },
       {
-        name: "Programmazione & Automazione",
+        name: "Linux, sistemi & networking",
+        items: [
+          "Linux (LPI Essentials)",
+          "Riga di comando & shell",
+          "macOS",
+          "Virtualizzazione (VM)",
+          "Docker",
+          "Reti e protocolli",
+        ],
+      },
+      {
+        name: "Programmazione & automazione",
         items: [
           "Python",
-          "Bash",
-          "PHP",
-          "JavaScript / Node.js",
-          "SQL",
-          "Sviluppo web (HTML/CSS)",
-          "Automazione dei processi",
-          "Git",
+          "Bash / Shell scripting",
+          "Automazione di processi",
+          "Pipeline",
+          "Logica di programmazione",
+          "Problem solving",
         ],
       },
       {
-        name: "Design & Tool",
+        name: "Sviluppo web & database",
         items: [
-          "Packaging & documentazione tecnica",
-          "Adobe Illustrator (scripting)",
-          "Adobe Suite",
-          "Fotografia",
+          "PHP",
+          "JavaScript (Node.js)",
+          "HTML5",
+          "CSS",
+          "MySQL",
+          "SQL",
+        ],
+      },
+      {
+        name: "Strumenti & metodo",
+        items: [
+          "Git / GitHub",
+          "Debugging su log ed evidenze",
+          "Documentazione",
+          "Qualità del codice",
         ],
       },
     ],
@@ -144,24 +174,46 @@ export const content: Record<Locale, PageContent> = {
         lead: "La mia formazione combina competenze tecniche e creative. Dopo gli studi in ambito economico-aziendale ho approfondito la programmazione e lo sviluppo web attraverso percorsi specialistici, costruendo basi solide che hanno accompagnato la mia evoluzione professionale verso l'automazione dei processi e, successivamente, la cybersecurity.",
         items: [
           {
-            title: "PHP & Java for Programmers",
-            org: "Pc Academy — Roma",
+            title: "PHP su MySQL",
+            org: "PC Academy — Roma",
             period: "2018 – 2019",
             description:
-              "Percorso dedicato alla programmazione orientata agli oggetti, allo sviluppo web e ai database relazionali, con approfondimenti su PHP, Java e SQL.",
+              "Programmazione in PHP e sviluppo di applicazioni web basate su PHP e MySQL, con focus sulla logica applicativa e sull'interazione con il database.",
           },
           {
-            title: "Master in Editorial Graphics, Web Design & eCommerce",
-            org: "Pc Academy — Roma",
+            title: "Logica di Programmazione e Basi di Dati SQL",
+            org: "PC Academy — Roma",
+            period: "2018 – 2019",
+            description:
+              "Fondamenti di logica di programmazione e progettazione di basi di dati relazionali, con interrogazione dei dati tramite SQL e MySQL.",
+          },
+          {
+            title: "Corso Completo di Fotografia",
+            org: "Francesco De Marco — Latina",
+            period: "2018",
+            description:
+              "Percorso completo di 74 ore su tecniche di ripresa, gestione della luce e post-produzione dell'immagine.",
+          },
+          {
+            title: "Master in Grafica Editoriale — Web Design & eCommerce",
+            org: "PC Academy — Roma (Adobe Authorized)",
             period: "2017",
             description:
-              "Master dedicato alla progettazione grafica, allo sviluppo web e alla comunicazione digitale, con approfondimenti su HTML, CSS, WordPress e strumenti Adobe.",
+              "Suite Adobe (Photoshop, Illustrator, InDesign, Dreamweaver) e sviluppo di siti ed e-commerce con HTML/CSS, WordPress/WooCommerce e SEO.",
+          },
+          {
+            title: "Tecnico di Marketing — Qualifica Professionale",
+            org: "Regione Lazio · I.P.S.C.T. «Luigi Einaudi» — Latina",
+            period: "2000 – 2003",
+            description:
+              "Qualifica professionale (triennale) in ambito marketing: teoria e tecnica di marketing, tecniche di comunicazione, legislazione del lavoro, pubblicità e parte pratica di informatica con stage.",
           },
           {
             title: "Diploma di Tecnico della Gestione Aziendale",
-            org: "I.P.S.C.T. Luigi Einaudi — Latina",
+            org: "I.P.S.C.T. «Luigi Einaudi» — Latina",
+            period: "1998 – 2003",
             description:
-              "Percorso di studi ad indirizzo economico-aziendale orientato all'organizzazione aziendale, al marketing e alla gestione d'impresa.",
+              "Diploma quinquennale (Esame di Stato) ad indirizzo economico-gestionale, con visione integrata dei processi aziendali (votazione 98/100).",
           },
         ],
       },
@@ -173,6 +225,7 @@ export const content: Record<Locale, PageContent> = {
             icon: "shieldCheck",
             org: "CompTIA",
             year: "2026",
+            credential: "ID: COMP001023058871",
             description:
               "Certificazione internazionale che valida competenze fondamentali in cybersecurity, networking, gestione del rischio, sicurezza delle infrastrutture, Identity and Access Management, crittografia, monitoraggio, vulnerability management e incident response. È il punto di partenza del mio percorso nella sicurezza informatica e la base su cui approfondisco offensive security, Penetration Testing e Red Teaming.",
           },
@@ -182,6 +235,7 @@ export const content: Record<Locale, PageContent> = {
             org: "Linux Professional Institute (LPI)",
             year: "2024",
             url: LPI_LINUX,
+            credential: "ID: LPI000606561 · 2jtytje6tw",
             description:
               "Certificazione sui fondamenti dei sistemi Linux: shell, gestione di utenti e permessi, filesystem, processi, networking di base e principi di sicurezza. Ha consolidato competenze che oggi uso quotidianamente nello sviluppo, nell'automazione e nei laboratori di cybersecurity.",
           },
@@ -191,16 +245,26 @@ export const content: Record<Locale, PageContent> = {
             org: "Linux Professional Institute (LPI)",
             year: "2025",
             url: LPI_WEB,
+            credential: "ID: LPI000606561 · z85ypb54rc",
             description:
               "Percorso sulle tecnologie fondamentali dello sviluppo web: architettura client-server, protocolli web, basi di frontend e backend e funzionamento delle applicazioni web. Una base importante anche per la sicurezza applicativa e l'analisi delle vulnerabilità web.",
           },
           {
-            title: "Pre Security",
+            title: "Pre Security (SEC0)",
             icon: "flag",
             org: "TryHackMe",
             year: "2026",
+            credential: "ID: THM-69e9c5b286352a6b0d0966aa",
             description:
               "Percorso introduttivo ai fondamenti della cybersecurity — sistemi operativi, networking, architettura dei computer, web e principi di sicurezza — affrontati con laboratori pratici e attività interattive. Il primo passo nel mio percorso di formazione pratica verso la sicurezza offensiva.",
+          },
+          {
+            title: "PHP Developer Fundamentals on MySQL Environment",
+            icon: "code",
+            org: "Certiport · TESI Automazione S.r.l.",
+            year: "2019",
+            description:
+              "Certificazione sui fondamenti dello sviluppo in PHP su ambiente MySQL: sintassi del linguaggio, interazione con il database e logica delle applicazioni web lato server.",
           },
         ],
         beyond: {
@@ -229,7 +293,8 @@ export const content: Record<Locale, PageContent> = {
       },
       {
         role: "Web Developer & Visual Designer (Freelance)",
-        period: "Apr 2009 – Mar 2013",
+        period: "2007 – 2013",
+        location: "Latina",
         paragraphs: [
           "Ho lavorato come libera professionista sviluppando siti web e curando progetti di grafica e branding per clienti diversi, seguendo ogni progetto dall'idea alla consegna finale.",
           "Ho sviluppato siti web con PHP, HTML, CSS e MySQL, occupandomi sia della parte tecnica che di quella grafica.",
@@ -238,6 +303,41 @@ export const content: Record<Locale, PageContent> = {
         ],
         tags: ["Sviluppo web", "PHP", "MySQL", "HTML5", "CSS", "JavaScript", "SQL"],
       },
+    ],
+    aptitude: {
+      lead: "Un profilo attitudinale che fotografa il mio modo di lavorare: i punti di forza su cui costruisco e le aree su cui mi alleno ogni giorno.",
+      strengths: [
+        { label: "Problem solving", value: 92 },
+        { label: "Capacità realizzativa", value: 90 },
+        { label: "Networking e team", value: 88 },
+        { label: "Adattabilità", value: 86 },
+        { label: "Energia e azione", value: 84 },
+      ],
+      workingOnLabel: "Su cui sto lavorando",
+      workingOn: [
+        {
+          title: "Gestione della routine",
+          text: "Trasformo le attività ripetitive in metodo, automatizzando ciò che si ripete.",
+        },
+        {
+          title: "Focus e pazienza",
+          text: "Bilancio la spinta all'azione con concentrazione, coltivata nei laboratori di sicurezza.",
+        },
+      ],
+    },
+    languages: [
+      { name: "Italiano", level: "Madrelingua" },
+      { name: "Inglese", level: "Scritto e parlato" },
+    ],
+    interests: [
+      "Ethical hacking",
+      "Sicurezza offensiva",
+      "Automazione dei processi",
+      "Fotografia",
+      "Cinema",
+      "Teatro",
+      "Musica",
+      "Calcio a 5",
     ],
   },
 
@@ -275,37 +375,57 @@ export const content: Record<Locale, PageContent> = {
     },
     skills: [
       {
-        name: "Security",
+        name: "Cybersecurity & security",
         items: [
           "CompTIA Security+ (SY0-701)",
-          "Linux",
-          "Networking",
-          "Offensive security",
-          "OWASP Top 10",
-          "OSINT",
-          "Penetration testing (growing)",
+          "Threats & risk management",
+          "Cryptography",
+          "Offensive security (TryHackMe)",
+          "Application security (CSRF, XSS)",
+          "Input validation & credentials",
+          "Hardening",
         ],
       },
       {
-        name: "Programming & Automation",
+        name: "Linux, systems & networking",
+        items: [
+          "Linux (LPI Essentials)",
+          "Command line & shell",
+          "macOS",
+          "Virtualization (VM)",
+          "Docker",
+          "Networking & protocols",
+        ],
+      },
+      {
+        name: "Programming & automation",
         items: [
           "Python",
-          "Bash",
-          "PHP",
-          "JavaScript / Node.js",
-          "SQL",
-          "Web development (HTML/CSS)",
+          "Bash / Shell scripting",
           "Process automation",
-          "Git",
+          "Pipelines",
+          "Programming logic",
+          "Problem solving",
         ],
       },
       {
-        name: "Design & Tools",
+        name: "Web development & databases",
         items: [
-          "Packaging & technical documentation",
-          "Adobe Illustrator (scripting)",
-          "Adobe Suite",
-          "Photography",
+          "PHP",
+          "JavaScript (Node.js)",
+          "HTML5",
+          "CSS",
+          "MySQL",
+          "SQL",
+        ],
+      },
+      {
+        name: "Tools & method",
+        items: [
+          "Git / GitHub",
+          "Log-based debugging",
+          "Documentation",
+          "Code quality",
         ],
       },
     ],
@@ -319,24 +439,46 @@ export const content: Record<Locale, PageContent> = {
         lead: "My education combines technical and creative skills. After studies in business and economics, I deepened programming and web development through specialized courses, building solid foundations that supported my move toward process automation and, later, cybersecurity.",
         items: [
           {
-            title: "PHP & Java for Programmers",
-            org: "Pc Academy — Rome",
+            title: "PHP on MySQL",
+            org: "PC Academy — Rome",
             period: "2018 – 2019",
             description:
-              "A course on object-oriented programming, web development and relational databases, focusing on PHP, Java and SQL.",
+              "PHP programming and development of web applications on PHP and MySQL, focusing on application logic and database interaction.",
           },
           {
-            title: "Master in Editorial Graphics, Web Design & eCommerce",
-            org: "Pc Academy — Rome",
+            title: "Programming Logic & SQL Databases",
+            org: "PC Academy — Rome",
+            period: "2018 – 2019",
+            description:
+              "Fundamentals of programming logic and relational database design, with data querying through SQL and MySQL.",
+          },
+          {
+            title: "Complete Photography Course",
+            org: "Francesco De Marco — Latina",
+            period: "2018",
+            description:
+              "A 74-hour course on shooting techniques, lighting and image post-production.",
+          },
+          {
+            title: "Master in Editorial Graphics — Web Design & eCommerce",
+            org: "PC Academy — Rome (Adobe Authorized)",
             period: "2017",
             description:
-              "A master's course on graphic design, web development and digital communication, focusing on HTML, CSS, WordPress and Adobe tools.",
+              "Adobe suite (Photoshop, Illustrator, InDesign, Dreamweaver) and website/e-commerce development with HTML/CSS, WordPress/WooCommerce and SEO.",
+          },
+          {
+            title: "Marketing Technician — Professional Qualification",
+            org: "Regione Lazio · I.P.S.C.T. «Luigi Einaudi» — Latina",
+            period: "2000 – 2003",
+            description:
+              "Three-year professional qualification in marketing: marketing theory and technique, communication, labour law, advertising and hands-on IT with an internship.",
           },
           {
             title: "Diploma in Business Management",
-            org: "I.P.S.C.T. Luigi Einaudi — Latina",
+            org: "I.P.S.C.T. «Luigi Einaudi» — Latina",
+            period: "1998 – 2003",
             description:
-              "A business- and economics-oriented programme focused on company organization, marketing and business management.",
+              "Five-year State-exam diploma in business and economics, with an integrated view of company processes (final grade 98/100).",
           },
         ],
       },
@@ -348,6 +490,7 @@ export const content: Record<Locale, PageContent> = {
             icon: "shieldCheck",
             org: "CompTIA",
             year: "2026",
+            credential: "ID: COMP001023058871",
             description:
               "An international certification validating core skills in cybersecurity, networking, risk management, infrastructure security, Identity and Access Management, cryptography, monitoring, vulnerability management and incident response. It's the starting point of my security career and the foundation on which I build offensive security, Penetration Testing and Red Teaming.",
           },
@@ -357,6 +500,7 @@ export const content: Record<Locale, PageContent> = {
             org: "Linux Professional Institute (LPI)",
             year: "2024",
             url: LPI_LINUX,
+            credential: "ID: LPI000606561 · 2jtytje6tw",
             description:
               "A certification on Linux fundamentals: shell, user and permission management, filesystem, processes, basic networking and security principles. It consolidated skills I use daily in development, automation and cybersecurity labs.",
           },
@@ -366,16 +510,26 @@ export const content: Record<Locale, PageContent> = {
             org: "Linux Professional Institute (LPI)",
             year: "2025",
             url: LPI_WEB,
+            credential: "ID: LPI000606561 · z85ypb54rc",
             description:
               "A path on core web technologies: client-server architecture, web protocols, frontend and backend basics and how web applications work. An important foundation also for application security and web vulnerability analysis.",
           },
           {
-            title: "Pre Security",
+            title: "Pre Security (SEC0)",
             icon: "flag",
             org: "TryHackMe",
             year: "2026",
+            credential: "ID: THM-69e9c5b286352a6b0d0966aa",
             description:
               "An introductory path to the fundamentals of cybersecurity — operating systems, networking, computer architecture, web and security principles — through hands-on labs and interactive activities. The first step in my practical journey toward offensive security.",
+          },
+          {
+            title: "PHP Developer Fundamentals on MySQL Environment",
+            icon: "code",
+            org: "Certiport · TESI Automazione S.r.l.",
+            year: "2019",
+            description:
+              "A certification on PHP development fundamentals on a MySQL environment: language syntax, database interaction and server-side web application logic.",
           },
         ],
         beyond: {
@@ -404,7 +558,8 @@ export const content: Record<Locale, PageContent> = {
       },
       {
         role: "Web Developer & Visual Designer (Freelance)",
-        period: "Apr 2009 – Mar 2013",
+        period: "2007 – 2013",
+        location: "Latina",
         paragraphs: [
           "I worked as a freelancer developing websites and handling graphic design and branding projects for a range of clients, following each project from the idea to final delivery.",
           "I developed websites with PHP, HTML, CSS and MySQL, taking care of both the technical and the visual side.",
@@ -413,6 +568,41 @@ export const content: Record<Locale, PageContent> = {
         ],
         tags: ["Web development", "PHP", "MySQL", "HTML5", "CSS", "JavaScript", "SQL"],
       },
+    ],
+    aptitude: {
+      lead: "An aptitude profile that captures how I work: the strengths I build on and the areas I train every day.",
+      strengths: [
+        { label: "Problem solving", value: 92 },
+        { label: "Delivery / getting things done", value: 90 },
+        { label: "Networking & team", value: 88 },
+        { label: "Adaptability", value: 86 },
+        { label: "Energy & drive", value: 84 },
+      ],
+      workingOnLabel: "What I'm working on",
+      workingOn: [
+        {
+          title: "Handling routine",
+          text: "I turn repetitive tasks into method, automating whatever repeats.",
+        },
+        {
+          title: "Focus & patience",
+          text: "I balance the drive to act with concentration, cultivated in security labs.",
+        },
+      ],
+    },
+    languages: [
+      { name: "Italian", level: "Native" },
+      { name: "English", level: "Written and spoken" },
+    ],
+    interests: [
+      "Ethical hacking",
+      "Offensive security",
+      "Process automation",
+      "Photography",
+      "Cinema",
+      "Theatre",
+      "Music",
+      "Five-a-side football",
     ],
   },
 };
