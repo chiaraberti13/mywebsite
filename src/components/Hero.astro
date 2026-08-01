@@ -130,6 +130,24 @@ const h = content[lang].hero;
   .hero-socials {
     margin-top: 2.25rem;
   }
+  /* Ingresso in cascata degli elementi dell'hero al caricamento */
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes heroIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: none; }
+    }
+    .hero-inner > * {
+      animation: heroIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .hero-inner > .eyebrow { animation-delay: 0.05s; }
+    .hero-inner > .hero-title { animation-delay: 0.13s; }
+    .hero-inner > .hero-roles { animation-delay: 0.21s; }
+    .hero-inner > .hero-badge { animation-delay: 0.29s; }
+    .hero-inner > .hero-sub { animation-delay: 0.37s; }
+    .hero-inner > .hero-actions { animation-delay: 0.45s; }
+    .hero-inner > .hero-socials { animation-delay: 0.53s; }
+  }
+
   /* Alone ocra decorativo, tenue, non invasivo */
   .hero-glow {
     position: absolute;
