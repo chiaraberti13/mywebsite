@@ -47,6 +47,7 @@ const desc =
               <h3 class="cv-block-title">{c.title}</h3>
               <p class="cv-org">{c.org}</p>
               {c.description && <p class="muted cert-desc">{c.description}</p>}
+              {c.credential && <p class="cert-cred">{c.credential}</p>}
             </div>
           ))
         }
@@ -109,6 +110,14 @@ const desc =
   }
   .cert-desc {
     font-size: 0.92rem;
+  }
+  .cert-cred {
+    margin-top: 0.7rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+    word-break: break-all;
   }
   .beyond {
     margin-top: clamp(2rem, 1rem + 3vw, 3rem);
