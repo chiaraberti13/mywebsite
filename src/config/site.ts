@@ -43,7 +43,7 @@ export const site = {
   /** Contatti diretti — AGGIORNARE se cambiano */
   email: "chiaraberti13@icloud.com",
   phone: "+39 340 79 96 597",
-  location: "Italia",
+  location: "Latina, Italia",
 
   /**
    * Social & piattaforme per la presentazione dei progetti.
