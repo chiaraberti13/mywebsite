@@ -24,7 +24,7 @@ const interests = content[lang].interests;
               <div class="apt-track" aria-hidden="true">
                 <div class:list={["apt-fill", `w${s.value}`]} />
               </div>
-              <span class="apt-val">{s.value}</span>
+              <span class="apt-val" data-count={s.value}>{s.value}</span>
             </div>
           ))
         }
@@ -190,3 +190,48 @@ const interests = content[lang].interests;
     gap: 0.4rem;
   }
 </style>
+
+<script>
+  // Micro-conteggio dei valori attitudinali quando la sezione entra in vista.
+  const section = document.getElementById("aptitude");
+  if (section) {
+    const vals = Array.from(section.querySelectorAll<HTMLElement>(".apt-val[data-count]"));
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reduce && vals.length) {
+      vals.forEach((v) => (v.textContent = "0"));
+    }
+    function run(el: HTMLElement) {
+      const target = parseInt(el.dataset.count || "0", 10);
+      if (reduce) {
+        el.textContent = String(target);
+        return;
+      }
+      const dur = 1000;
+      const start = performance.now();
+      function step(now: number) {
+        const p = Math.min((now - start) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = String(Math.round(target * eased));
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = String(target);
+      }
+      requestAnimationFrame(step);
+    }
+    if ("IntersectionObserver" in window && !reduce) {
+      const io = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              vals.forEach(run);
+              obs.disconnect();
+            }
+          });
+        },
+        { threshold: 0.3 },
+      );
+      io.observe(section);
+    } else {
+      vals.forEach(run);
+    }
+  }
+</script>
