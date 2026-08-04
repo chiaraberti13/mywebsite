@@ -64,7 +64,8 @@ export interface PageContent {
   experience: ExperienceItem[];
   aptitude: {
     lead: string;
-    strengths: { label: string; value: number }[];
+    radarMax: number;
+    axes: { label: string; value: number }[];
     workingOnLabel: string;
     workingOn: { title: string; text: string }[];
   };
@@ -126,10 +127,11 @@ export const content: Record<Locale, PageContent> = {
         items: [
           "Linux (LPI Essentials)",
           "Riga di comando & shell",
+          "Fondamenti Windows (NTFS, registro)",
           "macOS",
           "Virtualizzazione (VM)",
           "Docker",
-          "Reti e protocolli",
+          "Reti (OSI, TCP/IP, DNS)",
         ],
       },
       {
@@ -161,6 +163,7 @@ export const content: Record<Locale, PageContent> = {
           "Debugging su log ed evidenze",
           "Documentazione",
           "Qualità del codice",
+          "Sviluppo AI-assistito",
         ],
       },
     ],
@@ -192,7 +195,7 @@ export const content: Record<Locale, PageContent> = {
             org: "Francesco De Marco — Latina",
             period: "2018",
             description:
-              "Percorso completo di 74 ore su tecniche di ripresa, gestione della luce e post-produzione dell'immagine.",
+              "Percorso completo di 14 ore su tecniche di ripresa, gestione della luce e post-produzione dell'immagine.",
           },
           {
             title: "Master in Grafica Editoriale — Web Design & eCommerce",
@@ -204,16 +207,16 @@ export const content: Record<Locale, PageContent> = {
           {
             title: "Tecnico di Marketing — Qualifica Professionale",
             org: "Regione Lazio · I.P.S.C.T. «Luigi Einaudi» — Latina",
-            period: "2000 – 2003",
+            period: "2001 – 2003",
             description:
-              "Qualifica professionale (triennale) in ambito marketing: teoria e tecnica di marketing, tecniche di comunicazione, legislazione del lavoro, pubblicità e parte pratica di informatica con stage.",
+              "Qualifica professionale (triennale) in ambito marketing: teoria e tecnica di marketing, tecniche di comunicazione, legislazione sociale del lavoro, pubblicità e parte pratica di informatica con stage (votazione 30/30 orale · 23/30 scritto).",
           },
           {
-            title: "Diploma di Tecnico della Gestione Aziendale",
+            title: "Diploma di Tecnico della Gestione Aziendale — indirizzo Informatico",
             org: "I.P.S.C.T. «Luigi Einaudi» — Latina",
             period: "1998 – 2003",
             description:
-              "Diploma quinquennale (Esame di Stato) ad indirizzo economico-gestionale, con visione integrata dei processi aziendali (votazione 98/100).",
+              "Diploma quinquennale in ambito economico-gestionale con indirizzo informatico: metodi e strumenti organizzativi a supporto dei processi aziendali, con visione integrata dell'attività d'impresa (votazione 98/100).",
           },
         ],
       },
@@ -225,7 +228,7 @@ export const content: Record<Locale, PageContent> = {
             icon: "shieldCheck",
             org: "CompTIA",
             year: "2026",
-            credential: "ID: COMP001023058871",
+            credential: "ID: COMP001023058871 · verifica: 70c5b54fbb344cfd9e494f8632509f30",
             description:
               "Certificazione internazionale che valida competenze fondamentali in cybersecurity, networking, gestione del rischio, sicurezza delle infrastrutture, Identity and Access Management, crittografia, monitoraggio, vulnerability management e incident response. È il punto di partenza del mio percorso nella sicurezza informatica e la base su cui approfondisco offensive security, Penetration Testing e Red Teaming.",
           },
@@ -263,6 +266,7 @@ export const content: Record<Locale, PageContent> = {
             icon: "code",
             org: "Certiport · TESI Automazione S.r.l.",
             year: "2019",
+            credential: "ID: 57B89A03AA0247838AE85E14659F7B32",
             description:
               "Certificazione sui fondamenti dello sviluppo in PHP su ambiente MySQL: sintassi del linguaggio, interazione con il database e logica delle applicazioni web lato server.",
           },
@@ -283,6 +287,7 @@ export const content: Record<Locale, PageContent> = {
         location: "Latina, Lazio · In sede",
         paragraphs: [
           "Creo strumenti e automazioni che trasformano attività manuali e ripetitive in processi rapidi e affidabili, utilizzando Python, Bash, PHP, SQL e Linux/macOS. Entrata in Century Italia come Packaging Designer, ho progressivamente ampliato il mio ruolo verso lo sviluppo di script e applicazioni web e l'automazione dei processi.",
+          "Applico principi di sicurezza già nel lavoro quotidiano di sviluppo — protezione di dati e credenziali, validazione degli input e difesa dalle vulnerabilità web più comuni: è da qui che nasce il mio percorso verso la sicurezza offensiva.",
           "Ho sviluppato in Python sistemi che elaborano e ottimizzano automaticamente grandi quantità di file, riducendo i tempi di lavorazione di oltre l'80% e diminuendo gli errori.",
           "Ho creato applicazioni in PHP collegate a database per gestire in automatico le informazioni di prodotto e la generazione di documenti, con particolare attenzione alla protezione dei dati e alla sicurezza delle credenziali.",
           "Ho realizzato automazioni in Bash per sincronizzare file tra sistemi diversi, con logica di controllo degli errori e ripristino automatico, organizzate in moduli riutilizzabili.",
@@ -306,37 +311,40 @@ export const content: Record<Locale, PageContent> = {
     ],
     aptitude: {
       lead: "Un profilo attitudinale che fotografa il mio modo di lavorare: i punti di forza su cui costruisco e le aree su cui mi alleno ogni giorno.",
-      strengths: [
-        { label: "Problem solving", value: 92 },
-        { label: "Capacità realizzativa", value: 90 },
-        { label: "Networking e team", value: 88 },
-        { label: "Adattabilità", value: 86 },
-        { label: "Energia e azione", value: 84 },
+      radarMax: 5,
+      axes: [
+        { label: "Problem solving", value: 5 },
+        { label: "Pensiero critico", value: 5 },
+        { label: "Capacità realizzativa", value: 4 },
+        { label: "Networking e team", value: 3 },
+        { label: "Adattabilità", value: 4 },
+        { label: "Energia e azione", value: 4 },
       ],
-      workingOnLabel: "Su cui sto lavorando",
+      workingOnLabel: "Aree in sviluppo attivo",
       workingOn: [
         {
           title: "Gestione della routine",
-          text: "Trasformo le attività ripetitive in metodo, automatizzando ciò che si ripete.",
+          text: "La affronto convertendola in automazione: le attività ripetitive e meccaniche le trasformo in script e processi che le eliminano.",
         },
         {
-          title: "Focus e pazienza",
-          text: "Bilancio la spinta all'azione con concentrazione, coltivata nei laboratori di sicurezza.",
+          title: "Focus ed esecuzione",
+          text: "Sto imparando a canalizzare l'entusiasmo per portare a termine un obiettivo alla volta: il percorso di certificazioni e laboratori è il modo in cui alleno questa disciplina.",
         },
       ],
     },
     languages: [
       { name: "Italiano", level: "Madrelingua" },
-      { name: "Inglese", level: "Scritto e parlato" },
+      { name: "Inglese", level: "Comprensione tecnica scritta buona; base nel parlato, in potenziamento (corso pianificato)" },
     ],
     interests: [
-      "Ethical hacking",
-      "Sicurezza offensiva",
+      "Innovazione e tecnologia",
       "Automazione dei processi",
+      "Arte",
       "Fotografia",
       "Cinema",
       "Teatro",
       "Musica",
+      "Sport",
       "Calcio a 5",
     ],
   },
@@ -391,10 +399,11 @@ export const content: Record<Locale, PageContent> = {
         items: [
           "Linux (LPI Essentials)",
           "Command line & shell",
+          "Windows fundamentals (NTFS, registry)",
           "macOS",
           "Virtualization (VM)",
           "Docker",
-          "Networking & protocols",
+          "Networking (OSI, TCP/IP, DNS)",
         ],
       },
       {
@@ -426,6 +435,7 @@ export const content: Record<Locale, PageContent> = {
           "Log-based debugging",
           "Documentation",
           "Code quality",
+          "AI-assisted development",
         ],
       },
     ],
@@ -457,7 +467,7 @@ export const content: Record<Locale, PageContent> = {
             org: "Francesco De Marco — Latina",
             period: "2018",
             description:
-              "A 74-hour course on shooting techniques, lighting and image post-production.",
+              "A 14-hour course on shooting techniques, lighting and image post-production.",
           },
           {
             title: "Master in Editorial Graphics — Web Design & eCommerce",
@@ -469,16 +479,16 @@ export const content: Record<Locale, PageContent> = {
           {
             title: "Marketing Technician — Professional Qualification",
             org: "Regione Lazio · I.P.S.C.T. «Luigi Einaudi» — Latina",
-            period: "2000 – 2003",
+            period: "2001 – 2003",
             description:
-              "Three-year professional qualification in marketing: marketing theory and technique, communication, labour law, advertising and hands-on IT with an internship.",
+              "Three-year professional qualification in marketing: marketing theory and technique, communication, labour law, advertising and hands-on IT with an internship (final grade 30/30 oral · 23/30 written).",
           },
           {
-            title: "Diploma in Business Management",
+            title: "Diploma in Business Management — IT specialization",
             org: "I.P.S.C.T. «Luigi Einaudi» — Latina",
             period: "1998 – 2003",
             description:
-              "Five-year State-exam diploma in business and economics, with an integrated view of company processes (final grade 98/100).",
+              "Five-year diploma in business and economics with an IT specialization: organizational methods and tools supporting company processes, with an integrated view of the business (final grade 98/100).",
           },
         ],
       },
@@ -490,7 +500,7 @@ export const content: Record<Locale, PageContent> = {
             icon: "shieldCheck",
             org: "CompTIA",
             year: "2026",
-            credential: "ID: COMP001023058871",
+            credential: "ID: COMP001023058871 · verifica: 70c5b54fbb344cfd9e494f8632509f30",
             description:
               "An international certification validating core skills in cybersecurity, networking, risk management, infrastructure security, Identity and Access Management, cryptography, monitoring, vulnerability management and incident response. It's the starting point of my security career and the foundation on which I build offensive security, Penetration Testing and Red Teaming.",
           },
@@ -528,6 +538,7 @@ export const content: Record<Locale, PageContent> = {
             icon: "code",
             org: "Certiport · TESI Automazione S.r.l.",
             year: "2019",
+            credential: "ID: 57B89A03AA0247838AE85E14659F7B32",
             description:
               "A certification on PHP development fundamentals on a MySQL environment: language syntax, database interaction and server-side web application logic.",
           },
@@ -548,6 +559,7 @@ export const content: Record<Locale, PageContent> = {
         location: "Latina, Lazio · On-site",
         paragraphs: [
           "I build tools and automations that turn manual, repetitive tasks into fast, reliable processes, using Python, Bash, PHP, SQL and Linux/macOS. I joined Century Italia as a Packaging Designer and progressively expanded my role toward script and web application development and process automation.",
+          "I apply security principles in everyday development — protecting data and credentials, validating inputs and defending against the most common web vulnerabilities: this is where my path toward offensive security began.",
           "I developed Python systems that automatically process and optimize large volumes of files, cutting processing time by over 80% and reducing errors.",
           "I built PHP applications connected to databases to automatically manage product information and document generation, with particular attention to data protection and credential security.",
           "I created Bash automations to synchronize files across different systems, with error-handling and automatic recovery logic, organized into reusable modules.",
@@ -571,37 +583,40 @@ export const content: Record<Locale, PageContent> = {
     ],
     aptitude: {
       lead: "An aptitude profile that captures how I work: the strengths I build on and the areas I train every day.",
-      strengths: [
-        { label: "Problem solving", value: 92 },
-        { label: "Delivery / getting things done", value: 90 },
-        { label: "Networking & team", value: 88 },
-        { label: "Adaptability", value: 86 },
-        { label: "Energy & drive", value: 84 },
+      radarMax: 5,
+      axes: [
+        { label: "Problem solving", value: 5 },
+        { label: "Critical thinking", value: 5 },
+        { label: "Delivery", value: 4 },
+        { label: "Networking & team", value: 3 },
+        { label: "Adaptability", value: 4 },
+        { label: "Energy & drive", value: 4 },
       ],
-      workingOnLabel: "What I'm working on",
+      workingOnLabel: "Areas in active development",
       workingOn: [
         {
           title: "Handling routine",
-          text: "I turn repetitive tasks into method, automating whatever repeats.",
+          text: "I tackle it by converting it into automation: repetitive, mechanical tasks become scripts and processes that remove them.",
         },
         {
-          title: "Focus & patience",
-          text: "I balance the drive to act with concentration, cultivated in security labs.",
+          title: "Focus & execution",
+          text: "I'm learning to channel my enthusiasm to finish one goal at a time: a structured path of certifications and labs is how I train this discipline.",
         },
       ],
     },
     languages: [
       { name: "Italian", level: "Native" },
-      { name: "English", level: "Written and spoken" },
+      { name: "English", level: "Good written technical comprehension; basic spoken, being improved (course planned)" },
     ],
     interests: [
-      "Ethical hacking",
-      "Offensive security",
+      "Innovation & technology",
       "Process automation",
+      "Art",
       "Photography",
       "Cinema",
       "Theatre",
       "Music",
+      "Sport",
       "Five-a-side football",
     ],
   },
