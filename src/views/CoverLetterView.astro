@@ -1,0 +1,31 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SectionHeader from "@/components/SectionHeader.astro";
+import Prose from "@/components/Prose.astro";
+import { render } from "astro:content";
+import { type Locale } from "@/config/site";
+import { useTranslations } from "@/i18n/ui";
+import { getLongform } from "@/lib/content";
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const entry = await getLongform(lang, "cover-letter");
+const desc =
+  lang === "it"
+    ? "Lettera di presentazione di Chiara Berti."
+    : "Chiara Berti's cover letter.";
+const Content = entry ? (await render(entry)).Content : null;
+---
+<BaseLayout lang={lang} title={t("nav.coverLetter")} description={desc}>
+  <section class="section">
+    <div class="container">
+      <SectionHeader eyebrow={t("nav.coverLetter")} title={t("section.coverLetter")} />
+      {Content && (
+        <Prose>
+          <Content />
+        </Prose>
+      )}
+    </div>
+  </section>
+</BaseLayout>

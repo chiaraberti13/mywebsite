@@ -1,0 +1,60 @@
+---
+import Icon from "./Icon.astro";
+import { useTranslations } from "@/i18n/ui";
+import type { Locale } from "@/config/site";
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+<button
+  type="button"
+  class="theme-toggle"
+  id="theme-toggle"
+  aria-label={t("theme.toggle")}
+  title={t("theme.toggle")}
+>
+  <span class="icon icon--sun"><Icon name="sun" size={18} /></span>
+  <span class="icon icon--moon"><Icon name="moon" size={18} /></span>
+</button>
+
+<style>
+  .theme-toggle {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .theme-toggle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .icon {
+    display: grid;
+    place-items: center;
+  }
+  /* Mostra sole in dark (per passare a light) e luna in light */
+  .icon--sun { display: none; }
+  .icon--moon { display: grid; }
+  :global(:root[data-theme="dark"]) .icon--sun { display: grid; }
+  :global(:root[data-theme="dark"]) .icon--moon { display: none; }
+</style>
+
+<script>
+  const btn = document.getElementById("theme-toggle");
+  btn?.addEventListener("click", () => {
+    const root = document.documentElement;
+    const next = root.dataset.theme === "dark" ? "light" : "dark";
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem("theme", next);
+    } catch (e) {
+      /* storage non disponibile: ignora */
+    }
+  });
+</script>

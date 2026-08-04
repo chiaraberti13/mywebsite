@@ -1,0 +1,84 @@
+---
+// Contenitore tipografico per contenuti Markdown renderizzati.
+interface Props { class?: string }
+const { class: cls = "" } = Astro.props;
+---
+<div class={`prose ${cls}`}>
+  <slot />
+</div>
+
+<style>
+  .prose {
+    max-width: 78ch;
+    font-size: var(--step-0);
+    line-height: 1.8;
+    color: var(--text);
+  }
+  .prose :global(h2) {
+    font-size: var(--step-2);
+    margin-top: 2.2rem;
+    margin-bottom: 0.75rem;
+  }
+  .prose :global(h3) {
+    font-size: var(--step-1);
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .prose :global(p) {
+    margin-block: 1.15rem;
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin-block: 1rem;
+    padding-left: 1.4rem;
+  }
+  .prose :global(li) {
+    margin-block: 0.35rem;
+  }
+  .prose :global(li)::marker {
+    color: var(--accent);
+  }
+  .prose :global(a) {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .prose :global(strong) {
+    font-weight: 680;
+  }
+  .prose :global(blockquote) {
+    margin: 1.5rem 0;
+    padding: 0.8rem 1.2rem;
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    color: var(--muted);
+  }
+  .prose :global(blockquote p) {
+    margin: 0;
+  }
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--surface-2);
+    padding: 0.15em 0.4em;
+    border-radius: 5px;
+  }
+  .prose :global(pre) {
+    background: var(--surface-2);
+    padding: 1rem 1.2rem;
+    border-radius: var(--radius-sm);
+    overflow-x: auto;
+    border: 1px solid var(--border);
+  }
+  .prose :global(hr) {
+    border: 0;
+    height: 1px;
+    background: var(--border);
+    margin: 2rem 0;
+  }
+</style>

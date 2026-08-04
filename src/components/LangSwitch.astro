@@ -1,0 +1,57 @@
+---
+import { useTranslations } from "@/i18n/ui";
+import type { Locale } from "@/config/site";
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Calcola l'URL equivalente nell'altra lingua mantenendo la stessa pagina.
+const path = Astro.url.pathname;
+let target: string;
+if (lang === "it") {
+  target = path === "/" ? "/en/" : `/en${path}`;
+} else {
+  const rest = path.replace(/^\/en/, "");
+  target = rest === "" || rest === "/" ? "/" : rest;
+}
+const other: Locale = lang === "it" ? "en" : "it";
+---
+<a class="lang-switch" href={target} hreflang={other} aria-label={t("lang.switch")}>
+  <span aria-hidden="true">{other.toUpperCase()}</span>
+  <span class="sr-only">{t("lang.switch")}</span>
+</a>
+
+<style>
+  .lang-switch {
+    display: grid;
+    place-items: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding-inline: 0.6rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .lang-switch:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

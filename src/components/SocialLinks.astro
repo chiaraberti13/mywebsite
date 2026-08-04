@@ -1,0 +1,67 @@
+---
+import Icon from "./Icon.astro";
+import { site, type SocialLink } from "@/config/site";
+
+interface Props {
+  size?: number;
+  class?: string;
+  /** Escludi alcune piattaforme, es. ["email"] */
+  exclude?: string[];
+}
+const { size = 20, class: cls = "", exclude = [] } = Astro.props;
+const links = site.socials.filter((s) => !exclude.includes(s.platform));
+const labels: Record<string, string> = {
+  github: "GitHub",
+  linkedin: "LinkedIn",
+  instagram: "Instagram",
+  x: "X",
+  behance: "Behance",
+  telegram: "Telegram",
+  email: "Email",
+};
+---
+<ul class={`socials ${cls}`} role="list">
+  {
+    links.map((s: SocialLink) => (
+      <li>
+        <a
+          href={s.url}
+          class="social-link"
+          aria-label={`${labels[s.platform]}: ${s.handle}`}
+          rel={s.platform === "email" ? undefined : "me noopener noreferrer"}
+          target={s.platform === "email" ? undefined : "_blank"}
+        >
+          <Icon name={s.platform === "email" ? "mail" : s.platform} size={size} />
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  .social-link {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    background: var(--surface);
+    transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease,
+      background 0.2s ease;
+  }
+  .social-link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+</style>

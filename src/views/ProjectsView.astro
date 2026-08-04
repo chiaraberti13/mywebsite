@@ -1,0 +1,35 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SectionHeader from "@/components/SectionHeader.astro";
+import ProjectCard from "@/components/ProjectCard.astro";
+import { type Locale } from "@/config/site";
+import { useTranslations, localePath } from "@/i18n/ui";
+import { getProjects, slugOf } from "@/lib/content";
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const projects = await getProjects(lang);
+const desc =
+  lang === "it"
+    ? "Progetti di Chiara Berti: sicurezza, automazione e design."
+    : "Chiara Berti's projects: security, automation and design.";
+const intro =
+  lang === "it"
+    ? "Una selezione di lavori tra sicurezza, sviluppo full-stack e automazione."
+    : "A selection of work across security, full-stack development and automation.";
+---
+<BaseLayout lang={lang} title={t("nav.projects")} description={desc}>
+  <section class="section">
+    <div class="container">
+      <SectionHeader eyebrow={t("nav.projects")} title={t("section.projects")} intro={intro} />
+      <div class="grid grid--3" data-reveal-group>
+        {
+          projects.map((p) => (
+            <ProjectCard project={p} href={localePath(lang, `/projects/${slugOf(p.id)}`)} />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

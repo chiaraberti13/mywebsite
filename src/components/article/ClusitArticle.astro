@@ -1,0 +1,900 @@
+---
+/**
+ * Articolo interattivo: analisi Rapporto CLUSIT 2024–2026.
+ * Menu a tab + contatori e grafici animati. Dati verificati (fonti CLUSIT 2026).
+ */
+import Icon from "@/components/Icon.astro";
+import type { Locale } from "@/config/site";
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+
+const T = {
+  it: {
+    eyebrow: "Journal · Analisi dati",
+    title: "Cybersecurity 2024–2026: cosa ci raccontano davvero tre anni di Rapporto CLUSIT",
+    meta: "20 luglio 2026 · 5 min di lettura",
+    stats: [
+      { target: 5265, dec: 0, suffix: "", label: "Incidenti gravi nel 2025" },
+      { target: 48.7, dec: 1, prefix: "+", suffix: "%", label: "Rispetto al 2024" },
+      { target: 256, dec: 0, prefix: "+", suffix: "%", label: "Media mensile 2021→2025" },
+      { target: 84, dec: 0, suffix: "%", label: "Gravità High / Critical" },
+    ],
+    tabs: ["Panoramica", "La crescita", "L'impatto", "L'Italia"],
+    overview: [
+      "Ogni anno il Rapporto CLUSIT rappresenta uno dei punti di riferimento più importanti per comprendere l'evoluzione della cybersecurity. È una fotografia dello stato delle minacce informatiche, costruita analizzando migliaia di incidenti reali avvenuti in tutto il mondo. Dietro grafici, statistiche e percentuali si nasconde però una domanda molto semplice: il panorama della sicurezza informatica sta davvero peggiorando oppure abbiamo semplicemente imparato a rilevare più attacchi?",
+      "Per rispondere non basta osservare un singolo rapporto: è necessario confrontare i dati nel tempo. Ho quindi analizzato le edizioni 2024, 2025 e 2026 del Rapporto CLUSIT cercando di capire non solo quanto siano aumentati gli incidenti, ma soprattutto come siano cambiate le minacce, gli obiettivi degli attaccanti e l'impatto sulle organizzazioni.",
+      "Quello che emerge è un quadro molto chiaro. Gli attacchi informatici non stanno crescendo soltanto di numero: stanno diventando più organizzati, più frequenti e, soprattutto, molto più dannosi. La cybersecurity non è più un tema che riguarda esclusivamente gli specialisti del settore: oggi rappresenta un rischio concreto per qualsiasi organizzazione che utilizzi strumenti digitali.",
+    ],
+    growthHead: "La crescita degli attacchi non è più un fenomeno occasionale",
+    growth: [
+      "Negli ultimi anni si è parlato spesso dell'aumento degli attacchi informatici. È una notizia che ormai compare con regolarità e che, proprio per questo, rischia quasi di passare inosservata. Eppure, confrontando i tre rapporti, si nota un cambiamento importante: non siamo più di fronte a una crescita graduale, ma a una vera accelerazione del fenomeno.",
+      "Già il Rapporto CLUSIT 2024 descriveva uno scenario in cui il cybercrime aveva assunto una dimensione industriale. Gli attacchi aumentavano con continuità e colpivano organizzazioni di qualsiasi dimensione, dalle grandi aziende alle piccole imprese, passando per enti pubblici e infrastrutture critiche.",
+      "L'edizione 2025 confermava questa tendenza. I numeri continuavano a salire, ma cambiava anche il profilo degli attaccanti: sempre più spesso gli incidenti erano riconducibili a gruppi strutturati, capaci di pianificare campagne su larga scala e di sfruttare vulnerabilità comuni per colpire centinaia di organizzazioni contemporaneamente.",
+      "È però il Rapporto CLUSIT 2026 a segnare un punto di svolta. Nel corso del 2025 sono stati censiti 5.265 incidenti cyber gravi a livello mondiale, con un incremento del 48,7% rispetto all'anno precedente: la crescita più elevata registrata negli ultimi anni, difficilmente interpretabile come una semplice oscillazione statistica.",
+      "Ancora più interessante è l'andamento nel medio periodo. Nel 2021 la media era di circa 171 incidenti gravi al mese; nel 2025 ha raggiunto i 439 mensili, con un incremento complessivo del 256% in soli cinque anni. Oggi, mediamente, viene reso pubblico un incidente grave ogni poche ore.",
+      "Questi numeri raccontano una realtà molto diversa da quella di qualche anno fa. Il cybercrime non è più composto soltanto da singoli attaccanti o piccoli gruppi isolati: è diventato un ecosistema organizzato, capace di sviluppare strumenti sempre più efficaci, condividere competenze e colpire un numero crescente di vittime. L'aumento degli incidenti è quindi la conseguenza di un cambiamento strutturale del panorama delle minacce, non di un fenomeno temporaneo.",
+    ],
+    growthChart: "Media mensile di incidenti gravi",
+    impactHead: "Non cresce solo il numero: cresce l'impatto",
+    impact: [
+      "Se il primo elemento che colpisce è l'aumento degli attacchi, il secondo è probabilmente ancora più importante. Confrontando i tre rapporti emerge infatti che gli incidenti non stanno diventando soltanto più frequenti, ma anche molto più gravi.",
+      "Negli anni passati un attacco informatico poteva tradursi nella compromissione di un singolo computer o nel blocco temporaneo di alcuni servizi. Oggi gli effetti sono spesso molto più estesi: un incidente può interrompere la produzione di un'azienda, fermare un ospedale, rendere indisponibili servizi pubblici o causare la diffusione di grandi quantità di dati riservati.",
+      "Questa evoluzione è così evidente che il Rapporto CLUSIT 2026 introduce, per la prima volta, una nuova categoria di gravità denominata Extreme: alcuni incidenti hanno raggiunto un livello di impatto tale da non poter più essere descritti con le categorie tradizionali. Parallelamente, l'84% degli attacchi rientra nelle categorie di gravità più elevate (High/Critical), in aumento rispetto al 79% del 2024.",
+      "In altre parole, oggi la probabilità che un attacco provochi conseguenze operative, economiche o reputazionali importanti è molto più alta rispetto a pochi anni fa. È questo, più ancora della crescita numerica, il dato che dovrebbe far riflettere imprese, pubbliche amministrazioni e cittadini.",
+    ],
+    impactChart: "Incidenti High o Critical sul totale",
+    impactWas: "Era 79% nel 2024",
+    extreme: "Nuova categoria «Extreme»",
+    extremeVal: "2,7% del totale",
+    gAnnualCap: "Incidenti gravi nel mondo · all'anno",
+    gAnnualNote: "+48,7% rispetto al 2024",
+    gMonthlyNote: "Da 171 a 439 al mese",
+    y2024: "2024",
+    y2025: "2025",
+    y2026: "2026",
+    vWorld2024: "3.541",
+    vWorld2025: "5.265",
+    vItaly2024: "357",
+    vItaly2025: "507",
+    iDonutCap: "Distribuzione per gravità (2026)",
+    sevHigh: "High / Critical",
+    sevOther: "Altre",
+    vHi: "84%",
+    vOther: "16%",
+    iTrendCap: "Quota High/Critical nel tempo",
+    vHi2024: "79%",
+    vHi2026: "84%",
+    iTrendNote: "+5 punti percentuali dal 2024",
+    iExtremeCap: "La nuova fascia «Extreme»",
+    iExtremeName: "Extreme",
+    vExtreme: "2,7%",
+    iExtremeNote: "impatti oltre le categorie tradizionali",
+    itTrendCap: "Incidenti gravi in Italia · all'anno",
+    itTrendNote: "+42% sul 2024",
+    itShareCap: "Quota italiana sul totale mondiale",
+    vShare: "9,6%",
+    itShareNote: "4° nel mondo · 1° in Europa",
+    italyHead: "L'Italia nel mirino",
+    italy: [
+      "L'Italia resta uno dei bersagli principali: nel 2025 sono stati registrati 507 incidenti gravi contro obiettivi italiani, contro i 357 del 2024, con un aumento del 42% su base annua.",
+      "Il nostro Paese arriva così a rappresentare il 9,6% del totale mondiale, collocandosi al quarto posto a livello globale e al primo in Europa per numero di attacchi subiti.",
+    ],
+    italyStats: [
+      { target: 507, dec: 0, suffix: "", label: "Incidenti in Italia (2025)" },
+      { target: 9.6, dec: 1, suffix: "%", label: "Del totale mondiale" },
+      { target: 1, dec: 0, prefix: "N.", suffix: "", label: "In Europa per attacchi" },
+    ],
+    source: "Fonti: Rapporto CLUSIT 2024, 2025 e 2026 (dati verificati).",
+    sourceLink: "clusit.it",
+    axis2021: "2021",
+    axis2025: "2025",
+  },
+  en: {
+    eyebrow: "Journal · Data analysis",
+    title: "Cybersecurity 2024–2026: what three years of the CLUSIT Report really tell us",
+    meta: "July 20, 2026 · 5 min read",
+    stats: [
+      { target: 5265, dec: 0, suffix: "", label: "Serious incidents in 2025" },
+      { target: 48.7, dec: 1, prefix: "+", suffix: "%", label: "Compared to 2024" },
+      { target: 256, dec: 0, prefix: "+", suffix: "%", label: "Monthly avg 2021→2025" },
+      { target: 84, dec: 0, suffix: "%", label: "High / Critical severity" },
+    ],
+    tabs: ["Overview", "The growth", "The impact", "Italy"],
+    overview: [
+      "Every year the CLUSIT Report is one of the most important references for understanding how cybersecurity evolves. It's a snapshot of the state of cyber threats, built by analyzing thousands of real incidents from all over the world. Behind charts, statistics and percentages hides a very simple question: is the security landscape really getting worse, or have we simply learned to detect more attacks?",
+      "To answer it, one report isn't enough: you need to compare data over time. So I analyzed the 2024, 2025 and 2026 editions of the CLUSIT Report, trying to understand not only how much incidents grew, but above all how threats, attackers' targets and the impact on organizations have changed.",
+      "What emerges is a very clear picture. Cyber attacks are not only growing in number: they are becoming more organized, more frequent and, above all, far more damaging. Cybersecurity is no longer a topic only for specialists: today it's a concrete risk for any organization that uses digital tools.",
+    ],
+    growthHead: "The growth of attacks is no longer an occasional phenomenon",
+    growth: [
+      "In recent years we've often heard about the rise in cyber attacks. It's news that now appears regularly and, precisely for that reason, risks going almost unnoticed. Yet, comparing the three reports, an important change stands out: this is no longer gradual growth, but a real acceleration.",
+      "The 2024 CLUSIT Report already described a scenario in which cybercrime had taken on an industrial scale. Attacks grew steadily and hit organizations of every size, from large companies to small businesses, through public bodies and critical infrastructure.",
+      "The 2025 edition confirmed the trend. The numbers kept rising, but the attackers' profile changed too: more and more incidents were traced to structured groups, able to plan large-scale campaigns and exploit common vulnerabilities to hit hundreds of organizations at once.",
+      "But it's the 2026 CLUSIT Report that marks a turning point. During 2025, 5,265 serious cyber incidents were recorded worldwide, up 48.7% on the previous year: the highest increase of recent years, hard to read as a mere statistical fluctuation.",
+      "Even more telling is the medium-term trend. In 2021 the average was about 171 serious incidents per month; in 2025 it reached 439, a 256% increase in just five years. Today, on average, a serious incident is disclosed every few hours.",
+      "These numbers describe a very different reality from a few years ago. Cybercrime is no longer made only of lone attackers or small isolated groups: it's an organized ecosystem, able to build ever more effective tools, share expertise and hit a growing number of victims. The rise in incidents is therefore the consequence of a structural change in the threat landscape, not a temporary phenomenon.",
+    ],
+    growthChart: "Monthly average of serious incidents",
+    impactHead: "It's not just the number growing: the impact is too",
+    impact: [
+      "If the first striking element is the rise in attacks, the second is probably even more important. Comparing the three reports, incidents are becoming not only more frequent, but also far more severe.",
+      "In the past a cyber attack could mean the compromise of a single computer or a temporary outage of some services. Today the effects are often much broader: an incident can halt a company's production, stop a hospital, take public services offline or cause the leak of large amounts of confidential data.",
+      "This evolution is so evident that the 2026 CLUSIT Report introduces, for the first time, a new severity category called Extreme: some incidents have reached a level of impact that can no longer be described with the traditional categories. In parallel, 84% of attacks fall into the highest severity categories (High/Critical), up from 79% in 2024.",
+      "In other words, today the probability that an attack causes significant operational, economic or reputational consequences is much higher than a few years ago. This, even more than the growth in numbers, is the figure that should make companies, public administrations and citizens think.",
+    ],
+    impactChart: "High or Critical incidents out of the total",
+    impactWas: "Was 79% in 2024",
+    extreme: "New «Extreme» category",
+    extremeVal: "2.7% of the total",
+    gAnnualCap: "Serious incidents worldwide · per year",
+    gAnnualNote: "+48.7% compared to 2024",
+    gMonthlyNote: "From 171 to 439 per month",
+    y2024: "2024",
+    y2025: "2025",
+    y2026: "2026",
+    vWorld2024: "3,541",
+    vWorld2025: "5,265",
+    vItaly2024: "357",
+    vItaly2025: "507",
+    iDonutCap: "Severity distribution (2026)",
+    sevHigh: "High / Critical",
+    sevOther: "Other",
+    vHi: "84%",
+    vOther: "16%",
+    iTrendCap: "High/Critical share over time",
+    vHi2024: "79%",
+    vHi2026: "84%",
+    iTrendNote: "+5 percentage points since 2024",
+    iExtremeCap: "The new «Extreme» tier",
+    iExtremeName: "Extreme",
+    vExtreme: "2.7%",
+    iExtremeNote: "impact beyond the traditional categories",
+    itTrendCap: "Serious incidents in Italy · per year",
+    itTrendNote: "+42% on 2024",
+    itShareCap: "Italy's share of the world total",
+    vShare: "9.6%",
+    itShareNote: "4th worldwide · 1st in Europe",
+    italyHead: "Italy in the crosshairs",
+    italy: [
+      "Italy remains one of the main targets: in 2025, 507 serious incidents were recorded against Italian targets, versus 357 in 2024 — a 42% year-on-year increase.",
+      "The country thus accounts for 9.6% of the global total, ranking fourth worldwide and first in Europe by number of attacks suffered.",
+    ],
+    italyStats: [
+      { target: 507, dec: 0, suffix: "", label: "Incidents in Italy (2025)" },
+      { target: 9.6, dec: 1, suffix: "%", label: "Of the global total" },
+      { target: 1, dec: 0, prefix: "No.", suffix: "", label: "In Europe by attacks" },
+    ],
+    source: "Sources: CLUSIT Report 2024, 2025 and 2026 (verified data).",
+    sourceLink: "clusit.it",
+    axis2021: "2021",
+    axis2025: "2025",
+  },
+}[lang];
+
+const locale = lang === "it" ? "it-IT" : "en-US";
+---
+<article class="clusit" data-locale={locale}>
+  <header class="clusit-head">
+    <p class="eyebrow">{T.eyebrow}</p>
+    <h1 class="clusit-title">{T.title}</h1>
+    <p class="clusit-meta">{T.meta}</p>
+  </header>
+
+  <div class="stat-row" data-io>
+    {
+      T.stats.map((s) => (
+        <div class="stat">
+          <span
+            class="stat-num count"
+            data-target={s.target}
+            data-dec={s.dec}
+            data-prefix={s.prefix ?? ""}
+            data-suffix={s.suffix ?? ""}
+          >0</span>
+          <span class="stat-label">{s.label}</span>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="tabs" role="tablist" aria-label={T.eyebrow}>
+    {
+      T.tabs.map((tab, i) => (
+        <button
+          class:list={["tab", { active: i === 0 }]}
+          role="tab"
+          id={`tab-${i}`}
+          aria-controls={`panel-${i}`}
+          aria-selected={i === 0 ? "true" : "false"}
+          data-tab={i}
+        >
+          {tab}
+        </button>
+      ))
+    }
+  </div>
+
+  <!-- Panoramica -->
+  <section class="panel active" id="panel-0" role="tabpanel" aria-labelledby="tab-0" data-panel="0">
+    <div class="panel-text stack">
+      {T.overview.map((p) => <p>{p}</p>)}
+    </div>
+  </section>
+
+  <!-- La crescita -->
+  <section class="panel" id="panel-1" role="tabpanel" aria-labelledby="tab-1" data-panel="1" hidden>
+    <h2 class="panel-title">{T.growthHead}</h2>
+    <div class="panel-grid">
+      <div class="panel-text stack">
+        {T.growth.map((p) => <p>{p}</p>)}
+      </div>
+      <figure class="chart chart--sticky">
+        <div class="chart-block">
+          <figcaption class="chart-cap">{T.gAnnualCap}</figcaption>
+          <div class="cmp">
+            <div class="cmp-row">
+              <span class="cmp-lab">{T.y2024}</span>
+              <div class="cmp-track" aria-hidden="true"><div class="cmp-fill cmp-fill--muted w67"></div></div>
+              <span class="cmp-val">{T.vWorld2024}</span>
+            </div>
+            <div class="cmp-row">
+              <span class="cmp-lab">{T.y2025}</span>
+              <div class="cmp-track" aria-hidden="true"><div class="cmp-fill w100"></div></div>
+              <span class="cmp-val">{T.vWorld2025}</span>
+            </div>
+          </div>
+          <p class="chart-note">{T.gAnnualNote}</p>
+        </div>
+
+        <div class="chart-block chart-block--sep">
+          <figcaption class="chart-cap">{T.growthChart}</figcaption>
+          <div class="barchart" aria-hidden="true">
+            <div class="bar-col">
+              <div class="bar-track"><div class="bar h39"></div></div>
+              <span class="bar-val">171</span>
+              <span class="bar-lab">{T.axis2021}</span>
+            </div>
+            <div class="bar-col">
+              <div class="bar-track"><div class="bar bar--accent"></div></div>
+              <span class="bar-val">439</span>
+              <span class="bar-lab">{T.axis2025}</span>
+            </div>
+          </div>
+          <p class="chart-note">{T.gMonthlyNote}</p>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- L'impatto -->
+  <section class="panel" id="panel-2" role="tabpanel" aria-labelledby="tab-2" data-panel="2" hidden>
+    <h2 class="panel-title">{T.impactHead}</h2>
+    <div class="panel-grid">
+      <div class="panel-text stack">
+        {T.impact.map((p) => <p>{p}</p>)}
+      </div>
+      <figure class="chart chart--sticky">
+        <div class="chart-block">
+          <figcaption class="chart-cap">{T.iDonutCap}</figcaption>
+          <div class="donut-wrap">
+            <svg class="donut" viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="donut-track" cx="60" cy="60" r="52" />
+              <circle class="donut-val p84" cx="60" cy="60" r="52" />
+            </svg>
+            <div class="donut-center"><strong>{T.vHi}</strong><span>{T.sevHigh}</span></div>
+          </div>
+          <ul class="legend">
+            <li><span class="key key--accent" aria-hidden="true"></span>{T.sevHigh} · {T.vHi}</li>
+            <li><span class="key key--muted" aria-hidden="true"></span>{T.sevOther} · {T.vOther}</li>
+          </ul>
+        </div>
+
+        <div class="chart-block chart-block--sep">
+          <figcaption class="chart-cap">{T.iTrendCap}</figcaption>
+          <div class="cmp">
+            <div class="cmp-row">
+              <span class="cmp-lab">{T.y2024}</span>
+              <div class="cmp-track" aria-hidden="true"><div class="cmp-fill cmp-fill--muted w79"></div></div>
+              <span class="cmp-val">{T.vHi2024}</span>
+            </div>
+            <div class="cmp-row">
+              <span class="cmp-lab">{T.y2026}</span>
+              <div class="cmp-track" aria-hidden="true"><div class="cmp-fill w84"></div></div>
+              <span class="cmp-val">{T.vHi2026}</span>
+            </div>
+          </div>
+          <p class="chart-note">{T.iTrendNote}</p>
+        </div>
+
+        <div class="chart-block chart-block--sep">
+          <figcaption class="chart-cap">{T.iExtremeCap}</figcaption>
+          <div class="strip" aria-hidden="true"><div class="strip-fill w27"></div></div>
+          <div class="extreme">
+            <span class="extreme-dot" aria-hidden="true"></span>
+            <div>
+              <strong>{T.iExtremeName} · {T.vExtreme}</strong>
+              <span class="muted"> — {T.iExtremeNote}</span>
+            </div>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- L'Italia -->
+  <section class="panel" id="panel-3" role="tabpanel" aria-labelledby="tab-3" data-panel="3" hidden>
+    <h2 class="panel-title">{T.italyHead}</h2>
+    <div class="panel-text stack italy-intro">
+      {T.italy.map((p) => <p>{p}</p>)}
+    </div>
+    <div class="italy-charts">
+      <figure class="chart">
+        <figcaption class="chart-cap">{T.itTrendCap}</figcaption>
+        <div class="barchart" aria-hidden="true">
+          <div class="bar-col">
+            <div class="bar-track"><div class="bar h70"></div></div>
+            <span class="bar-val">{T.vItaly2024}</span>
+            <span class="bar-lab">{T.y2024}</span>
+          </div>
+          <div class="bar-col">
+            <div class="bar-track"><div class="bar bar--accent"></div></div>
+            <span class="bar-val">{T.vItaly2025}</span>
+            <span class="bar-lab">{T.y2025}</span>
+          </div>
+        </div>
+        <p class="chart-note">{T.itTrendNote}</p>
+      </figure>
+
+      <figure class="chart italy-share">
+        <figcaption class="chart-cap">{T.itShareCap}</figcaption>
+        <div class="donut-wrap">
+          <svg class="donut" viewBox="0 0 120 120" aria-hidden="true">
+            <circle class="donut-track" cx="60" cy="60" r="52" />
+            <circle class="donut-val p96" cx="60" cy="60" r="52" />
+          </svg>
+          <div class="donut-center"><strong>{T.vShare}</strong><span>{T.y2025}</span></div>
+        </div>
+        <p class="chart-note">{T.itShareNote}</p>
+      </figure>
+    </div>
+  </section>
+
+  <footer class="clusit-foot">
+    <Icon name="external" size={15} />
+    <span class="muted">{T.source} </span>
+    <a href="https://clusit.it" target="_blank" rel="noopener noreferrer">{T.sourceLink}</a>
+  </footer>
+</article>
+
+<style>
+  .clusit {
+    max-width: 62rem;
+    margin-inline: auto;
+  }
+  .clusit-title {
+    font-size: var(--step-3);
+    margin-top: 0.7rem;
+    max-width: 26ch;
+  }
+  .clusit-meta {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.9rem;
+  }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+  .stat-row--sub {
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 1.5rem;
+  }
+  @media (min-width: 720px) {
+    .stat-row {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.2rem;
+  }
+  .stat-num {
+    display: block;
+    font-size: clamp(1.6rem, 1.2rem + 2vw, 2.3rem);
+    font-weight: 720;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-label {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 2.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.6rem;
+    position: sticky;
+    top: 4.25rem;
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
+    backdrop-filter: blur(8px);
+    z-index: 5;
+  }
+  .tab {
+    font: inherit;
+    font-weight: 600;
+    font-size: 0.92rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.2s ease, background 0.2s ease;
+  }
+  .tab:hover {
+    color: var(--text);
+    background: var(--surface-2);
+  }
+  .tab.active {
+    color: var(--accent-contrast);
+    background: var(--accent);
+  }
+
+  .panel {
+    padding-top: 1.75rem;
+    animation: fade 0.35s ease both;
+  }
+  .panel[hidden] {
+    display: none;
+  }
+  @keyframes fade {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .panel-title {
+    font-size: var(--step-2);
+    max-width: 24ch;
+    margin-bottom: 1.4rem;
+  }
+  .panel-text {
+    max-width: 62ch;
+    line-height: 1.7;
+  }
+  .panel-text p {
+    font-size: 0.98rem;
+  }
+  .panel-grid {
+    display: grid;
+    gap: clamp(1.5rem, 1rem + 3vw, 2.5rem);
+    align-items: start;
+  }
+  @media (min-width: 820px) {
+    .panel-grid {
+      grid-template-columns: 1.15fr 0.85fr;
+    }
+    .chart--sticky {
+      position: sticky;
+      top: 8.5rem;
+    }
+  }
+
+  .chart {
+    margin: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.4rem;
+  }
+  .chart-cap {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.1rem;
+  }
+
+  /* Più grafici nella stessa card, separati da un filo */
+  .chart-block--sep {
+    margin-top: 1.4rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Barre di confronto orizzontali (totali annui, quota nel tempo) */
+  .cmp {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .cmp-row {
+    display: grid;
+    grid-template-columns: 2.7rem 1fr auto;
+    align-items: center;
+    gap: 0.65rem;
+  }
+  .cmp-lab {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  .cmp-track {
+    height: 20px;
+    background: var(--surface-2);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .cmp-fill {
+    height: 100%;
+    width: 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent-hover), var(--accent));
+    transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cmp-fill--muted {
+    background: var(--border);
+  }
+  .panel.in .cmp-fill {
+    width: var(--w);
+  }
+  /* Valori via classe: la CSP del sito blocca gli attributi style inline */
+  .cmp-fill.w67 { --w: 67.3%; }
+  .cmp-fill.w79 { --w: 79%; }
+  .cmp-fill.w84 { --w: 84%; }
+  .cmp-fill.w100 { --w: 100%; }
+  .cmp-val {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.9rem;
+  }
+
+  /* Donut (composizione / quota) */
+  .donut-wrap {
+    position: relative;
+    width: 150px;
+    margin-inline: auto;
+  }
+  .donut {
+    width: 150px;
+    height: 150px;
+    transform: rotate(-90deg);
+  }
+  .donut-track {
+    fill: none;
+    stroke: var(--surface-2);
+    stroke-width: 13;
+  }
+  .donut-val {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 13;
+    stroke-linecap: round;
+    stroke-dasharray: 326.73;
+    stroke-dashoffset: 326.73;
+    transition: stroke-dashoffset 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .panel.in .donut-val {
+    stroke-dashoffset: calc(326.73 - 326.73 * var(--pct) / 100);
+  }
+  .donut-val.p84 { --pct: 84; }
+  .donut-val.p96 { --pct: 9.6; }
+  .donut-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.1;
+  }
+  .donut-center strong {
+    font-size: 1.55rem;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .donut-center span {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-top: 0.15rem;
+  }
+  .legend {
+    list-style: none;
+    margin: 1.1rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    font-size: 0.84rem;
+  }
+  .legend li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .key {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex: none;
+  }
+  .key--accent {
+    background: var(--accent);
+  }
+  .key--muted {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+  }
+
+  /* Striscia per la nuova fascia Extreme */
+  .strip {
+    height: 20px;
+    background: var(--surface-2);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .strip-fill {
+    height: 100%;
+    width: 0;
+    border-radius: 999px;
+    background: var(--danger);
+    transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .panel.in .strip-fill {
+    width: var(--w);
+  }
+  .strip-fill.w27 { --w: 2.7%; }
+
+  /* Sezione Italia: intro a tutta larghezza + due grafici affiancati */
+  .italy-intro {
+    max-width: 62ch;
+    margin-bottom: clamp(1.5rem, 1rem + 2vw, 2.4rem);
+  }
+  .italy-charts {
+    display: grid;
+    gap: clamp(1rem, 0.5rem + 2vw, 1.6rem);
+  }
+  @media (min-width: 640px) {
+    .italy-charts {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .italy-share {
+    display: flex;
+    flex-direction: column;
+  }
+  .italy-share .donut-wrap {
+    margin-block: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bar,
+    .hbar-fill,
+    .cmp-fill,
+    .strip-fill,
+    .donut-val {
+      transition: none;
+    }
+  }
+
+  .barchart {
+    display: flex;
+    align-items: flex-end;
+    gap: 2rem;
+    height: 175px;
+    padding-inline: 0.5rem;
+  }
+  .bar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+  }
+  .bar-track {
+    width: 100%;
+    max-width: 72px;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+  }
+  .bar {
+    width: 100%;
+    height: var(--h, 100%);
+    background: var(--border);
+    border-radius: 8px 8px 0 0;
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .bar.h39 { --h: 39%; }
+  .bar.h70 { --h: 70.4%; }
+  .bar--accent {
+    background: linear-gradient(180deg, var(--accent), var(--accent-hover));
+  }
+  .panel.in .bar {
+    transform: scaleY(1);
+  }
+  .bar-val {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    margin-top: 0.55rem;
+  }
+  .bar-lab {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  .hbar {
+    height: 34px;
+    background: var(--surface-2);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .hbar-fill {
+    height: 100%;
+    width: 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent-hover), var(--accent));
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 0.8rem;
+    color: var(--accent-contrast);
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .panel.in .hbar-fill {
+    width: 84%;
+  }
+  .chart-note {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.6rem;
+  }
+  .extreme {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.2rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+  .extreme-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--danger);
+    flex: none;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--danger) 22%, transparent);
+  }
+
+  .clusit-foot {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+  }
+  .clusit-foot a {
+    color: var(--accent);
+  }
+  .clusit-foot a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<script>
+  const root = document.querySelector(".clusit");
+  if (root instanceof HTMLElement) {
+    const locale = root.dataset.locale || "it-IT";
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function fmt(v: number, dec: number) {
+      return new Intl.NumberFormat(locale, {
+        minimumFractionDigits: dec,
+        maximumFractionDigits: dec,
+      }).format(v);
+    }
+
+    function animateCount(el: HTMLElement) {
+      if (el.dataset.done === "1") return;
+      el.dataset.done = "1";
+      const target = parseFloat(el.dataset.target || "0");
+      const dec = parseInt(el.dataset.dec || "0", 10);
+      const pre = el.dataset.prefix || "";
+      const suf = el.dataset.suffix || "";
+      if (reduce) {
+        el.textContent = pre + fmt(target, dec) + suf;
+        return;
+      }
+      const dur = 1100;
+      const start = performance.now();
+      function step(now: number) {
+        const p = Math.min((now - start) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = pre + fmt(target * eased, dec) + suf;
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = pre + fmt(target, dec) + suf;
+      }
+      requestAnimationFrame(step);
+    }
+
+    function activatePanel(panel: HTMLElement) {
+      // forza un reflow così le transizioni dei grafici partono dallo stato iniziale
+      void panel.offsetWidth;
+      panel.classList.add("in");
+      panel.querySelectorAll<HTMLElement>(".count").forEach(animateCount);
+    }
+
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>(".tab"));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>(".panel"));
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const idx = tab.dataset.tab;
+        tabs.forEach((t) => {
+          const on = t === tab;
+          t.classList.toggle("active", on);
+          t.setAttribute("aria-selected", on ? "true" : "false");
+        });
+        panels.forEach((p) => {
+          const on = p.dataset.panel === idx;
+          p.hidden = !on;
+          p.classList.toggle("active", on);
+          if (on) requestAnimationFrame(() => activatePanel(p));
+        });
+      });
+    });
+
+    // Contatori delle stat tiles + primo pannello quando entrano in viewport
+    const statRow = root.querySelector<HTMLElement>("[data-io]");
+    const firstPanel = root.querySelector<HTMLElement>(".panel.active");
+    const observeAndCount = (el: HTMLElement | null) => {
+      if (!el) return;
+      if ("IntersectionObserver" in window) {
+        const io = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                const t = e.target as HTMLElement;
+                t.classList.add("in");
+                t.querySelectorAll<HTMLElement>(".count").forEach(animateCount);
+                obs.unobserve(t);
+              }
+            });
+          },
+          { threshold: 0.25 },
+        );
+        io.observe(el);
+      } else {
+        el.classList.add("in");
+        el.querySelectorAll<HTMLElement>(".count").forEach(animateCount);
+      }
+    };
+    observeAndCount(statRow);
+    if (firstPanel) firstPanel.classList.add("in");
+  }
+</script>

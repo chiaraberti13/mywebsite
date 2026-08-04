@@ -1,0 +1,98 @@
+---
+// Font tech self-hostati (serviti dallo stesso dominio -> compatibili con la CSP font-src 'self')
+import "@fontsource-variable/space-grotesk";
+import "@fontsource-variable/jetbrains-mono";
+import "@/styles/global.css";
+import { site } from "@/config/site";
+import type { Locale } from "@/config/site";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  lang: Locale;
+  /** Immagine social opzionale (percorso assoluto in /public) */
+  image?: string;
+  noindex?: boolean;
+}
+const { title, description, lang, image = "/og-default.png", noindex = false } =
+  Astro.props;
+
+// URL canonico + alternate hreflang per la stessa pagina nelle due lingue
+const path = Astro.url.pathname;
+const itPath = lang === "it" ? path : (path.replace(/^\/en/, "") || "/");
+const enPath = lang === "en" ? path : path === "/" ? "/en/" : `/en${path}`;
+const canonical = new URL(path, site.url).href;
+const itUrl = new URL(itPath, site.url).href;
+const enUrl = new URL(enPath, site.url).href;
+const ogImage = new URL(image, site.url).href;
+const fullTitle = title === site.name ? title : `${title} · ${site.name}`;
+---
+<!doctype html>
+<html lang={lang} data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#d7a521" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="mask-icon" href="/favicon.svg" color="#d7a521" />
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="it" href={itUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={itUrl} />
+
+    <!-- Open Graph / social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={lang === "it" ? "it_IT" : "en_US"} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Imposta il tema prima del paint per evitare il flash (CSP: hash whitelisted) -->
+    <script is:inline>(function(){try{var t=localStorage.getItem("theme");if(t){document.documentElement.dataset.theme=t;return}}catch(e){}document.documentElement.dataset.theme=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"})();</script>
+    <!-- Abilita lo stato iniziale delle animazioni di reveal solo con JS -->
+    <script is:inline>document.documentElement.classList.add("reveal-ready");</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{lang === "it" ? "Vai al contenuto" : "Skip to content"}</a>
+    <Header lang={lang} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+
+    <script>
+      const els = document.querySelectorAll("[data-reveal],[data-reveal-group]");
+      if ("IntersectionObserver" in window && els.length) {
+        const io = new IntersectionObserver(
+          (entries, obs) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add("is-visible");
+                obs.unobserve(e.target);
+              }
+            }
+          },
+          { threshold: 0.1 },
+        );
+        els.forEach((el) => io.observe(el));
+      } else {
+        els.forEach((el) => el.classList.add("is-visible"));
+      }
+    </script>
+  </body>
+</html>

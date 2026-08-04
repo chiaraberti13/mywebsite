@@ -1,0 +1,84 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SectionHeader from "@/components/SectionHeader.astro";
+import Icon from "@/components/Icon.astro";
+import { site, type Locale } from "@/config/site";
+import { content } from "@/data/content";
+import { useTranslations } from "@/i18n/ui";
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const cur = content[lang].curriculum;
+const desc =
+  lang === "it"
+    ? "Formazione di Chiara Berti: il percorso dal design alla cybersecurity e l'istruzione."
+    : "Chiara Berti's education: the path from design to cybersecurity and academic background.";
+---
+<BaseLayout lang={lang} title={t("nav.education")} description={desc}>
+  <section class="section">
+    <div class="container">
+      <div class="cv-head">
+        <SectionHeader eyebrow={t("nav.education")} title={t("section.path")} />
+        {
+          site.features.cvDownload && (
+            <a class="btn btn--primary" href={site.cvFile} download>
+              <Icon name="download" size={18} />
+              {t("cta.downloadCv")}
+            </a>
+          )
+        }
+      </div>
+      <div class="stack cv-intro" data-reveal>
+        {cur.intro.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="container">
+      <SectionHeader eyebrow="Education" title={t("section.education")} intro={cur.education.lead} />
+      <div class="stack" data-reveal-group>
+        {
+          cur.education.items.map((ed) => (
+            <div class="card cv-block">
+              {ed.period && <p class="cv-period">{ed.period}</p>}
+              <h3 class="cv-block-title">{ed.title}</h3>
+              <p class="cv-org">{ed.org}</p>
+              {ed.description && <p class="muted">{ed.description}</p>}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .cv-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .cv-intro {
+    max-width: 65ch;
+  }
+  .cv-period {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+    display: inline-block;
+  }
+  .cv-block-title {
+    font-size: var(--step-1);
+  }
+  .cv-org {
+    color: var(--accent);
+    font-weight: 550;
+    margin: 0.15rem 0 0.6rem;
+  }
+</style>

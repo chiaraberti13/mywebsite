@@ -1,0 +1,73 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SectionHeader from "@/components/SectionHeader.astro";
+import Icon from "@/components/Icon.astro";
+import { type Locale } from "@/config/site";
+import { useTranslations, localePath } from "@/i18n/ui";
+import { getJournal, slugOf } from "@/lib/content";
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const posts = await getJournal(lang);
+const desc =
+  lang === "it"
+    ? "Articoli e note su cybersecurity, ethical hacking e tecnologia."
+    : "Articles and notes on cybersecurity, ethical hacking and technology.";
+const locale = lang === "it" ? "it-IT" : "en-US";
+---
+<BaseLayout lang={lang} title={t("nav.journal")} description={desc}>
+  <section class="section">
+    <div class="container">
+      <SectionHeader eyebrow={t("nav.journal")} title={t("section.journal")} />
+      <ul class="post-list" role="list" data-reveal-group>
+        {
+          posts.map((post) => (
+            <li>
+              <a class="post card card--link" href={localePath(lang, `/journal/${slugOf(post.id)}`)}>
+                <p class="post-date">{post.data.date.toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" })}</p>
+                <h3 class="post-title">{post.data.title}</h3>
+                <p class="muted post-desc">{post.data.description}</p>
+                <span class="post-more">{t("cta.readMore")} <Icon name="chevronRight" size={16} /></span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .post-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .post {
+    display: block;
+  }
+  .post-date {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  .post-title {
+    font-size: var(--step-1);
+  }
+  .post-desc {
+    margin: 0.5rem 0 0.9rem;
+    max-width: 62ch;
+  }
+  .post-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+</style>

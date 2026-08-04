@@ -1,0 +1,106 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Hero from "@/components/Hero.astro";
+import About from "@/components/About.astro";
+import Skills from "@/components/Skills.astro";
+import Aptitude from "@/components/Aptitude.astro";
+import SectionHeader from "@/components/SectionHeader.astro";
+import ProjectCard from "@/components/ProjectCard.astro";
+import Icon from "@/components/Icon.astro";
+import { site, type Locale } from "@/config/site";
+import { content } from "@/data/content";
+import { useTranslations, localePath } from "@/i18n/ui";
+import { getFeaturedProjects, slugOf } from "@/lib/content";
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const featured = await getFeaturedProjects(lang);
+const desc = content[lang].hero.subheadline;
+---
+<BaseLayout lang={lang} title={site.name} description={desc}>
+  <Hero lang={lang} />
+  <div class="hr container"></div>
+  <About lang={lang} />
+
+  <section class="section section--tight" id="valori">
+    <div class="container">
+      <SectionHeader eyebrow={t("nav.about")} title={t("section.values")} />
+      <div class="stack values-text" data-reveal>
+        {content[lang].values.paragraphs.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <Skills lang={lang} />
+
+  <Aptitude lang={lang} />
+
+  {
+    featured.length > 0 && (
+      <section class="section">
+        <div class="container">
+          <SectionHeader eyebrow={t("nav.projects")} title={t("section.projects")} />
+          <div class="grid grid--3" data-reveal-group>
+            {featured.map((p) => (
+              <ProjectCard
+                project={p}
+                href={localePath(lang, `/projects/${slugOf(p.id)}`)}
+              />
+            ))}
+          </div>
+          <p class="see-all">
+            <a class="btn btn--ghost" href={localePath(lang, "/projects")}>
+              {t("cta.viewProjects")}
+              <Icon name="chevronRight" size={18} />
+            </a>
+          </p>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section">
+    <div class="container">
+      <div class="cta-band" data-reveal>
+        <div>
+          <h2 class="cta-title">{t("section.contact")}</h2>
+          <p class="muted">{t("contact.orEmail")} <a class="cta-mail" href={`mailto:${site.email}`}>{site.email}</a></p>
+        </div>
+        <a class="btn btn--primary" href={localePath(lang, "/contact")}>
+          {t("cta.contact")}
+          <Icon name="chevronRight" size={18} />
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .values-text {
+    max-width: 62ch;
+  }
+  .see-all {
+    margin-top: 2rem;
+  }
+  .cta-band {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: clamp(1.75rem, 1rem + 3vw, 3rem);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  .cta-title {
+    font-size: var(--step-2);
+  }
+  .cta-mail {
+    color: var(--accent);
+  }
+  .cta-mail:hover {
+    text-decoration: underline;
+  }
+</style>

@@ -1,0 +1,70 @@
+---
+import { content } from "@/data/content";
+import { useTranslations } from "@/i18n/ui";
+import type { Locale } from "@/config/site";
+import SectionHeader from "./SectionHeader.astro";
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const about = content[lang].about;
+---
+<section class="section" id="about">
+  <div class="container about-grid">
+    <div>
+      <SectionHeader eyebrow={t("nav.about")} title={t("section.about")} />
+      <div class="stack about-text" data-reveal>
+        {about.paragraphs.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+
+    <aside class="about-highlights" data-reveal-group>
+      {
+        about.highlights.map((h) => (
+          <div class="card highlight">
+            <span class="highlight-label">{h.label}</span>
+            <span class="highlight-value">{h.value}</span>
+          </div>
+        ))
+      }
+    </aside>
+  </div>
+</section>
+
+<style>
+  .about-grid {
+    display: grid;
+    gap: clamp(1.5rem, 1rem + 3vw, 3rem);
+  }
+  @media (min-width: 860px) {
+    .about-grid {
+      grid-template-columns: 1.6fr 1fr;
+      align-items: start;
+    }
+  }
+  .about-text {
+    max-width: 60ch;
+  }
+  .about-highlights {
+    display: grid;
+    gap: 0.85rem;
+  }
+  .highlight {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 1.1rem 1.25rem;
+  }
+  .highlight-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .highlight-value {
+    font-size: var(--step-1);
+    font-weight: 650;
+    color: var(--accent);
+  }
+</style>

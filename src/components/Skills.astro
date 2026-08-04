@@ -1,0 +1,48 @@
+---
+import { content } from "@/data/content";
+import { useTranslations } from "@/i18n/ui";
+import type { Locale } from "@/config/site";
+import SectionHeader from "./SectionHeader.astro";
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const groups = content[lang].skills;
+---
+<section class="section" id="skills">
+  <div class="container">
+    <SectionHeader eyebrow={t("nav.skills")} title={t("section.skills")} />
+    <div class="grid grid--3" data-reveal-group>
+      {
+        groups.map((g) => (
+          <div class="card skill-card">
+            <h3 class="skill-title">{g.name}</h3>
+            <ul class="skill-tags" role="list">
+              {g.items.map((item) => (
+                <li class="tag">{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .skill-title {
+    font-size: var(--step-0);
+    font-family: var(--font-mono);
+    letter-spacing: 0.02em;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .skill-tags {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+</style>

@@ -1,0 +1,26 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { useTranslations, localePath } from "@/i18n/ui";
+const lang = "it" as const;
+const t = useTranslations(lang);
+---
+<BaseLayout lang={lang} title={t("notfound.title")} description={t("notfound.text")} noindex={true}>
+  <section class="section">
+    <div class="container notfound">
+      <p class="eyebrow">404</p>
+      <h1>{t("notfound.title")}</h1>
+      <p class="lead">{t("notfound.text")}</p>
+      <a class="btn btn--primary" href={localePath(lang, "/")}>{t("cta.backHome")}</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    text-align: center;
+    display: grid;
+    justify-items: center;
+    gap: 1rem;
+    padding-block: clamp(3rem, 2rem + 6vw, 6rem);
+  }
+</style>
