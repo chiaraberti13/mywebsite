@@ -10,28 +10,78 @@ const t = useTranslations(lang);
 const apt = content[lang].aptitude;
 const languages = content[lang].languages;
 const interests = content[lang].interests;
+
+// ── Geometria del radar (esagono, scala 1..max) ──────────────
+const axes = apt.axes;
+const max = apt.radarMax;
+const n = axes.length;
+const cx = 310;
+const cy = 205;
+const R = 160;
+const vbW = 660;
+const vbH = 430;
+const labelR = R + 26;
+
+const point = (i: number, r: number): [number, number] => {
+  const ang = ((-90 + (360 / n) * i) * Math.PI) / 180;
+  return [cx + r * Math.cos(ang), cy + r * Math.sin(ang)];
+};
+const fmt = (p: [number, number]) => `${p[0].toFixed(1)},${p[1].toFixed(1)}`;
+const ringPoints = (r: number) => axes.map((_, i) => fmt(point(i, r))).join(" ");
+
+const levels = Array.from({ length: max }, (_, k) => k + 1);
+const dataPts = axes.map((a, i) => point(i, (R * a.value) / max));
+const dataStr = dataPts.map(fmt).join(" ");
+const axisEnds = axes.map((_, i) => point(i, R));
+const scale = levels.map((l) => {
+  const [x, y] = point(0, (R * l) / max);
+  return { l, x: (x + 7).toFixed(1), y: (y + 4).toFixed(1) };
+});
+const labels = axes.map((a, i) => {
+  const ang = ((-90 + (360 / n) * i) * Math.PI) / 180;
+  const [x, y] = point(i, labelR);
+  const cos = Math.cos(ang);
+  const sin = Math.sin(ang);
+  const anchor = Math.abs(cos) < 0.25 ? "middle" : cos > 0 ? "start" : "end";
+  const dy = sin < -0.3 ? "-0.15em" : sin > 0.3 ? "0.9em" : "0.32em";
+  return { label: a.label, value: a.value, x: x.toFixed(1), y: y.toFixed(1), anchor, dy };
+});
+const aria =
+  (lang === "it" ? "Radar dei punti di forza: " : "Strengths radar: ") +
+  axes.map((a) => `${a.label} ${a.value}/${max}`).join(", ");
 ---
 <section class="section" id="aptitude">
   <div class="container">
     <SectionHeader eyebrow={t("section.aptitudeKicker")} title={t("section.aptitude")} intro={apt.lead} />
 
-    <div class="apt-grid">
-      <div class="apt-bars" data-reveal-group>
-        {
-          apt.strengths.map((s) => (
-            <div class="apt-row">
-              <span class="apt-label">{s.label}</span>
-              <div class="apt-track" aria-hidden="true">
-                <div class:list={["apt-fill", `w${s.value}`]} />
-              </div>
-              <span class="apt-val" data-count={s.value}>{s.value}</span>
-            </div>
-          ))
-        }
-      </div>
+    <div class="apt-radar-card card" data-reveal>
+      <svg class="radar" viewBox={`0 0 ${vbW} ${vbH}`} role="img" aria-label={aria}>
+        <g class="radar-grid">
+          {levels.map((l) => <polygon class="rd-grid" points={ringPoints((R * l) / max)} />)}
+          {axisEnds.map(([x, y]) => (
+            <line class="rd-axis" x1={cx} y1={cy} x2={x.toFixed(1)} y2={y.toFixed(1)} />
+          ))}
+          {scale.map((s) => (
+            <text class="rd-scale" x={s.x} y={s.y}>{s.l}</text>
+          ))}
+        </g>
+        <g class="radar-data">
+          <polygon class="rd-area" points={dataStr} />
+          {dataPts.map(([x, y]) => (
+            <circle class="rd-dot" cx={x.toFixed(1)} cy={y.toFixed(1)} r="4.5" />
+          ))}
+        </g>
+        <g class="radar-labels">
+          {labels.map((l) => (
+            <text class="rd-label" x={l.x} y={l.y} text-anchor={l.anchor} dy={l.dy}>{l.label}</text>
+          ))}
+        </g>
+      </svg>
+    </div>
 
-      <aside class="apt-working" data-reveal-group>
-        <p class="apt-working-label">{apt.workingOnLabel}</p>
+    <div class="apt-working" data-reveal-group>
+      <p class="apt-working-label">{apt.workingOnLabel}</p>
+      <div class="apt-cards">
         {
           apt.workingOn.map((w) => (
             <div class="card apt-card">
@@ -43,7 +93,7 @@ const interests = content[lang].interests;
             </div>
           ))
         }
-      </aside>
+      </div>
     </div>
 
     <div class="apt-meta" data-reveal>
@@ -66,66 +116,80 @@ const interests = content[lang].interests;
 </section>
 
 <style>
-  .apt-grid {
-    display: grid;
-    gap: clamp(1.5rem, 1rem + 3vw, 3rem);
+  .apt-radar-card {
+    max-width: 660px;
+    margin-inline: auto;
+    padding: clamp(1rem, 0.5rem + 2vw, 1.75rem);
+    background: linear-gradient(180deg, var(--surface), var(--bg));
   }
-  @media (min-width: 860px) {
-    .apt-grid {
-      grid-template-columns: 1.5fr 1fr;
-      align-items: start;
+  .radar {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+  }
+  .rd-grid {
+    fill: none;
+    stroke: var(--border);
+    stroke-width: 1;
+  }
+  .rd-axis {
+    stroke: var(--border);
+    stroke-width: 1;
+  }
+  .rd-scale {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--muted);
+  }
+  .rd-area {
+    fill: var(--accent);
+    fill-opacity: 0.16;
+    stroke: var(--accent);
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+  }
+  .rd-dot {
+    fill: var(--bg);
+    stroke: var(--accent);
+    stroke-width: 2.5;
+  }
+  .rd-label {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 13.5px;
+    fill: var(--text);
+  }
+
+  /* Animazione di ingresso del radar */
+  @media (prefers-reduced-motion: no-preference) {
+    .radar-grid,
+    .radar-labels {
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+    .radar-labels {
+      transition-delay: 0.25s;
+    }
+    .radar-data {
+      opacity: 0;
+      transform: scale(0.15);
+      transform-origin: 310px 205px;
+      transform-box: view-box;
+      transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease;
+    }
+    .radar.in .radar-grid,
+    .radar.in .radar-labels {
+      opacity: 1;
+    }
+    .radar.in .radar-data {
+      opacity: 1;
+      transform: scale(1);
     }
   }
 
-  .apt-bars {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .apt-row {
-    display: grid;
-    grid-template-columns: minmax(6.5rem, 11rem) 1fr 2rem;
-    align-items: center;
-    gap: 0.6rem 1rem;
-  }
-  .apt-label {
-    font-size: 0.95rem;
-  }
-  .apt-track {
-    height: 12px;
-    background: var(--surface-2);
-    border-radius: 999px;
-    overflow: hidden;
-  }
-  .apt-fill {
-    height: 100%;
-    width: 0;
-    border-radius: 999px;
-    background: linear-gradient(90deg, var(--accent-hover), var(--accent));
-    transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  /* Le larghezze arrivano da classi (la CSP blocca gli style inline) e
-     partono quando la sezione entra in viewport. */
-  .apt-bars.is-visible .apt-fill {
-    width: var(--w);
-  }
-  .apt-fill.w84 { --w: 84%; }
-  .apt-fill.w86 { --w: 86%; }
-  .apt-fill.w88 { --w: 88%; }
-  .apt-fill.w90 { --w: 90%; }
-  .apt-fill.w92 { --w: 92%; }
-  .apt-val {
-    font-family: var(--font-mono);
-    font-weight: 700;
-    color: var(--accent);
-    font-variant-numeric: tabular-nums;
-    text-align: right;
-  }
-
   .apt-working {
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
+    margin-top: clamp(1.5rem, 1rem + 3vw, 2.5rem);
   }
   .apt-working-label {
     font-family: var(--font-mono);
@@ -133,6 +197,16 @@ const interests = content[lang].interests;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--muted);
+    margin-bottom: 0.9rem;
+  }
+  .apt-cards {
+    display: grid;
+    gap: 0.85rem;
+  }
+  @media (min-width: 640px) {
+    .apt-cards {
+      grid-template-columns: 1fr 1fr;
+    }
   }
   .apt-card {
     padding: 1.1rem 1.25rem;
@@ -180,6 +254,7 @@ const interests = content[lang].interests;
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
+    max-width: 42ch;
   }
   .apt-interests {
     list-style: none;
@@ -192,46 +267,25 @@ const interests = content[lang].interests;
 </style>
 
 <script>
-  // Micro-conteggio dei valori attitudinali quando la sezione entra in vista.
-  const section = document.getElementById("aptitude");
-  if (section) {
-    const vals = Array.from(section.querySelectorAll<HTMLElement>(".apt-val[data-count]"));
+  // Avvia l'animazione del radar quando la sezione entra in viewport.
+  const radar = document.querySelector<SVGElement>("#aptitude .radar");
+  if (radar) {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!reduce && vals.length) {
-      vals.forEach((v) => (v.textContent = "0"));
-    }
-    function run(el: HTMLElement) {
-      const target = parseInt(el.dataset.count || "0", 10);
-      if (reduce) {
-        el.textContent = String(target);
-        return;
-      }
-      const dur = 1000;
-      const start = performance.now();
-      function step(now: number) {
-        const p = Math.min((now - start) / dur, 1);
-        const eased = 1 - Math.pow(1 - p, 3);
-        el.textContent = String(Math.round(target * eased));
-        if (p < 1) requestAnimationFrame(step);
-        else el.textContent = String(target);
-      }
-      requestAnimationFrame(step);
-    }
-    if ("IntersectionObserver" in window && !reduce) {
+    if (reduce || !("IntersectionObserver" in window)) {
+      radar.classList.add("in");
+    } else {
       const io = new IntersectionObserver(
         (entries, obs) => {
           entries.forEach((e) => {
             if (e.isIntersecting) {
-              vals.forEach(run);
+              radar.classList.add("in");
               obs.disconnect();
             }
           });
         },
-        { threshold: 0.3 },
+        { threshold: 0.35 },
       );
-      io.observe(section);
-    } else {
-      vals.forEach(run);
+      io.observe(radar);
     }
   }
 </script>
