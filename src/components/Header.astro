@@ -12,13 +12,16 @@ const t = useTranslations(lang);
 
 const allRoutes = [
   { key: "nav.home", path: "/" },
+  { key: "nav.about", path: "/#about", section: true },
+  { key: "nav.values", path: "/#values", section: true },
+  { key: "nav.skills", path: "/#skills", section: true },
   { key: "nav.education", path: "/formazione" },
   { key: "nav.experience", path: "/esperienze" },
   { key: "nav.certifications", path: "/certificazioni" },
   { key: "nav.projects", path: "/projects" },
   { key: "nav.journal", path: "/journal", feature: "journal" },
   { key: "nav.contact", path: "/contact" },
-] as { key: UIKey; path: string; feature?: keyof typeof site.features }[];
+] as { key: UIKey; path: string; feature?: keyof typeof site.features; section?: boolean }[];
 const routes = allRoutes.filter((r) => !r.feature || site.features[r.feature]);
 
 // pathname normalizzato senza prefisso lingua, per lo stato "attivo"
@@ -36,7 +39,7 @@ const current = raw.length > 1 ? raw.replace(/\/$/, "") : "/";
       <ul role="list">
         {
           routes.map((r) => {
-            const isActive = r.path === current;
+            const isActive = !r.section && r.path === current;
             return (
               <li>
                 <a
@@ -202,9 +205,21 @@ const current = raw.length > 1 ? raw.replace(/\/$/, "") : "/";
 <script>
   const btn = document.getElementById("menu-btn");
   const menu = document.getElementById("mobile-menu");
+  const openLabel = btn?.getAttribute("aria-label") || "Open menu";
+  const closeLabel = document.documentElement.lang === "it" ? "Chiudi menu" : "Close menu";
+
   btn?.addEventListener("click", () => {
     const open = btn.getAttribute("aria-expanded") === "true";
     btn.setAttribute("aria-expanded", String(!open));
+    btn.setAttribute("aria-label", open ? openLabel : closeLabel);
     if (menu) menu.hidden = open;
+  });
+
+  menu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      btn?.setAttribute("aria-expanded", "false");
+      btn?.setAttribute("aria-label", openLabel);
+      menu.hidden = true;
+    });
   });
 </script>

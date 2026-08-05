@@ -27,6 +27,7 @@ htmlcov/
 
 # Distribution artifacts
 dist/
+.astro/
 build/
 target/
 *.out
