@@ -34,47 +34,96 @@ const about = content[lang].about;
 <style>
   .about-grid {
     display: grid;
-    gap: clamp(1.5rem, 1rem + 3vw, 3rem);
+    gap: clamp(1.75rem, 1.1rem + 3vw, 3.5rem);
   }
   @media (min-width: 860px) {
     .about-grid {
-      grid-template-columns: 1.6fr 1fr;
-      align-items: start;
+      grid-template-columns: minmax(0, 1.45fr) minmax(18rem, 0.9fr);
+      align-items: center;
     }
   }
   .about-text {
-    max-width: 60ch;
+    max-width: 62ch;
   }
   .about-highlights {
+    position: relative;
     display: grid;
-    gap: 1px;
+    gap: 0.9rem;
+    padding: clamp(1rem, 0.8rem + 1vw, 1.35rem);
     overflow: hidden;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--border);
+    border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
+    border-radius: calc(var(--radius) + 0.45rem);
+    background:
+      radial-gradient(circle at 10% 8%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 32%),
+      linear-gradient(145deg, color-mix(in srgb, var(--surface) 92%, var(--accent)), var(--surface));
     box-shadow: var(--shadow);
   }
+  .about-highlights::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 1.35rem;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 42%, transparent), transparent);
+  }
   .highlight {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    min-height: 6.25rem;
-    padding: 1.15rem 1.25rem;
-    background:
-      linear-gradient(135deg, var(--accent-soft), transparent 42%),
-      var(--surface);
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: start;
+    padding: clamp(0.85rem, 0.72rem + 0.6vw, 1.05rem);
+    border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
+    border-radius: calc(var(--radius) - 0.25rem);
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    backdrop-filter: blur(8px);
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  }
+  .highlight:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--accent) 36%, var(--border));
+    background: color-mix(in srgb, var(--surface) 94%, var(--accent-soft));
+  }
+  .highlight::before {
+    content: "";
+    position: relative;
+    z-index: 1;
+    width: 0.72rem;
+    height: 0.72rem;
+    margin-top: 0.25rem;
+    border: 3px solid var(--surface);
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+  .highlight-label,
+  .highlight-value {
+    grid-column: 2;
   }
   .highlight-label {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--accent);
   }
   .highlight-value {
-    font-size: clamp(1.05rem, 0.98rem + 0.35vw, 1.25rem);
+    margin-top: -0.45rem;
+    font-size: clamp(1rem, 0.96rem + 0.2vw, 1.12rem);
     font-weight: 650;
-    line-height: 1.25;
+    line-height: 1.35;
     color: var(--text);
+  }
+  @media (max-width: 859px) {
+    .about-highlights {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .about-highlights::before {
+      display: none;
+    }
+  }
+  @media (max-width: 560px) {
+    .about-highlights {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

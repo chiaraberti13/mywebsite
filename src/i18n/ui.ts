@@ -8,6 +8,7 @@ export const ui = {
   it: {
     "nav.home": "Home",
     "nav.about": "Chi sono",
+    "nav.values": "Valori",
     "nav.skills": "Competenze",
     "nav.education": "Formazione",
     "nav.experience": "Esperienze",
@@ -68,6 +69,7 @@ export const ui = {
   en: {
     "nav.home": "Home",
     "nav.about": "About",
+    "nav.values": "Values",
     "nav.skills": "Skills",
     "nav.education": "Education",
     "nav.experience": "Experience",
