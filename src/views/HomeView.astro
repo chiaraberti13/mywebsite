@@ -23,11 +23,13 @@ const desc = content[lang].hero.subheadline;
   <div class="hr container"></div>
   <About lang={lang} />
 
-  <section class="section section--tight" id="values">
-    <div class="container">
+  <section class="section section--tight values-section" id="values">
+    <div class="container values-layout">
       <SectionHeader eyebrow={t("nav.about")} title={t("section.values")} />
-      <div class="stack values-text" data-reveal>
-        {content[lang].values.paragraphs.map((p) => <p>{p}</p>)}
+      <div class="values-panel" data-reveal>
+        <div class="stack values-text">
+          {content[lang].values.paragraphs.map((p) => <p>{p}</p>)}
+        </div>
       </div>
     </div>
   </section>
@@ -77,8 +79,59 @@ const desc = content[lang].hero.subheadline;
 </BaseLayout>
 
 <style>
+  .values-section {
+    position: relative;
+    overflow: hidden;
+  }
+  .values-section::before {
+    content: "";
+    position: absolute;
+    inset: 12% auto auto 0;
+    width: min(22rem, 55vw);
+    height: min(22rem, 55vw);
+    border-radius: 999px;
+    background: radial-gradient(circle, var(--accent-soft), transparent 68%);
+    transform: translateX(-42%);
+    pointer-events: none;
+  }
+  .values-layout {
+    position: relative;
+    display: grid;
+    gap: clamp(1.75rem, 1rem + 4vw, 4rem);
+  }
+  .values-panel {
+    position: relative;
+    padding: clamp(1.35rem, 1rem + 2vw, 2.3rem);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--surface), var(--surface-2));
+    box-shadow: var(--shadow);
+  }
+  .values-panel::before {
+    content: "";
+    position: absolute;
+    inset-block: clamp(1.35rem, 1rem + 2vw, 2.3rem);
+    left: 0;
+    width: 3px;
+    border-radius: 999px;
+    background: var(--accent);
+  }
   .values-text {
     max-width: 62ch;
+  }
+  @media (min-width: 860px) {
+    .values-layout {
+      grid-template-columns: minmax(14rem, 0.65fr) minmax(0, 1fr);
+      align-items: start;
+    }
+    .values-layout :global(.section-header) {
+      position: sticky;
+      top: 6rem;
+      margin-bottom: 0;
+    }
+    .values-panel {
+      margin-top: 0.25rem;
+    }
   }
   .see-all {
     margin-top: 2rem;
