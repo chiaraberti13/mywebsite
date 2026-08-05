@@ -21,7 +21,7 @@ const about = content[lang].about;
     <aside class="about-highlights" aria-label={lang === "it" ? "Sintesi del profilo" : "Profile summary"} data-reveal-group>
       {
         about.highlights.map((h) => (
-          <div class="card highlight">
+          <div class="highlight">
             <span class="highlight-label">{h.label}</span>
             <span class="highlight-value">{h.value}</span>
           </div>
@@ -46,6 +46,7 @@ const about = content[lang].about;
     max-width: 62ch;
   }
   .about-highlights {
+    position: relative;
     display: grid;
     grid-template-columns: 1fr;
     gap: 0.85rem;
