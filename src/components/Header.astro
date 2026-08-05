@@ -27,11 +27,15 @@ const allRoutes = [
     children: [
       { key: "nav.values", path: "/#values", section: true },
       { key: "nav.skills", path: "/#skills", section: true },
+      { key: "section.aptitude", path: "/#aptitude", section: true },
     ],
   },
-  { key: "nav.education", path: "/formazione" },
+  {
+    key: "nav.education",
+    path: "/formazione",
+    children: [{ key: "nav.certifications", path: "/certificazioni" }],
+  },
   { key: "nav.experience", path: "/esperienze" },
-  { key: "nav.certifications", path: "/certificazioni" },
   { key: "nav.projects", path: "/projects" },
   { key: "nav.journal", path: "/journal", feature: "journal" },
   { key: "nav.contact", path: "/contact" },
