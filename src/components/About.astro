@@ -48,56 +48,14 @@ const about = content[lang].about;
   .about-highlights {
     position: relative;
     display: grid;
-    gap: 0.9rem;
-    padding: clamp(1rem, 0.8rem + 1vw, 1.35rem);
-    overflow: hidden;
-    border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
-    border-radius: calc(var(--radius) + 0.45rem);
-    background:
-      radial-gradient(circle at 10% 8%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 32%),
-      linear-gradient(145deg, color-mix(in srgb, var(--surface) 92%, var(--accent)), var(--surface));
-    box-shadow: var(--shadow);
-  }
-  .about-highlights::before {
-    content: "";
-    position: absolute;
-    inset: 0 auto 0 1.35rem;
-    width: 1px;
-    background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 42%, transparent), transparent);
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+    align-content: center;
   }
   .highlight {
-    position: relative;
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 0.75rem;
-    align-items: start;
-    padding: clamp(0.85rem, 0.72rem + 0.6vw, 1.05rem);
-    border: 1px solid color-mix(in srgb, var(--border) 82%, transparent);
-    border-radius: calc(var(--radius) - 0.25rem);
-    background: color-mix(in srgb, var(--surface) 88%, transparent);
-    backdrop-filter: blur(8px);
-    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-  }
-  .highlight:hover {
-    transform: translateY(-2px);
-    border-color: color-mix(in srgb, var(--accent) 36%, var(--border));
-    background: color-mix(in srgb, var(--surface) 94%, var(--accent-soft));
-  }
-  .highlight::before {
-    content: "";
-    position: relative;
-    z-index: 1;
-    width: 0.72rem;
-    height: 0.72rem;
-    margin-top: 0.25rem;
-    border: 3px solid var(--surface);
-    border-radius: 999px;
-    background: var(--accent);
-    box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent);
-  }
-  .highlight-label,
-  .highlight-value {
-    grid-column: 2;
+    gap: 0.45rem;
+    padding: clamp(1rem, 0.85rem + 0.75vw, 1.35rem);
   }
   .highlight-label {
     font-family: var(--font-mono);
@@ -107,7 +65,6 @@ const about = content[lang].about;
     color: var(--accent);
   }
   .highlight-value {
-    margin-top: -0.45rem;
     font-size: clamp(1rem, 0.96rem + 0.2vw, 1.12rem);
     font-weight: 650;
     line-height: 1.35;
@@ -116,9 +73,6 @@ const about = content[lang].about;
   @media (max-width: 859px) {
     .about-highlights {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .about-highlights::before {
-      display: none;
     }
   }
   @media (max-width: 560px) {
