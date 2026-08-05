@@ -52,10 +52,53 @@ const about = content[lang].about;
     gap: 0.85rem;
     align-content: center;
   }
+  @media (min-width: 860px) {
+    .about-highlights {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
   .highlight {
+    position: relative;
     display: grid;
     gap: 0.45rem;
     padding: clamp(1rem, 0.85rem + 0.75vw, 1.35rem);
+    min-height: 100%;
+    overflow: hidden;
+    background:
+      linear-gradient(135deg, var(--accent-soft), transparent 42%),
+      var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease,
+      translate 0.2s ease;
+  }
+  .highlight::after {
+    content: "";
+    position: absolute;
+    inset: auto 1rem 1rem auto;
+    width: 2.6rem;
+    aspect-ratio: 1;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    opacity: 0.16;
+    pointer-events: none;
+  }
+  .highlight:hover {
+    translate: 0 -3px;
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+    box-shadow: 0 14px 34px -24px color-mix(in srgb, var(--accent) 50%, transparent),
+      var(--shadow);
+  }
+  @media (min-width: 860px) {
+    .highlight:nth-child(3) {
+      grid-column: span 2;
+      grid-template-columns: minmax(8rem, 0.35fr) 1fr;
+      align-items: center;
+      background:
+        linear-gradient(100deg, var(--accent-soft), transparent 58%),
+        var(--surface);
+    }
   }
   .highlight-label {
     font-family: var(--font-mono);
