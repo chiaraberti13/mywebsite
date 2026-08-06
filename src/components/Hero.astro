@@ -82,45 +82,80 @@ const h = content[lang].hero;
           </defs>
 
           <rect x="0" y="0" width="400" height="460" fill="url(#heroGrid)" />
-          <circle cx="200" cy="196" r="150" fill="url(#heroCore)" />
+          <circle cx="200" cy="205" r="155" fill="url(#heroCore)" />
 
-          <!-- Connessioni della rete -->
-          <g class="hero-net-links" stroke="var(--accent)" stroke-width="1.4" fill="none">
-            <line x1="200" y1="196" x2="78" y2="96" opacity="0.5" />
-            <line x1="200" y1="196" x2="330" y2="120" opacity="0.5" />
-            <line x1="200" y1="196" x2="60" y2="250" opacity="0.5" />
-            <line x1="200" y1="196" x2="120" y2="360" opacity="0.5" />
-            <line x1="200" y1="196" x2="320" y2="300" opacity="0.5" />
-            <line x1="200" y1="196" x2="288" y2="392" opacity="0.5" />
-            <line x1="78" y1="96" x2="330" y2="120" opacity="0.22" />
-            <line x1="60" y1="250" x2="120" y2="360" opacity="0.22" />
-            <line x1="320" y1="300" x2="288" y2="392" opacity="0.22" />
+          <!-- Le competenze (nodi) convergono sul nucleo di sicurezza (centro) -->
+          <g class="hero-net-links">
+            <line x1="200" y1="205" x2="78"  y2="98"  />
+            <line x1="200" y1="205" x2="322" y2="110" />
+            <line x1="200" y1="205" x2="54"  y2="236" />
+            <line x1="200" y1="205" x2="346" y2="250" />
+            <line x1="200" y1="205" x2="120" y2="374" />
+            <line x1="200" y1="205" x2="300" y2="388" />
+            <line class="hero-net-link--faint" x1="78"  y1="98"  x2="322" y2="110" />
+            <line class="hero-net-link--faint" x1="54"  y1="236" x2="120" y2="374" />
+            <line class="hero-net-link--faint" x1="346" y1="250" x2="300" y2="388" />
           </g>
 
-          <!-- Nodi periferici -->
-          <g class="hero-net-nodes" fill="var(--accent)">
-            <circle cx="78"  cy="96"  r="5"   />
-            <circle cx="330" cy="120" r="6.5" />
-            <circle cx="60"  cy="250" r="4.5" />
-            <circle cx="120" cy="360" r="6"   />
-            <circle cx="320" cy="300" r="5"   />
-            <circle cx="288" cy="392" r="4.5" />
+          <!-- Nodi-competenza: ognuno porta il glyph del proprio dominio -->
+          <g class="hero-net-nodes">
+            <g transform="translate(78 98)">
+              <circle class="hnode-halo" r="20" />
+              <circle class="hnode-bg" r="20" />
+              <g class="hnode-ico" transform="translate(-10 -10) scale(0.83)">
+                <rect x="3" y="4" width="18" height="16" rx="2" /><path d="m7 9 3 3-3 3M13 15h4" />
+              </g>
+            </g>
+            <g transform="translate(322 110)">
+              <circle class="hnode-halo" r="20" />
+              <circle class="hnode-bg" r="20" />
+              <g class="hnode-ico" transform="translate(-10 -10) scale(0.83)">
+                <circle cx="12" cy="5" r="2.5" /><circle cx="5" cy="19" r="2.5" /><circle cx="19" cy="19" r="2.5" /><path d="M12 7.5 6.6 16.6M12 7.5l5.4 9.1M6.8 19h10.4" />
+              </g>
+            </g>
+            <g transform="translate(54 236)">
+              <circle class="hnode-halo" r="18" />
+              <circle class="hnode-bg" r="18" />
+              <g class="hnode-ico" transform="translate(-9 -9) scale(0.75)">
+                <path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 6l-3 12" />
+              </g>
+            </g>
+            <g transform="translate(346 250)">
+              <circle class="hnode-halo" r="19" />
+              <circle class="hnode-bg" r="19" />
+              <g class="hnode-ico" transform="translate(-9.5 -9.5) scale(0.79)">
+                <rect x="6" y="6" width="12" height="12" rx="2" /><rect x="9.5" y="9.5" width="5" height="5" /><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2" />
+              </g>
+            </g>
+            <g transform="translate(120 374)">
+              <circle class="hnode-halo" r="19" />
+              <circle class="hnode-bg" r="19" />
+              <g class="hnode-ico" transform="translate(-9.5 -9.5) scale(0.79)">
+                <path d="M4.9 19.1a10 10 0 0 1 0-14.2M7.8 16.2a6 6 0 0 1 0-8.4M16.2 7.8a6 6 0 0 1 0 8.4M19.1 4.9a10 10 0 0 1 0 14.2" /><circle cx="12" cy="12" r="1.5" />
+              </g>
+            </g>
+            <g transform="translate(300 388)">
+              <circle class="hnode-halo" r="18" />
+              <circle class="hnode-bg" r="18" />
+              <g class="hnode-ico" transform="translate(-9 -9) scale(0.75)">
+                <path d="M5 21V4" /><path d="M5 5h12l-2.5 3.5L17 12H5" />
+              </g>
+            </g>
           </g>
 
-          <!-- Nodo centrale: scudo -->
-          <g class="hero-net-core" transform="translate(200 196)">
-            <circle r="46" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5" opacity="0.9" />
-            <g transform="translate(-16 -18) scale(1.35)" fill="none"
-               stroke="var(--accent)" stroke-width="1.9"
-               stroke-linecap="round" stroke-linejoin="round">
+          <!-- Nucleo: la sicurezza, capita "a strati" (frame ruotati = profondità) -->
+          <g class="hero-net-core" transform="translate(200 205)">
+            <rect class="core-frame" x="-40" y="-40" width="80" height="80" rx="14" transform="rotate(18)" />
+            <rect class="core-frame" x="-40" y="-40" width="80" height="80" rx="14" transform="rotate(-16)" />
+            <circle class="core-disc" r="42" />
+            <g class="hnode-ico core-shield" transform="translate(-18 -20) scale(1.5)">
               <path d="M12 3 5 6v5c0 4.5 3 7.6 7 9 4-1.4 7-4.5 7-9V6l-7-3Z" />
               <path d="m9 12 2 2 4-4" />
             </g>
           </g>
 
-          <!-- Linea di scansione -->
-          <line class="hero-net-scan" x1="0" x2="400" y1="0" y2="0"
-                stroke="var(--accent)" stroke-width="1.4" opacity="0.5" />
+          <!-- Linea di scansione (ispezione / pentest) -->
+          <line class="hero-net-scan" x1="0" x2="400" y1="0" y2="0" />
         </svg>
 
         <p class="hero-visual-caption">
@@ -313,31 +348,79 @@ const h = content[lang].hero;
     height: 100%;
     display: block;
   }
+  /* Gerarchia di disegno (dal fondo alla cima, come l'ordine nel markup):
+     griglia → glow → collegamenti → nodi → nucleo → scansione. */
+  .hero-net-links line {
+    stroke: var(--accent);
+    stroke-width: 1.4;
+    fill: none;
+    opacity: 0.42;
+  }
+  .hero-net-link--faint {
+    opacity: 0.18;
+  }
+  .hnode-bg {
+    fill: var(--surface);
+    stroke: var(--accent);
+    stroke-width: 1.5;
+  }
+  .hnode-ico {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .hnode-halo {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.4;
+    opacity: 0;
+  }
+  .core-frame {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.2;
+    opacity: 0.38;
+  }
+  .core-disc {
+    fill: var(--surface);
+    stroke: var(--accent);
+    stroke-width: 1.5;
+  }
+  .core-shield {
+    stroke-width: 1.4;
+  }
+  .hero-net-scan {
+    stroke: var(--accent);
+    stroke-width: 1.4;
+    opacity: 0;
+  }
 
   @media (prefers-reduced-motion: no-preference) {
-    .hero-net-nodes circle {
+    .hnode-halo {
       transform-box: fill-box;
       transform-origin: center;
-      animation: nodePulse 3.2s ease-in-out infinite;
+      animation: haloPulse 3.4s ease-in-out infinite;
     }
-    .hero-net-nodes circle:nth-child(1) { animation-delay: 0s; }
-    .hero-net-nodes circle:nth-child(2) { animation-delay: 0.45s; }
-    .hero-net-nodes circle:nth-child(3) { animation-delay: 0.9s; }
-    .hero-net-nodes circle:nth-child(4) { animation-delay: 1.35s; }
-    .hero-net-nodes circle:nth-child(5) { animation-delay: 1.8s; }
-    .hero-net-nodes circle:nth-child(6) { animation-delay: 2.25s; }
-    @keyframes nodePulse {
-      0%, 100% { opacity: 0.55; transform: scale(1); }
-      50%      { opacity: 1;    transform: scale(1.35); }
+    .hero-net-nodes > g:nth-child(1) .hnode-halo { animation-delay: 0s; }
+    .hero-net-nodes > g:nth-child(2) .hnode-halo { animation-delay: 0.55s; }
+    .hero-net-nodes > g:nth-child(3) .hnode-halo { animation-delay: 1.1s; }
+    .hero-net-nodes > g:nth-child(4) .hnode-halo { animation-delay: 1.65s; }
+    .hero-net-nodes > g:nth-child(5) .hnode-halo { animation-delay: 2.2s; }
+    .hero-net-nodes > g:nth-child(6) .hnode-halo { animation-delay: 2.75s; }
+    @keyframes haloPulse {
+      0%   { opacity: 0.5; transform: scale(1); }
+      60%, 100% { opacity: 0; transform: scale(1.55); }
     }
     .hero-net-core {
       transform-box: view-box;
-      transform-origin: 200px 196px;
+      transform-origin: 200px 205px;
       animation: coreBreathe 5s ease-in-out infinite;
     }
     @keyframes coreBreathe {
-      0%, 100% { transform: translate(200px, 196px) scale(1); }
-      50%      { transform: translate(200px, 196px) scale(1.03); }
+      0%, 100% { transform: translate(200px, 205px) scale(1); }
+      50%      { transform: translate(200px, 205px) scale(1.03); }
     }
     .hero-net-scan {
       animation: scanMove 6s linear infinite;
