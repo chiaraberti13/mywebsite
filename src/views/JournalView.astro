@@ -20,14 +20,25 @@ const locale = lang === "it" ? "it-IT" : "en-US";
   <section class="section">
     <div class="container">
       <SectionHeader eyebrow={t("nav.journal")} title={t("section.journal")} />
-      <ul class="post-list" role="list" data-reveal-group>
+      <ul class="post-grid grid grid--2" role="list" data-reveal-group>
         {
           posts.map((post) => (
             <li>
               <a class="post card card--link" href={localePath(lang, `/journal/${slugOf(post.id)}`)}>
-                <p class="post-date">{post.data.date.toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" })}</p>
+                <p class="post-date">
+                  {post.data.date.toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" })}
+                </p>
                 <h3 class="post-title">{post.data.title}</h3>
                 <p class="muted post-desc">{post.data.description}</p>
+                {
+                  post.data.tags.length > 0 && (
+                    <ul class="post-tags" role="list">
+                      {post.data.tags.slice(0, 4).map((tag) => (
+                        <li class="tag">{tag}</li>
+                      ))}
+                    </ul>
+                  )
+                }
                 <span class="post-more">{t("cta.readMore")} <Icon name="chevronRight" size={16} /></span>
               </a>
             </li>
@@ -39,21 +50,41 @@ const locale = lang === "it" ? "it-IT" : "en-US";
 </BaseLayout>
 
 <style>
-  .post-list {
+  .post-grid {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: grid;
-    gap: 1rem;
   }
   .post {
-    display: block;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding-left: clamp(1.4rem, 1.1rem + 1vw, 2rem);
+    overflow: hidden;
+  }
+  /* Linea accent laterale */
+  .post::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--accent);
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+  }
+  .post:hover::before {
+    opacity: 1;
   }
   .post-date {
     font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: var(--muted);
-    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    margin-bottom: 0.6rem;
   }
   .post-title {
     font-size: var(--step-1);
@@ -62,10 +93,19 @@ const locale = lang === "it" ? "it-IT" : "en-US";
     margin: 0.5rem 0 0.9rem;
     max-width: 62ch;
   }
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    margin: 0 0 1rem;
+    padding: 0;
+  }
   .post-more {
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
+    margin-top: auto;
     color: var(--accent);
     font-weight: 600;
     font-size: 0.9rem;

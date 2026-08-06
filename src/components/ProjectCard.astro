@@ -30,7 +30,7 @@ const linkEntries = Object.entries(links).filter(([, v]) => Boolean(v)) as [
   string,
 ][];
 ---
-<article class="card card--link project-card">
+<article class="card card--link project-card" data-tags={tags.join("|")}>
   <a href={href} class="project-cover-link" tabindex="-1" aria-hidden="true">
     <ProjectCover tags={tags} cover={cover} seed={slugOf(project.id)} />
     <span class="project-cover-arrow" aria-hidden="true">

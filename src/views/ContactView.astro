@@ -24,15 +24,31 @@ const intro =
     <div class="container contact-grid" data-reveal-group>
       <div>
         <SectionHeader eyebrow={t("nav.contact")} title={t("section.contact")} intro={intro} />
-        <div class="direct">
-          <p class="muted">{t("contact.orEmail")}</p>
-          <a class="direct-mail" href={`mailto:${site.email}`}>
-            <Icon name="mail" size={20} />
-            {site.email}
+        <div class="contact-card card">
+          <a class="contact-row" href={`mailto:${site.email}`}>
+            <span class="contact-ico" aria-hidden="true"><Icon name="mail" size={18} /></span>
+            <span>
+              <span class="contact-label">Email</span>
+              <span class="contact-value">{site.email}</span>
+            </span>
           </a>
-          <div class="direct-socials">
-            <SocialLinks size={18} exclude={["email"]} />
+          <a class="contact-row" href={`tel:${site.phone.replace(/\s+/g, "")}`}>
+            <span class="contact-ico" aria-hidden="true"><Icon name="phone" size={18} /></span>
+            <span>
+              <span class="contact-label">{lang === "it" ? "Telefono" : "Phone"}</span>
+              <span class="contact-value">{site.phone}</span>
+            </span>
+          </a>
+          <div class="contact-row contact-row--static">
+            <span class="contact-ico" aria-hidden="true"><Icon name="mapPin" size={18} /></span>
+            <span>
+              <span class="contact-label">{lang === "it" ? "Dove" : "Location"}</span>
+              <span class="contact-value">{site.location} <span class="contact-tz">· CET</span></span>
+            </span>
           </div>
+        </div>
+        <div class="direct-socials">
+          <SocialLinks size={18} exclude={["email"]} />
         </div>
       </div>
       <ContactForm lang={lang} />
@@ -51,20 +67,54 @@ const intro =
       align-items: start;
     }
   }
-  .direct {
+  .contact-card {
     margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: clamp(1rem, 0.8rem + 0.8vw, 1.4rem);
   }
-  .direct-mail {
-    display: inline-flex;
+  .contact-row {
+    display: flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    font-weight: 600;
+    gap: 0.85rem;
+    padding: 0.6rem 0.5rem;
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    transition: background 0.2s ease;
+  }
+  a.contact-row:hover {
+    background: var(--accent-soft);
+  }
+  .contact-row--static {
+    cursor: default;
+  }
+  .contact-ico {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex: none;
+    border-radius: 9px;
+    background: var(--accent-soft);
     color: var(--accent);
   }
-  .direct-mail:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
+  .contact-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .contact-value {
+    display: block;
+    font-weight: 550;
+  }
+  .contact-tz {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
   }
   .direct-socials {
     margin-top: 1.75rem;
