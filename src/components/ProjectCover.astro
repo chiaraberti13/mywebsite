@@ -34,16 +34,13 @@ const joined = tags.join(" ");
 const matched = iconRules.find(([re]) => re.test(joined));
 const glyph = matched?.[1] ?? "code";
 
-/** Hash stabile dallo slug per variare angolo e posizione dell'accento. */
+/** Hash stabile dallo slug: sceglie una delle varianti di sfondo.
+    Niente style inline (bloccato dalla CSP stretta): la variante è una
+    classe, definita nel foglio di stile con hash calcolato da Astro. */
 let hash = 0;
 for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
-const angle = 110 + (hash % 130); // 110–240deg
-const blobX = 20 + (hash % 55); // 20–75%
-const blobY = 18 + ((hash >> 3) % 45); // 18–63%
+const variant = (hash % 6) + 1; // cov-v1 … cov-v6
 const primaryTag = tags[0] ?? matched?.[2] ?? "Project";
-
-const style =
-  `--cov-angle:${angle}deg;--cov-x:${blobX}%;--cov-y:${blobY}%;`;
 ---
 {
   cover ? (
@@ -52,8 +49,11 @@ const style =
     </div>
   ) : (
     <div
-      class:list={["project-cover project-cover--gen", { "is-large": large }]}
-      style={style}
+      class:list={[
+        "project-cover project-cover--gen",
+        `cov-v${variant}`,
+        { "is-large": large },
+      ]}
       aria-hidden="true"
     >
       <span class="cov-grid" />
@@ -86,6 +86,10 @@ const style =
 
   /* ── Copertina generata ─────────────────────────────────────── */
   .project-cover--gen {
+    /* valori di default, sovrascritti dalle varianti cov-v1…6 */
+    --cov-angle: 150deg;
+    --cov-x: 40%;
+    --cov-y: 28%;
     background: linear-gradient(
       var(--cov-angle),
       var(--surface-2) 0%,
@@ -94,6 +98,13 @@ const style =
     );
     color: var(--accent);
   }
+  /* Varianti seminate dallo slug (nessuno stile inline: CSP-safe) */
+  .cov-v1 { --cov-angle: 120deg; --cov-x: 26%; --cov-y: 22%; }
+  .cov-v2 { --cov-angle: 155deg; --cov-x: 68%; --cov-y: 18%; }
+  .cov-v3 { --cov-angle: 200deg; --cov-x: 32%; --cov-y: 60%; }
+  .cov-v4 { --cov-angle: 235deg; --cov-x: 72%; --cov-y: 52%; }
+  .cov-v5 { --cov-angle: 175deg; --cov-x: 48%; --cov-y: 30%; }
+  .cov-v6 { --cov-angle: 110deg; --cov-x: 60%; --cov-y: 66%; }
   .cov-grid {
     position: absolute;
     inset: 0;

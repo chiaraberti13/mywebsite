@@ -368,13 +368,12 @@ main {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   TRANSIZIONI DI PAGINA
-   Crossfade nativo tra le route (dove supportato) + fade-in del
-   contenuto ad ogni caricamento. Tutto in CSS: nessun runtime, CSP-safe.
+   TRANSIZIONE DI PAGINA
+   Fade-in del contenuto ad ogni caricamento. CSS puro in foglio di
+   stile esterno: nessun inline, compatibile con la CSP stretta del sito.
+   (Niente @view-transition: la snapshot cross-document di Chrome inietta
+   stili/font inline che la CSP 'self' bloccherebbe.)
    ═══════════════════════════════════════════════════════════════ */
-@view-transition {
-  navigation: auto;
-}
 @media (prefers-reduced-motion: no-preference) {
   @keyframes pageIn {
     from {
@@ -388,11 +387,5 @@ main {
   }
   main {
     animation: pageIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none;
   }
 }
