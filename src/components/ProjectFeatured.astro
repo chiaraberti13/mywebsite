@@ -1,0 +1,159 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Icon from "./Icon.astro";
+import ProjectCover from "./ProjectCover.astro";
+import { slugOf } from "@/lib/content";
+import { useTranslations } from "@/i18n/ui";
+import type { Locale } from "@/config/site";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+  href: string;
+  lang: Locale;
+}
+const { project, href, lang } = Astro.props;
+const t = useTranslations(lang);
+const { title, summary, tags, cover, links } = project.data;
+const featuredLabel = lang === "it" ? "In evidenza" : "Featured";
+---
+<article class="featured">
+  <a href={href} class="featured-cover" tabindex="-1" aria-hidden="true">
+    <ProjectCover tags={tags} cover={cover} seed={slugOf(project.id)} large />
+  </a>
+  <div class="featured-body">
+    <p class="featured-eyebrow">
+      <span class="featured-star" aria-hidden="true">★</span>
+      {featuredLabel}
+    </p>
+    <h3 class="featured-title">
+      <a href={href}>{title}</a>
+    </h3>
+    <p class="featured-summary">{summary}</p>
+
+    {
+      tags.length > 0 && (
+        <ul class="featured-tags" role="list">
+          {tags.map((tag) => (
+            <li class="tag">{tag}</li>
+          ))}
+        </ul>
+      )
+    }
+
+    <div class="featured-actions">
+      <a class="btn btn--primary" href={href}>
+        {t("cta.readMore")}
+        <Icon name="chevronRight" size={18} />
+      </a>
+      {
+        links.github && (
+          <a
+            class="btn btn--ghost"
+            href={links.github}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icon name="github" size={18} />
+            GitHub
+          </a>
+        )
+      }
+      {
+        links.live && (
+          <a
+            class="btn btn--ghost"
+            href={links.live}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icon name="external" size={18} />
+            Live
+          </a>
+        )
+      }
+    </div>
+  </div>
+</article>
+
+<style>
+  .featured {
+    position: relative;
+    display: grid;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  @media (min-width: 820px) {
+    .featured {
+      grid-template-columns: 1.05fr 0.95fr;
+      align-items: stretch;
+    }
+  }
+  .featured-cover {
+    display: block;
+    overflow: hidden;
+  }
+  .featured-cover :global(.project-cover) {
+    height: 100%;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .featured:hover .featured-cover :global(.project-cover) {
+    transform: scale(1.04);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .featured:hover .featured-cover :global(.project-cover) {
+      transform: none;
+    }
+  }
+  .featured-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: clamp(1.5rem, 1rem + 2.5vw, 2.75rem);
+  }
+  .featured-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    width: fit-content;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .featured-star {
+    color: var(--accent);
+  }
+  .featured-title {
+    font-size: var(--step-2);
+  }
+  .featured-title a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .featured-summary {
+    color: var(--muted);
+    max-width: 52ch;
+  }
+  .featured-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    margin: 0.15rem 0 0;
+    padding: 0;
+  }
+  .featured-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.6rem;
+    position: relative;
+    z-index: 1;
+  }
+</style>

@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import SectionHeader from "@/components/SectionHeader.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
+import ProjectFeatured from "@/components/ProjectFeatured.astro";
 import { type Locale } from "@/config/site";
 import { useTranslations, localePath } from "@/i18n/ui";
 import { getProjects, slugOf } from "@/lib/content";
@@ -10,6 +11,8 @@ interface Props { lang: Locale }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const projects = await getProjects(lang);
+const featured = projects.find((p) => p.data.featured);
+const rest = featured ? projects.filter((p) => p.id !== featured.id) : projects;
 const desc =
   lang === "it"
     ? "Progetti di Chiara Berti: sicurezza, automazione e design."
@@ -23,9 +26,20 @@ const intro =
   <section class="section">
     <div class="container">
       <SectionHeader eyebrow={t("nav.projects")} title={t("section.projects")} intro={intro} />
+      {
+        featured && (
+          <div class="projects-featured" data-reveal>
+            <ProjectFeatured
+              project={featured}
+              lang={lang}
+              href={localePath(lang, `/projects/${slugOf(featured.id)}`)}
+            />
+          </div>
+        )
+      }
       <div class="grid grid--3" data-reveal-group>
         {
-          projects.map((p) => (
+          rest.map((p) => (
             <ProjectCard project={p} href={localePath(lang, `/projects/${slugOf(p.id)}`)} />
           ))
         }
@@ -33,3 +47,9 @@ const intro =
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .projects-featured {
+    margin-bottom: clamp(1.6rem, 1rem + 2vw, 2.6rem);
+  }
+</style>

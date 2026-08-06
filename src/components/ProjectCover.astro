@@ -1,0 +1,140 @@
+---
+/**
+ * Copertina di progetto.
+ * - Se il progetto ha `cover` (immagine in /public) la usa.
+ * - Altrimenti genera una copertina decorativa on-brand: gradiente ocra +
+ *   pattern seminato dallo slug + glyph di dominio ricavato dai tag.
+ *   Nessuna immagine esterna, tutto deterministico e coerente coi token.
+ */
+import Icon from "./Icon.astro";
+
+interface Props {
+  tags: string[];
+  cover?: string;
+  seed: string;
+  /** Copertina grande per il progetto in evidenza */
+  large?: boolean;
+}
+const { tags, cover, seed, large = false } = Astro.props;
+
+/** Icona di dominio: la prima regola che combacia con un tag qualsiasi. */
+const iconRules: [RegExp, string, string][] = [
+  [/reti|network|osi/i, "network", "Reti"],
+  [/sdr/i, "radio", "SDR"],
+  [/image/i, "image", "Imaging"],
+  [/pentest|cybersecurity/i, "shieldCheck", "Security"],
+  [/privacy/i, "lock", "Privacy"],
+  [/full-?stack/i, "layers", "Full-stack"],
+  [/algoritm/i, "braces", "Algoritmi"],
+  [/shell|automazione|puppeteer|node/i, "terminal", "Automation"],
+  [/python|fastapi/i, "cpu", "Python"],
+  [/php|javascript|typescript/i, "braces", "Code"],
+];
+const joined = tags.join(" ");
+const matched = iconRules.find(([re]) => re.test(joined));
+const glyph = matched?.[1] ?? "code";
+
+/** Hash stabile dallo slug per variare angolo e posizione dell'accento. */
+let hash = 0;
+for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+const angle = 110 + (hash % 130); // 110–240deg
+const blobX = 20 + (hash % 55); // 20–75%
+const blobY = 18 + ((hash >> 3) % 45); // 18–63%
+const primaryTag = tags[0] ?? matched?.[2] ?? "Project";
+
+const style =
+  `--cov-angle:${angle}deg;--cov-x:${blobX}%;--cov-y:${blobY}%;`;
+---
+{
+  cover ? (
+    <div class:list={["project-cover", { "is-large": large }]}>
+      <img src={cover} alt="" loading="lazy" decoding="async" />
+    </div>
+  ) : (
+    <div
+      class:list={["project-cover project-cover--gen", { "is-large": large }]}
+      style={style}
+      aria-hidden="true"
+    >
+      <span class="cov-grid" />
+      <span class="cov-blob" />
+      <span class="cov-glyph">
+        <Icon name={glyph} size={large ? 132 : 84} />
+      </span>
+      <span class="cov-tag">{primaryTag}</span>
+    </div>
+  )
+}
+
+<style>
+  .project-cover {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    background: var(--surface-2);
+    overflow: hidden;
+  }
+  .project-cover.is-large {
+    aspect-ratio: 16 / 10;
+    height: 100%;
+  }
+  .project-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ── Copertina generata ─────────────────────────────────────── */
+  .project-cover--gen {
+    background: linear-gradient(
+      var(--cov-angle),
+      var(--surface-2) 0%,
+      var(--surface) 55%,
+      var(--surface-2) 100%
+    );
+    color: var(--accent);
+  }
+  .cov-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, currentColor 1px, transparent 1px),
+      linear-gradient(to bottom, currentColor 1px, transparent 1px);
+    background-size: 26px 26px;
+    opacity: 0.08;
+  }
+  .cov-blob {
+    position: absolute;
+    left: var(--cov-x);
+    top: var(--cov-y);
+    width: 60%;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 68%);
+  }
+  .cov-glyph {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--accent);
+    opacity: 0.85;
+  }
+  .cov-glyph :global(svg) {
+    filter: drop-shadow(0 6px 18px var(--accent-soft));
+  }
+  .cov-tag {
+    position: absolute;
+    left: 0.9rem;
+    bottom: 0.8rem;
+    padding: 0.28rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: color-mix(in srgb, var(--surface) 78%, transparent);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+    color: var(--muted);
+    backdrop-filter: blur(4px);
+  }
+</style>
