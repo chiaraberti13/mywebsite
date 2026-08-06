@@ -61,6 +61,7 @@ export const ui = {
     "footer.rights": "Tutti i diritti riservati.",
     "footer.builtWith": "Sito statico, senza cookie di tracciamento.",
     "footer.privacy": "Informativa privacy",
+    "footer.nav": "Naviga",
 
     "privacy.title": "Informativa sulla privacy",
 
@@ -123,6 +124,7 @@ export const ui = {
     "footer.rights": "All rights reserved.",
     "footer.builtWith": "Static site, no tracking cookies.",
     "footer.privacy": "Privacy policy",
+    "footer.nav": "Explore",
 
     "privacy.title": "Privacy policy",
 

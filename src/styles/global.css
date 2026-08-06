@@ -136,19 +136,11 @@ h2 {
 h3 {
   font-size: var(--step-1);
 }
+/* Allineamento a sinistra ovunque: la giustificazione su colonne strette
+   crea "fiumi" di spazi bianchi. I contenuti long-form (.prose) mantengono
+   la propria giustificazione, dove le righe sono abbastanza lunghe. */
 p {
   text-wrap: pretty;
-  text-align: justify;
-  text-justify: inter-word;
-  hyphens: auto;
-  -webkit-hyphens: auto;
-}
-/* Le intro brevi restano allineate a sinistra: la giustificazione su poche
-   righe crea spazi troppo larghi. */
-.lead,
-.eyebrow {
-  text-align: left;
-  hyphens: manual;
 }
 
 /* Focus accessibile e visibile ovunque */
@@ -372,5 +364,35 @@ main {
   .reveal-ready [data-reveal].is-visible,
   .reveal-ready [data-reveal-group].is-visible > * {
     opacity: 1;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TRANSIZIONI DI PAGINA
+   Crossfade nativo tra le route (dove supportato) + fade-in del
+   contenuto ad ogni caricamento. Tutto in CSS: nessun runtime, CSP-safe.
+   ═══════════════════════════════════════════════════════════════ */
+@view-transition {
+  navigation: auto;
+}
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes pageIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  main {
+    animation: pageIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
   }
 }

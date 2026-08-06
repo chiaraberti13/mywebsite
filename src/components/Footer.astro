@@ -1,27 +1,74 @@
 ---
 import { site } from "@/config/site";
-import { useTranslations, localePath } from "@/i18n/ui";
+import { useTranslations, localePath, type UIKey } from "@/i18n/ui";
 import type { Locale } from "@/config/site";
 import SocialLinks from "./SocialLinks.astro";
+import Icon from "./Icon.astro";
 
 interface Props { lang: Locale }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const year = new Date().getFullYear();
+
+const navLinks = (
+  [
+    { key: "nav.about", path: "/#about" },
+    { key: "nav.education", path: "/formazione" },
+    { key: "nav.experience", path: "/esperienze" },
+    { key: "nav.projects", path: "/projects" },
+    { key: "nav.journal", path: "/journal", feature: "journal" },
+    { key: "nav.contact", path: "/contact" },
+  ] satisfies { key: UIKey; path: string; feature?: keyof typeof site.features }[]
+).filter((l) => !l.feature || site.features[l.feature]);
 ---
 <footer class="site-footer">
-  <div class="container footer-inner">
+  <div class="container footer-grid">
     <div class="footer-brand">
-      <a href={localePath(lang, "/")} class="footer-name">{site.name}</a>
+      <a href={localePath(lang, "/")} class="footer-name">
+        <span class="footer-mark">{site.initials}</span>
+        {site.name}
+      </a>
       <p class="muted footer-tagline">{t("footer.builtWith")}</p>
+      <SocialLinks size={18} exclude={["email"]} />
     </div>
 
-    <SocialLinks size={18} exclude={[]} />
+    <nav class="footer-col" aria-label={t("footer.nav")}>
+      <p class="footer-heading">{t("footer.nav")}</p>
+      <ul role="list">
+        {
+          navLinks.map((l) => (
+            <li>
+              <a class="footer-link" href={localePath(lang, l.path)}>{t(l.key)}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="footer-col">
+      <p class="footer-heading">{t("section.contact")}</p>
+      <ul role="list" class="footer-contact">
+        <li>
+          <a class="footer-link" href={`mailto:${site.email}`}>
+            <Icon name="mail" size={16} /> {site.email}
+          </a>
+        </li>
+        <li class="footer-loc">
+          <Icon name="globe" size={16} /> {site.location}
+        </li>
+      </ul>
+    </div>
   </div>
 
   <div class="container footer-bottom">
     <p class="muted">© {year} {site.name}. {t("footer.rights")}</p>
-    <a class="footer-privacy" href={localePath(lang, "/privacy")}>{t("footer.privacy")}</a>
+    <div class="footer-bottom-right">
+      <a class="footer-privacy" href={localePath(lang, "/privacy")}>{t("footer.privacy")}</a>
+      <button type="button" class="footer-top" id="footer-top">
+        {lang === "it" ? "Torna su" : "Back to top"}
+        <Icon name="arrowUp" size={15} />
+      </button>
+    </div>
   </div>
 </footer>
 
@@ -29,23 +76,89 @@ const year = new Date().getFullYear();
   .site-footer {
     border-top: 1px solid var(--border);
     background: var(--surface);
-    padding-block: 2.5rem 1.5rem;
+    padding-block: clamp(2.5rem, 1.5rem + 3vw, 3.75rem) 1.5rem;
     margin-top: 2rem;
   }
-  .footer-inner {
+  .footer-grid {
+    display: grid;
+    gap: 2rem;
+  }
+  @media (min-width: 720px) {
+    .footer-grid {
+      grid-template-columns: 1.5fr 1fr 1.2fr;
+      gap: 2.5rem;
+    }
+  }
+  .footer-brand {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
+    flex-direction: column;
+    gap: 0.9rem;
+    align-items: flex-start;
   }
   .footer-name {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
     font-weight: 700;
     font-size: 1.1rem;
   }
+  .footer-mark {
+    display: grid;
+    place-items: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 8px;
+    background: var(--accent);
+    color: var(--accent-contrast);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
   .footer-tagline {
     font-size: 0.85rem;
-    margin-top: 0.25rem;
+    max-width: 32ch;
+  }
+  .footer-heading {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.9rem;
+  }
+  .footer-col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+    transition: color 0.2s ease;
+  }
+  .footer-link:hover {
+    color: var(--accent);
+  }
+  .footer-link :global(svg) {
+    color: var(--accent);
+    flex: none;
+  }
+  .footer-loc {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+  .footer-loc :global(svg) {
+    color: var(--accent);
+    flex: none;
   }
   .footer-bottom {
     display: flex;
@@ -53,10 +166,15 @@ const year = new Date().getFullYear();
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
-    margin-top: 2rem;
+    margin-top: clamp(2rem, 1rem + 2vw, 2.75rem);
     padding-top: 1.25rem;
     border-top: 1px solid var(--border);
     font-size: 0.85rem;
+  }
+  .footer-bottom-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.25rem;
   }
   .footer-privacy {
     color: var(--muted);
@@ -64,4 +182,29 @@ const year = new Date().getFullYear();
   .footer-privacy:hover {
     color: var(--accent);
   }
+  .footer-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .footer-top:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
 </style>
+
+<script>
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.getElementById("footer-top")?.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+  });
+</script>

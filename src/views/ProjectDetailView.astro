@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Prose from "@/components/Prose.astro";
 import Icon from "@/components/Icon.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
 import { render, type CollectionEntry } from "astro:content";
 import { type Locale } from "@/config/site";
 import { useTranslations, localePath } from "@/i18n/ui";
@@ -34,10 +35,13 @@ const linkEntries = Object.entries(links).filter(([, v]) => Boolean(v)) as [stri
 <BaseLayout lang={lang} title={title} description={summary} image={cover}>
   <article class="section">
     <div class="container">
-      <a class="back" href={localePath(lang, "/projects")}>
-        <Icon name="chevronRight" size={16} class="flip" />
-        {t("nav.projects")}
-      </a>
+      <Breadcrumb
+        items={[
+          { label: t("nav.home"), href: localePath(lang, "/") },
+          { label: t("nav.projects"), href: localePath(lang, "/projects") },
+          { label: title },
+        ]}
+      />
 
       <header class="detail-head">
         <h1>{title}</h1>
@@ -73,20 +77,6 @@ const linkEntries = Object.entries(links).filter(([, v]) => Boolean(v)) as [stri
 </BaseLayout>
 
 <style>
-  .back {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    color: var(--muted);
-    font-weight: 550;
-    margin-bottom: 1.5rem;
-  }
-  .back:hover {
-    color: var(--accent);
-  }
-  .back :global(.flip) {
-    transform: rotate(180deg);
-  }
   .detail-head h1 {
     font-size: var(--step-3);
     max-width: 20ch;
