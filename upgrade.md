@@ -11,6 +11,7 @@
 - [x] Alleggerire il menu principale spostando “Certificazioni” nel sottomenu di “Formazione”.
 - [x] Rinominare la voce valori in “Valori” per ridurre densità e ripetizione.
 - [x] Rimuovere il contenitore unico dei blocchi laterali di “Chi sono” e renderli card libere, uniformi allo stile globale del sito.
+- [x] Rifinire le highlight di “Chi sono” come mini-card bento con bordo, superficie, hover e card “Credenziale” enfatizzata.
 - [x] Trasformare la sezione “Valori” da blocco testuale semplice a layout editoriale con pannello visivo, mantenendo invariati i contenuti testuali.
 
 ## Note UX rilevate

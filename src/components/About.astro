@@ -61,6 +61,11 @@ const about = content[lang].about;
     gap: 0.7rem;
     align-content: center;
   }
+  @media (min-width: 860px) {
+    .about-highlights {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
   .highlight {
     position: relative;
     display: grid;
