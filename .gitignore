@@ -27,6 +27,7 @@ venv/
 
 # Build directories
 dist/
+.astro/
 build/
 target/
 *.out

@@ -8,6 +8,7 @@ export const ui = {
   it: {
     "nav.home": "Home",
     "nav.about": "Chi sono",
+    "nav.values": "Valori",
     "nav.skills": "Competenze",
     "nav.education": "Formazione",
     "nav.experience": "Esperienze",
@@ -22,6 +23,7 @@ export const ui = {
     "cta.viewProjects": "Vedi i progetti",
     "cta.readMore": "Leggi",
     "cta.backHome": "Torna alla home",
+    "cta.scrollDown": "Scorri per scoprire",
 
     "theme.toggle": "Cambia tema chiaro/scuro",
     "lang.switch": "English",
@@ -68,6 +70,7 @@ export const ui = {
   en: {
     "nav.home": "Home",
     "nav.about": "About",
+    "nav.values": "Values",
     "nav.skills": "Skills",
     "nav.education": "Education",
     "nav.experience": "Experience",
@@ -82,6 +85,7 @@ export const ui = {
     "cta.viewProjects": "View projects",
     "cta.readMore": "Read",
     "cta.backHome": "Back home",
+    "cta.scrollDown": "Scroll to explore",
 
     "theme.toggle": "Toggle light/dark theme",
     "lang.switch": "Italiano",

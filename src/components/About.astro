@@ -18,10 +18,10 @@ const about = content[lang].about;
       </div>
     </div>
 
-    <aside class="about-highlights" data-reveal-group>
+    <aside class="about-highlights" aria-label={lang === "it" ? "Sintesi del profilo" : "Profile summary"} data-reveal-group>
       {
         about.highlights.map((h) => (
-          <div class="card highlight">
+          <div class="highlight">
             <span class="highlight-label">{h.label}</span>
             <span class="highlight-value">{h.value}</span>
           </div>
@@ -34,37 +34,93 @@ const about = content[lang].about;
 <style>
   .about-grid {
     display: grid;
-    gap: clamp(1.5rem, 1rem + 3vw, 3rem);
+    gap: clamp(1.75rem, 1.1rem + 3vw, 3.5rem);
   }
   @media (min-width: 860px) {
     .about-grid {
-      grid-template-columns: 1.6fr 1fr;
-      align-items: start;
+      grid-template-columns: minmax(0, 1.45fr) minmax(18rem, 0.9fr);
+      align-items: center;
     }
   }
   .about-text {
-    max-width: 60ch;
+    max-width: 62ch;
   }
   .about-highlights {
+    position: relative;
     display: grid;
+    grid-template-columns: 1fr;
     gap: 0.85rem;
+    align-content: center;
+  }
+  @media (min-width: 860px) {
+    .about-highlights {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
   .highlight {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    padding: 1.1rem 1.25rem;
+    position: relative;
+    display: grid;
+    gap: 0.45rem;
+    padding: clamp(1rem, 0.85rem + 0.75vw, 1.35rem);
+    min-height: 100%;
+    overflow: hidden;
+    background:
+      linear-gradient(135deg, var(--accent-soft), transparent 42%),
+      var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease,
+      translate 0.2s ease;
+  }
+  .highlight::after {
+    content: "";
+    position: absolute;
+    inset: auto 1rem 1rem auto;
+    width: 2.6rem;
+    aspect-ratio: 1;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    opacity: 0.16;
+    pointer-events: none;
+  }
+  .highlight:hover {
+    translate: 0 -3px;
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+    box-shadow: 0 14px 34px -24px color-mix(in srgb, var(--accent) 50%, transparent),
+      var(--shadow);
+  }
+  @media (min-width: 860px) {
+    .highlight:nth-child(3) {
+      grid-column: span 2;
+      grid-template-columns: minmax(8rem, 0.35fr) 1fr;
+      align-items: center;
+      background:
+        linear-gradient(100deg, var(--accent-soft), transparent 58%),
+        var(--surface);
+    }
   }
   .highlight-label {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--accent);
   }
   .highlight-value {
-    font-size: var(--step-1);
+    font-size: clamp(1rem, 0.96rem + 0.2vw, 1.12rem);
     font-weight: 650;
-    color: var(--accent);
+    line-height: 1.35;
+    color: var(--text);
+  }
+  @media (max-width: 859px) {
+    .about-highlights {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 560px) {
+    .about-highlights {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
