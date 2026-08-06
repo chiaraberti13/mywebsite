@@ -3,6 +3,7 @@ import { content } from "@/data/content";
 import { useTranslations } from "@/i18n/ui";
 import type { Locale } from "@/config/site";
 import SectionHeader from "./SectionHeader.astro";
+import Icon from "./Icon.astro";
 
 interface Props { lang: Locale }
 const { lang } = Astro.props;
@@ -20,12 +21,20 @@ const about = content[lang].about;
 
     <aside class="about-highlights" aria-label={lang === "it" ? "Sintesi del profilo" : "Profile summary"} data-reveal-group>
       {
-        about.highlights.map((h) => (
-          <div class="highlight">
-            <span class="highlight-label">{h.label}</span>
-            <span class="highlight-value">{h.value}</span>
-          </div>
-        ))
+        about.highlights.map((h) => {
+          const isCredential = /security\+/i.test(h.value);
+          return (
+            <div class:list={["highlight", { "is-credential": isCredential }]}>
+              <span class="highlight-label">
+                {isCredential && (
+                  <Icon name="shieldCheck" size={14} class="highlight-ico" />
+                )}
+                {h.label}
+              </span>
+              <span class="highlight-value">{h.value}</span>
+            </div>
+          );
+        })
       }
     </aside>
   </div>
@@ -49,7 +58,7 @@ const about = content[lang].about;
     position: relative;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 0.85rem;
+    gap: 0.7rem;
     align-content: center;
   }
   @media (min-width: 860px) {
@@ -61,50 +70,49 @@ const about = content[lang].about;
     position: relative;
     display: grid;
     gap: 0.45rem;
-    padding: clamp(1rem, 0.85rem + 0.75vw, 1.35rem);
-    min-height: 100%;
-    overflow: hidden;
-    background:
-      linear-gradient(135deg, var(--accent-soft), transparent 42%),
-      var(--surface);
+    padding: clamp(0.95rem, 0.8rem + 0.6vw, 1.2rem) clamp(1rem, 0.85rem + 0.75vw, 1.3rem);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease,
-      translate 0.2s ease;
+    background: var(--surface);
+    transition: translate 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   }
-  .highlight::after {
+  .highlight::before {
     content: "";
     position: absolute;
-    inset: auto 1rem 1rem auto;
-    width: 2.6rem;
-    aspect-ratio: 1;
-    border: 1px solid var(--accent);
+    left: 0;
+    top: 0.9rem;
+    bottom: 0.9rem;
+    width: 3px;
     border-radius: 999px;
-    opacity: 0.16;
-    pointer-events: none;
+    background: var(--border);
+    transition: background 0.2s ease;
   }
   .highlight:hover {
     translate: 0 -3px;
-    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
-    box-shadow: 0 14px 34px -24px color-mix(in srgb, var(--accent) 50%, transparent),
-      var(--shadow);
+    border-color: var(--accent);
+    box-shadow: var(--shadow);
   }
-  @media (min-width: 860px) {
-    .highlight:nth-child(3) {
-      grid-column: span 2;
-      grid-template-columns: minmax(8rem, 0.35fr) 1fr;
-      align-items: center;
-      background:
-        linear-gradient(100deg, var(--accent-soft), transparent 58%),
-        var(--surface);
-    }
+  .highlight:hover::before {
+    background: var(--accent);
+  }
+  .highlight.is-credential {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .highlight.is-credential::before {
+    background: var(--accent);
   }
   .highlight-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     font-family: var(--font-mono);
     font-size: 0.72rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+    color: var(--accent);
+  }
+  .highlight-ico {
     color: var(--accent);
   }
   .highlight-value {
@@ -116,6 +124,9 @@ const about = content[lang].about;
   @media (max-width: 859px) {
     .about-highlights {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .highlight.is-credential {
+      grid-column: 1 / -1;
     }
   }
   @media (max-width: 560px) {

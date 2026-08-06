@@ -18,18 +18,18 @@ const t = useTranslations(lang);
   data-email={site.email}
 >
   <div class="field">
+    <input id="cf-name" name="name" type="text" required autocomplete="name" maxlength="120" placeholder=" " />
     <label for="cf-name">{t("contact.name")}</label>
-    <input id="cf-name" name="name" type="text" required autocomplete="name" maxlength="120" />
   </div>
 
   <div class="field">
+    <input id="cf-email" name="email" type="email" required autocomplete="email" maxlength="200" placeholder=" " />
     <label for="cf-email">{t("contact.email")}</label>
-    <input id="cf-email" name="email" type="email" required autocomplete="email" maxlength="200" />
   </div>
 
   <div class="field">
+    <textarea id="cf-message" name="message" required rows="5" maxlength="4000" placeholder=" "></textarea>
     <label for="cf-message">{t("contact.message")}</label>
-    <textarea id="cf-message" name="message" required rows="5" maxlength="4000"></textarea>
   </div>
 
   <!-- Honeypot anti-spam: invisibile agli umani, ignorato dagli screen reader -->
@@ -96,15 +96,21 @@ const t = useTranslations(lang);
     gap: 1.1rem;
     max-width: 34rem;
   }
+  /* Floating labels: l'etichetta parte dentro il campo e "risale"
+     al focus o quando il campo non è vuoto (placeholder=" "). */
   .field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
+    position: relative;
   }
   .field label {
-    font-size: 0.9rem;
-    font-weight: 600;
+    position: absolute;
+    left: 0.7rem;
+    top: 0.72rem;
+    padding: 0 0.35rem;
+    background: var(--bg);
     color: var(--muted);
+    font-size: 0.95rem;
+    pointer-events: none;
+    transition: top 0.15s ease, font-size 0.15s ease, color 0.15s ease;
   }
   input,
   textarea {
@@ -123,6 +129,15 @@ const t = useTranslations(lang);
     outline: none;
     border-color: var(--accent);
     box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .field input:focus + label,
+  .field input:not(:placeholder-shown) + label,
+  .field textarea:focus + label,
+  .field textarea:not(:placeholder-shown) + label {
+    top: -0.6rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent);
   }
   .hp {
     position: absolute;

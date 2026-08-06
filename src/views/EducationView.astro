@@ -38,18 +38,21 @@ const desc =
   <section class="section section--tight">
     <div class="container">
       <SectionHeader eyebrow="Education" title={t("section.education")} intro={cur.education.lead} />
-      <div class="stack" data-reveal-group>
+      <ol class="edu-timeline" role="list" data-reveal-group>
         {
           cur.education.items.map((ed) => (
-            <div class="card cv-block">
-              {ed.period && <p class="cv-period">{ed.period}</p>}
-              <h3 class="cv-block-title">{ed.title}</h3>
-              <p class="cv-org">{ed.org}</p>
-              {ed.description && <p class="muted">{ed.description}</p>}
-            </div>
+            <li class="edu-item">
+              <span class="edu-marker" aria-hidden="true" />
+              <div class="card cv-block">
+                {ed.period && <p class="cv-period">{ed.period}</p>}
+                <h3 class="cv-block-title">{ed.title}</h3>
+                <p class="cv-org">{ed.org}</p>
+                {ed.description && <p class="muted">{ed.description}</p>}
+              </div>
+            </li>
           ))
         }
-      </div>
+      </ol>
     </div>
   </section>
 </BaseLayout>
@@ -80,5 +83,42 @@ const desc =
     color: var(--accent);
     font-weight: 550;
     margin: 0.15rem 0 0.6rem;
+  }
+
+  /* Timeline verticale (coerente con Esperienze) */
+  .edu-timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+  .edu-item {
+    position: relative;
+    padding-left: 2rem;
+    padding-bottom: 1.5rem;
+  }
+  .edu-item::before {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 0.4rem;
+    bottom: -0.4rem;
+    width: 2px;
+    background: var(--border);
+  }
+  .edu-item:last-child::before {
+    display: none;
+  }
+  .edu-marker {
+    position: absolute;
+    left: 0;
+    top: 0.4rem;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 0 4px var(--bg);
+    z-index: 1;
   }
 </style>

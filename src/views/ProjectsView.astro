@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import SectionHeader from "@/components/SectionHeader.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
+import ProjectFeatured from "@/components/ProjectFeatured.astro";
 import { type Locale } from "@/config/site";
 import { useTranslations, localePath } from "@/i18n/ui";
 import { getProjects, slugOf } from "@/lib/content";
@@ -10,6 +11,13 @@ interface Props { lang: Locale }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const projects = await getProjects(lang);
+const featured = projects.find((p) => p.data.featured);
+const rest = featured ? projects.filter((p) => p.id !== featured.id) : projects;
+// Tag unici (dai progetti in griglia) per la barra dei filtri
+const allTags = Array.from(new Set(rest.flatMap((p) => p.data.tags))).sort((a, b) =>
+  a.localeCompare(b),
+);
+const allLabel = lang === "it" ? "Tutti" : "All";
 const desc =
   lang === "it"
     ? "Progetti di Chiara Berti: sicurezza, automazione e design."
@@ -22,14 +30,118 @@ const intro =
 <BaseLayout lang={lang} title={t("nav.projects")} description={desc}>
   <section class="section">
     <div class="container">
-      <SectionHeader eyebrow={t("nav.projects")} title={t("section.projects")} intro={intro} />
-      <div class="grid grid--3" data-reveal-group>
+      <SectionHeader eyebrow={t("nav.projects")} title={t("section.projects")} intro={intro} align="center" />
+      {
+        featured && (
+          <div class="projects-featured" data-reveal>
+            <ProjectFeatured
+              project={featured}
+              lang={lang}
+              href={localePath(lang, `/projects/${slugOf(featured.id)}`)}
+            />
+          </div>
+        )
+      }
+      {
+        allTags.length > 1 && (
+          <div class="proj-filters" role="group" aria-label={t("nav.projects")} data-project-filters>
+            <button type="button" class="filter-pill is-active" data-filter="*" aria-pressed="true">
+              {allLabel}
+            </button>
+            {allTags.map((tag) => (
+              <button type="button" class="filter-pill" data-filter={tag} aria-pressed="false">
+                {tag}
+              </button>
+            ))}
+          </div>
+        )
+      }
+      <div class="grid grid--3" data-reveal-group data-project-grid>
         {
-          projects.map((p) => (
+          rest.map((p) => (
             <ProjectCard project={p} href={localePath(lang, `/projects/${slugOf(p.id)}`)} />
           ))
         }
       </div>
+      <p class="proj-empty" data-project-empty hidden>
+        {lang === "it" ? "Nessun progetto per questo filtro." : "No projects for this filter."}
+      </p>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .projects-featured {
+    margin-bottom: clamp(1.6rem, 1rem + 2vw, 2.6rem);
+  }
+  .proj-filters {
+    position: sticky;
+    top: 4.25rem;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: clamp(1.4rem, 1rem + 1.5vw, 2rem);
+    padding-block: 0.75rem;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: saturate(160%) blur(8px);
+  }
+  .filter-pill {
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 550;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  }
+  .filter-pill:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .filter-pill.is-active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-contrast);
+  }
+  .proj-empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 2rem 0;
+  }
+  /* Card nascosta dal filtro */
+  :global(.project-card.is-hidden) {
+    display: none;
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-project-filters]");
+  const grid = document.querySelector<HTMLElement>("[data-project-grid]");
+  const empty = document.querySelector<HTMLElement>("[data-project-empty]");
+  if (root && grid) {
+    const pills = Array.from(root.querySelectorAll<HTMLButtonElement>(".filter-pill"));
+    const cards = Array.from(grid.querySelectorAll<HTMLElement>(".project-card"));
+    root.addEventListener("click", (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>(".filter-pill");
+      if (!btn) return;
+      const filter = btn.dataset.filter ?? "*";
+      pills.forEach((p) => {
+        const on = p === btn;
+        p.classList.toggle("is-active", on);
+        p.setAttribute("aria-pressed", String(on));
+      });
+      let visible = 0;
+      cards.forEach((card) => {
+        const tags = (card.dataset.tags ?? "").split("|");
+        const show = filter === "*" || tags.includes(filter);
+        card.classList.toggle("is-hidden", !show);
+        if (show) visible++;
+      });
+      if (empty) empty.hidden = visible > 0;
+    });
+  }
+</script>

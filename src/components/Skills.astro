@@ -3,20 +3,36 @@ import { content } from "@/data/content";
 import { useTranslations } from "@/i18n/ui";
 import type { Locale } from "@/config/site";
 import SectionHeader from "./SectionHeader.astro";
+import Icon from "./Icon.astro";
 
 interface Props { lang: Locale }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const groups = content[lang].skills;
+
+/** Icona per categoria, ricavata dal nome del gruppo. */
+const iconFor = (name: string): string => {
+  if (/cyber|sicur|security/i.test(name)) return "shieldCheck";
+  if (/linux|network|sistem|system/i.test(name)) return "terminal";
+  if (/programm/i.test(name)) return "braces";
+  if (/web|database/i.test(name)) return "database";
+  if (/strument|tool|metod|method/i.test(name)) return "wrench";
+  return "code";
+};
 ---
 <section class="section" id="skills">
   <div class="container">
     <SectionHeader eyebrow={t("nav.skills")} title={t("section.skills")} />
-    <div class="grid grid--3" data-reveal-group>
+    <div class="skills-bento" data-reveal-group>
       {
-        groups.map((g) => (
-          <div class="card skill-card">
-            <h3 class="skill-title">{g.name}</h3>
+        groups.map((g, i) => (
+          <div class:list={["card skill-card", { "skill-card--wide": i === 0 }]}>
+            <div class="skill-head">
+              <span class="skill-ico" aria-hidden="true">
+                <Icon name={iconFor(g.name)} size={20} />
+              </span>
+              <h3 class="skill-title">{g.name}</h3>
+            </div>
             <ul class="skill-tags" role="list">
               {g.items.map((item) => (
                 <li class="tag">{item}</li>
@@ -30,12 +46,52 @@ const groups = content[lang].skills;
 </section>
 
 <style>
+  .skills-bento {
+    display: grid;
+    gap: clamp(1rem, 0.5rem + 2vw, 1.6rem);
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 640px) {
+    .skills-bento {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 900px) {
+    .skills-bento {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    /* La card Cybersecurity (focus del profilo) occupa due colonne */
+    .skill-card--wide {
+      grid-column: span 2;
+    }
+  }
+
+  .skill-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .skill-head {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  .skill-ico {
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    flex: none;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  }
   .skill-title {
     font-size: var(--step-0);
     font-family: var(--font-mono);
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
     color: var(--accent);
-    margin-bottom: 1rem;
   }
   .skill-tags {
     list-style: none;
@@ -44,5 +100,37 @@ const groups = content[lang].skills;
     display: flex;
     flex-wrap: wrap;
     gap: 0.45rem;
+  }
+  .skill-card--wide .skill-tags {
+    gap: 0.5rem;
+  }
+
+  /* ── Carosello orizzontale con snap su mobile ──────────────── */
+  @media (max-width: 639px) {
+    .skills-bento {
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: 82%;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: 0.2rem;
+      gap: 0.85rem;
+      padding-bottom: 0.6rem;
+      margin-inline: calc(-1 * clamp(1.1rem, 0.5rem + 3vw, 2rem));
+      padding-inline: clamp(1.1rem, 0.5rem + 3vw, 2rem);
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) transparent;
+      -webkit-overflow-scrolling: touch;
+    }
+    .skill-card {
+      scroll-snap-align: start;
+    }
+    .skills-bento::-webkit-scrollbar {
+      height: 6px;
+    }
+    .skills-bento::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 999px;
+    }
   }
 </style>
