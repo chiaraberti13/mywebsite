@@ -2,7 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 import Icon from "./Icon.astro";
 import ProjectCover from "./ProjectCover.astro";
-import { slugOf } from "@/lib/content";
+import { slugOf, categoriesOf } from "@/lib/content";
 
 interface Props {
   project: CollectionEntry<"projects">;
@@ -10,6 +10,7 @@ interface Props {
 }
 const { project, href } = Astro.props;
 const { title, summary, tags, cover, links } = project.data;
+const categories = categoriesOf(slugOf(project.id));
 
 const platformIcon: Record<string, string> = {
   github: "github",
@@ -30,7 +31,7 @@ const linkEntries = Object.entries(links).filter(([, v]) => Boolean(v)) as [
   string,
 ][];
 ---
-<article class="card card--link project-card" data-tags={tags.join("|")}>
+<article class="card card--link project-card" data-categories={categories.join("|")}>
   <a href={href} class="project-cover-link" tabindex="-1" aria-hidden="true">
     <ProjectCover tags={tags} cover={cover} seed={slugOf(project.id)} />
     <span class="project-cover-arrow" aria-hidden="true">

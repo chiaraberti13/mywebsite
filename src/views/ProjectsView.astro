@@ -5,7 +5,7 @@ import ProjectCard from "@/components/ProjectCard.astro";
 import ProjectFeatured from "@/components/ProjectFeatured.astro";
 import { type Locale } from "@/config/site";
 import { useTranslations, localePath } from "@/i18n/ui";
-import { getProjects, slugOf } from "@/lib/content";
+import { getProjects, slugOf, categoriesOf, PROJECT_CATEGORIES, categoryLabel } from "@/lib/content";
 
 interface Props { lang: Locale }
 const { lang } = Astro.props;
@@ -13,11 +13,10 @@ const t = useTranslations(lang);
 const projects = await getProjects(lang);
 const featured = projects.find((p) => p.data.featured);
 const rest = featured ? projects.filter((p) => p.id !== featured.id) : projects;
-// Tag unici (dai progetti in griglia) per la barra dei filtri
-const allTags = Array.from(new Set(rest.flatMap((p) => p.data.tags))).sort((a, b) =>
-  a.localeCompare(b),
-);
-const allLabel = lang === "it" ? "Tutti" : "All";
+// Categorie presenti tra i progetti in griglia (nell'ordine definito)
+const present = new Set(rest.flatMap((p) => categoriesOf(slugOf(p.id))));
+const filterCats = PROJECT_CATEGORIES.filter((c) => present.has(c.key));
+const allLabel = lang === "it" ? "Tutte" : "All";
 const desc =
   lang === "it"
     ? "Progetti di Chiara Berti: sicurezza, automazione e design."
@@ -43,14 +42,14 @@ const intro =
         )
       }
       {
-        allTags.length > 1 && (
+        filterCats.length > 1 && (
           <div class="proj-filters" role="group" aria-label={t("nav.projects")} data-project-filters>
             <button type="button" class="filter-pill is-active" data-filter="*" aria-pressed="true">
               {allLabel}
             </button>
-            {allTags.map((tag) => (
-              <button type="button" class="filter-pill" data-filter={tag} aria-pressed="false">
-                {tag}
+            {filterCats.map((c) => (
+              <button type="button" class="filter-pill" data-filter={c.key} aria-pressed="false">
+                {categoryLabel(c.key, lang)}
               </button>
             ))}
           </div>
@@ -136,8 +135,8 @@ const intro =
       });
       let visible = 0;
       cards.forEach((card) => {
-        const tags = (card.dataset.tags ?? "").split("|");
-        const show = filter === "*" || tags.includes(filter);
+        const cats = (card.dataset.categories ?? "").split("|");
+        const show = filter === "*" || cats.includes(filter);
         card.classList.toggle("is-hidden", !show);
         if (show) visible++;
       });
