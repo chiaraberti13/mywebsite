@@ -13,87 +13,159 @@ const h = content[lang].hero;
 ---
 <section class="hero">
   <div class="container hero-inner">
-    <p class="eyebrow">{h.eyebrow}</p>
-    <h1 class="hero-title">{h.headline}</h1>
+    <div class="hero-text">
+      <p class="eyebrow">{h.eyebrow}</p>
+      <h1 class="hero-title">{h.headline}</h1>
 
-    <p class="hero-roles" aria-label="Roles">
-      {
-        h.roles.map((r, i) => (
-          <>
-            {i > 0 && <span class="dot" aria-hidden="true">•</span>}
-            <span>{r}</span>
-          </>
-        ))
-      }
-    </p>
+      <p class="hero-badge">
+        <span class="hero-badge-dot" aria-hidden="true"></span>
+        <span class="hero-badge-name">CompTIA Security+</span>
+        <span class="hero-badge-sub">SY0-701</span>
+      </p>
 
-    <p class="hero-badge">
-      <span class="hero-badge-dot" aria-hidden="true"></span>
-      <span class="hero-badge-name">CompTIA Security+</span>
-      <span class="hero-badge-sub">SY0-701</span>
-    </p>
+      <p class="hero-roles" aria-label={h.roles.join(", ")}>
+        {
+          h.roles.map((r, i) => (
+            <span class="role" aria-hidden={i > 0 ? "true" : undefined}>
+              {r}
+            </span>
+          ))
+        }
+      </p>
 
-    <p class="lead hero-sub">{h.subheadline}</p>
+      <p class="lead hero-sub">{h.subheadline}</p>
 
-    <div class="hero-actions">
-      <a class="btn btn--primary" href={localePath(lang, "/contact")}>
-        {t("cta.contact")}
-        <Icon name="chevronRight" size={18} />
+      <div class="hero-actions">
+        <a class="btn btn--primary" href={localePath(lang, "/contact")}>
+          {t("cta.contact")}
+          <Icon name="chevronRight" size={18} />
+        </a>
+        <a class="btn btn--ghost" href={localePath(lang, "/projects")}>
+          {t("cta.viewProjects")}
+        </a>
+        {
+          site.features.cvDownload && (
+            <a class="btn btn--ghost" href={site.cvFile} download>
+              <Icon name="download" size={18} />
+              {t("cta.downloadCv")}
+            </a>
+          )
+        }
+      </div>
+
+      <div class="hero-socials">
+        <SocialLinks size={18} exclude={["email"]} />
+      </div>
+
+      <a class="hero-scroll" href="#about" aria-label={t("cta.scrollDown")}>
+        <span class="hero-scroll-line" aria-hidden="true"></span>
+        <Icon name="chevronRight" size={16} class="hero-scroll-chevron" />
       </a>
-      <a class="btn btn--ghost" href={localePath(lang, "/projects")}>
-        {t("cta.viewProjects")}
-      </a>
-      {
-        site.features.cvDownload && (
-          <a class="btn btn--ghost" href={site.cvFile} download>
-            <Icon name="download" size={18} />
-            {t("cta.downloadCv")}
-          </a>
-        )
-      }
     </div>
 
-    <div class="hero-socials">
-      <SocialLinks size={18} exclude={["email"]} />
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hero-visual-panel">
+        <svg
+          class="hero-net"
+          viewBox="0 0 400 460"
+          role="presentation"
+          preserveAspectRatio="xMidYMid slice"
+        >
+          <defs>
+            <pattern id="heroGrid" width="28" height="28" patternUnits="userSpaceOnUse">
+              <path d="M28 0H0V28" fill="none" stroke="currentColor" stroke-width="1" opacity="0.10" />
+            </pattern>
+            <radialGradient id="heroCore" cx="50%" cy="42%" r="60%">
+              <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.28" />
+              <stop offset="100%" stop-color="var(--accent)" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+
+          <rect x="0" y="0" width="400" height="460" fill="url(#heroGrid)" />
+          <circle cx="200" cy="196" r="150" fill="url(#heroCore)" />
+
+          <!-- Connessioni della rete -->
+          <g class="hero-net-links" stroke="var(--accent)" stroke-width="1.4" fill="none">
+            <line x1="200" y1="196" x2="78" y2="96" opacity="0.5" />
+            <line x1="200" y1="196" x2="330" y2="120" opacity="0.5" />
+            <line x1="200" y1="196" x2="60" y2="250" opacity="0.5" />
+            <line x1="200" y1="196" x2="120" y2="360" opacity="0.5" />
+            <line x1="200" y1="196" x2="320" y2="300" opacity="0.5" />
+            <line x1="200" y1="196" x2="288" y2="392" opacity="0.5" />
+            <line x1="78" y1="96" x2="330" y2="120" opacity="0.22" />
+            <line x1="60" y1="250" x2="120" y2="360" opacity="0.22" />
+            <line x1="320" y1="300" x2="288" y2="392" opacity="0.22" />
+          </g>
+
+          <!-- Nodi periferici -->
+          <g class="hero-net-nodes" fill="var(--accent)">
+            <circle cx="78"  cy="96"  r="5"   />
+            <circle cx="330" cy="120" r="6.5" />
+            <circle cx="60"  cy="250" r="4.5" />
+            <circle cx="120" cy="360" r="6"   />
+            <circle cx="320" cy="300" r="5"   />
+            <circle cx="288" cy="392" r="4.5" />
+          </g>
+
+          <!-- Nodo centrale: scudo -->
+          <g class="hero-net-core" transform="translate(200 196)">
+            <circle r="46" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5" opacity="0.9" />
+            <g transform="translate(-16 -18) scale(1.35)" fill="none"
+               stroke="var(--accent)" stroke-width="1.9"
+               stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3 5 6v5c0 4.5 3 7.6 7 9 4-1.4 7-4.5 7-9V6l-7-3Z" />
+              <path d="m9 12 2 2 4-4" />
+            </g>
+          </g>
+
+          <!-- Linea di scansione -->
+          <line class="hero-net-scan" x1="0" x2="400" y1="0" y2="0"
+                stroke="var(--accent)" stroke-width="1.4" opacity="0.5" />
+        </svg>
+
+        <p class="hero-visual-caption">
+          <span>secure</span><span class="dot">·</span><span>automate</span><span class="dot">·</span><span>understand</span>
+        </p>
+      </div>
     </div>
   </div>
 
   <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-mesh" aria-hidden="true"></div>
 </section>
 
 <style>
   .hero {
     position: relative;
     overflow: hidden;
-    padding-block: clamp(3.5rem, 2rem + 8vw, 7.5rem);
+    padding-block: clamp(3.5rem, 2rem + 8vw, 7rem);
   }
   .hero-inner {
     position: relative;
     z-index: 1;
-    max-width: 54rem;
+    display: grid;
+    gap: clamp(2rem, 1rem + 5vw, 4rem);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .hero-inner {
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+    }
+  }
+  .hero-text {
+    max-width: 40rem;
   }
   .hero-title {
     margin-top: 1rem;
-    max-width: 20ch;
+    max-width: 18ch;
   }
-  .hero-roles {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 0.65rem;
-    align-items: center;
-    margin-top: 1.25rem;
-    font-family: var(--font-mono);
-    font-size: var(--step--1);
-    color: var(--muted);
-  }
-  .hero-roles .dot {
-    color: var(--accent);
-  }
+
+  /* ── Credenziale Security+ (accanto al titolo) ─────────────── */
   .hero-badge {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 1.1rem;
+    margin-top: 1.25rem;
     padding: 0.4rem 0.85rem;
     border: 1px solid var(--accent);
     border-radius: 999px;
@@ -117,9 +189,65 @@ const h = content[lang].hero;
     color: var(--muted);
     letter-spacing: 0.04em;
   }
+
+  /* ── Ruoli a rotazione (crossfade) ─────────────────────────── */
+  .hero-roles {
+    position: relative;
+    margin-top: 1.25rem;
+    min-height: 1.6em;
+    font-family: var(--font-mono);
+    font-size: var(--step-0);
+    color: var(--text);
+  }
+  .hero-roles .role {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .hero-roles .role::before {
+    content: "";
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--accent);
+    flex: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    /* 3 ruoli · 2.8s ciascuno = ciclo di 8.4s */
+    .hero-roles .role {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      animation: roleCycle 8.4s infinite;
+    }
+    .hero-roles .role:nth-child(1) { animation-delay: 0s; }
+    .hero-roles .role:nth-child(2) { animation-delay: 2.8s; }
+    .hero-roles .role:nth-child(3) { animation-delay: 5.6s; }
+    @keyframes roleCycle {
+      0%   { opacity: 0; transform: translateY(0.4em); }
+      6%   { opacity: 1; transform: translateY(0); }
+      28%  { opacity: 1; transform: translateY(0); }
+      34%  { opacity: 0; transform: translateY(-0.4em); }
+      100% { opacity: 0; transform: translateY(-0.4em); }
+    }
+  }
+  /* Fallback senza animazione: lista statica con separatori */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-roles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 0.9rem;
+      color: var(--muted);
+    }
+    .hero-roles .role[aria-hidden="true"] {
+      display: inline-flex;
+    }
+  }
+
   .hero-sub {
     margin-top: 1.5rem;
     max-width: 52ch;
+    color: var(--muted);
   }
   .hero-actions {
     display: flex;
@@ -130,37 +258,165 @@ const h = content[lang].hero;
   .hero-socials {
     margin-top: 2.25rem;
   }
-  /* Ingresso in cascata degli elementi dell'hero al caricamento */
+
+  /* ── Indicatore di scroll ──────────────────────────────────── */
+  .hero-scroll {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 2.5rem;
+    color: var(--muted);
+    transition: color 0.2s ease;
+  }
+  .hero-scroll:hover {
+    color: var(--accent);
+  }
+  .hero-scroll-line {
+    width: 1px;
+    height: 2.25rem;
+    background: linear-gradient(to bottom, transparent, var(--accent));
+  }
+  .hero-scroll-chevron {
+    transform: rotate(90deg);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-scroll-chevron {
+      animation: scrollBob 1.8s ease-in-out infinite;
+    }
+    @keyframes scrollBob {
+      0%, 100% { transform: rotate(90deg) translateX(0); }
+      50%      { transform: rotate(90deg) translateX(4px); }
+    }
+  }
+
+  /* ── Colonna visiva ────────────────────────────────────────── */
+  .hero-visual {
+    position: relative;
+    justify-self: center;
+    width: 100%;
+    max-width: 26rem;
+  }
+  .hero-visual-panel {
+    position: relative;
+    aspect-ratio: 5 / 6;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background:
+      linear-gradient(145deg, var(--surface) 0%, var(--surface-2) 100%);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    color: var(--accent);
+  }
+  .hero-net {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-net-nodes circle {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: nodePulse 3.2s ease-in-out infinite;
+    }
+    .hero-net-nodes circle:nth-child(1) { animation-delay: 0s; }
+    .hero-net-nodes circle:nth-child(2) { animation-delay: 0.45s; }
+    .hero-net-nodes circle:nth-child(3) { animation-delay: 0.9s; }
+    .hero-net-nodes circle:nth-child(4) { animation-delay: 1.35s; }
+    .hero-net-nodes circle:nth-child(5) { animation-delay: 1.8s; }
+    .hero-net-nodes circle:nth-child(6) { animation-delay: 2.25s; }
+    @keyframes nodePulse {
+      0%, 100% { opacity: 0.55; transform: scale(1); }
+      50%      { opacity: 1;    transform: scale(1.35); }
+    }
+    .hero-net-core {
+      transform-box: view-box;
+      transform-origin: 200px 196px;
+      animation: coreBreathe 5s ease-in-out infinite;
+    }
+    @keyframes coreBreathe {
+      0%, 100% { transform: translate(200px, 196px) scale(1); }
+      50%      { transform: translate(200px, 196px) scale(1.03); }
+    }
+    .hero-net-scan {
+      animation: scanMove 6s linear infinite;
+    }
+    @keyframes scanMove {
+      0%   { transform: translateY(0); opacity: 0; }
+      8%   { opacity: 0.5; }
+      92%  { opacity: 0.5; }
+      100% { transform: translateY(460px); opacity: 0; }
+    }
+  }
+
+  .hero-visual-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.9rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .hero-visual-caption .dot {
+    color: var(--accent);
+  }
+
+  /* ── Ingresso in cascata ───────────────────────────────────── */
   @media (prefers-reduced-motion: no-preference) {
     @keyframes heroIn {
       from { opacity: 0; transform: translateY(18px); }
-      to { opacity: 1; transform: none; }
+      to   { opacity: 1; transform: none; }
     }
-    .hero-inner > * {
+    .hero-text > * {
       animation: heroIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
-    .hero-inner > .eyebrow { animation-delay: 0.05s; }
-    .hero-inner > .hero-title { animation-delay: 0.13s; }
-    .hero-inner > .hero-roles { animation-delay: 0.21s; }
-    .hero-inner > .hero-badge { animation-delay: 0.29s; }
-    .hero-inner > .hero-sub { animation-delay: 0.37s; }
-    .hero-inner > .hero-actions { animation-delay: 0.45s; }
-    .hero-inner > .hero-socials { animation-delay: 0.53s; }
+    .hero-text > .eyebrow      { animation-delay: 0.05s; }
+    .hero-text > .hero-title   { animation-delay: 0.13s; }
+    .hero-text > .hero-badge   { animation-delay: 0.21s; }
+    .hero-text > .hero-roles   { animation-delay: 0.29s; }
+    .hero-text > .hero-sub     { animation-delay: 0.37s; }
+    .hero-text > .hero-actions { animation-delay: 0.45s; }
+    .hero-text > .hero-socials { animation-delay: 0.53s; }
+    .hero-text > .hero-scroll  { animation-delay: 0.61s; }
+
+    @keyframes heroVisualIn {
+      from { opacity: 0; transform: translateY(24px) scale(0.97); }
+      to   { opacity: 1; transform: none; }
+    }
+    .hero-visual {
+      animation: heroVisualIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+    }
   }
 
-  /* Alone ocra decorativo, tenue, non invasivo */
+  /* ── Alone ocra + mesh per profondità ──────────────────────── */
   .hero-glow {
     position: absolute;
     top: -30%;
     right: -10%;
     width: 45rem;
     height: 45rem;
-    background: radial-gradient(
-      circle,
-      var(--accent-soft) 0%,
-      transparent 60%
-    );
+    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 60%);
     pointer-events: none;
     z-index: 0;
+  }
+  .hero-mesh {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+    background:
+      radial-gradient(38rem 26rem at 12% 8%, var(--accent-soft), transparent 55%),
+      radial-gradient(30rem 22rem at 88% 92%, var(--accent-soft), transparent 55%);
+  }
+  :root[data-theme="dark"] .hero-mesh {
+    opacity: 0.9;
   }
 </style>

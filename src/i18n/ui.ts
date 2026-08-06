@@ -23,6 +23,7 @@ export const ui = {
     "cta.viewProjects": "Vedi i progetti",
     "cta.readMore": "Leggi",
     "cta.backHome": "Torna alla home",
+    "cta.scrollDown": "Scorri per scoprire",
 
     "theme.toggle": "Cambia tema chiaro/scuro",
     "lang.switch": "English",
@@ -84,6 +85,7 @@ export const ui = {
     "cta.viewProjects": "View projects",
     "cta.readMore": "Read",
     "cta.backHome": "Back home",
+    "cta.scrollDown": "Scroll to explore",
 
     "theme.toggle": "Toggle light/dark theme",
     "lang.switch": "Italiano",
