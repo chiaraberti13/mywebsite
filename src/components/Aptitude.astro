@@ -1,5 +1,6 @@
 ---
 import SectionHeader from "./SectionHeader.astro";
+import Icon from "./Icon.astro";
 import { content } from "@/data/content";
 import type { Locale } from "@/config/site";
 import { useTranslations } from "@/i18n/ui";
@@ -54,6 +55,7 @@ const aria =
   <div class="container">
     <SectionHeader eyebrow={t("section.aptitudeKicker")} title={t("section.aptitude")} intro={apt.lead} />
 
+    <div class="apt-top">
     <div class="apt-radar-card card" data-reveal>
       <svg class="radar" viewBox={`0 0 ${vbW} ${vbH}`} role="img" aria-label={aria}>
         <g class="radar-grid">
@@ -67,9 +69,14 @@ const aria =
         </g>
         <g class="radar-data">
           <polygon class="rd-area" points={dataStr} />
-          {dataPts.map(([x, y]) => (
-            <circle class="rd-dot" cx={x.toFixed(1)} cy={y.toFixed(1)} r="4.5" />
-          ))}
+          {axes.map((a, i) => {
+            const [x, y] = dataPts[i];
+            return (
+              <circle class="rd-dot" cx={x.toFixed(1)} cy={y.toFixed(1)} r="4.5">
+                <title>{`${a.label}: ${a.value}/${max}`}</title>
+              </circle>
+            );
+          })}
         </g>
         <g class="radar-labels">
           {labels.map((l) => (
@@ -95,18 +102,25 @@ const aria =
         }
       </div>
     </div>
+    </div>
 
-    <div class="apt-meta" data-reveal>
-      <div class="apt-meta-col">
-        <p class="apt-meta-label">{t("section.languages")}</p>
+    <div class="apt-meta" data-reveal-group>
+      <div class="card apt-meta-card">
+        <p class="apt-meta-label">
+          <span class="apt-meta-ico" aria-hidden="true"><Icon name="globe" size={18} /></span>
+          {t("section.languages")}
+        </p>
         <ul class="apt-langs" role="list">
           {languages.map((l) => (
             <li><strong>{l.name}</strong> <span class="muted">— {l.level}</span></li>
           ))}
         </ul>
       </div>
-      <div class="apt-meta-col">
-        <p class="apt-meta-label">{t("section.interests")}</p>
+      <div class="card apt-meta-card">
+        <p class="apt-meta-label">
+          <span class="apt-meta-ico" aria-hidden="true"><Icon name="heart" size={18} /></span>
+          {t("section.interests")}
+        </p>
         <ul class="apt-interests" role="list">
           {interests.map((i) => <li class="tag">{i}</li>)}
         </ul>
@@ -116,11 +130,29 @@ const aria =
 </section>
 
 <style>
+  /* Radar e "aree in sviluppo" affiancati su desktop */
+  .apt-top {
+    display: grid;
+    gap: clamp(1.5rem, 1rem + 3vw, 2.75rem);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .apt-top {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+    .apt-working {
+      margin-top: 0 !important;
+    }
+  }
   .apt-radar-card {
-    max-width: 660px;
+    width: 100%;
+    max-width: 560px;
     margin-inline: auto;
     padding: clamp(1rem, 0.5rem + 2vw, 1.75rem);
     background: linear-gradient(180deg, var(--surface), var(--bg));
+  }
+  .rd-dot {
+    cursor: help;
   }
   .radar {
     width: 100%;
@@ -228,24 +260,38 @@ const aria =
 
   .apt-meta {
     margin-top: clamp(2rem, 1rem + 3vw, 3rem);
-    padding-top: 1.75rem;
-    border-top: 1px solid var(--border);
     display: grid;
-    gap: 1.5rem;
+    gap: clamp(1rem, 0.5rem + 2vw, 1.6rem);
   }
   @media (min-width: 640px) {
     .apt-meta {
-      grid-template-columns: minmax(8rem, auto) 1fr;
-      gap: 3rem;
+      grid-template-columns: 1fr 1fr;
     }
   }
+  .apt-meta-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
   .apt-meta-label {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
     font-family: var(--font-mono);
     font-size: 0.75rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 0.7rem;
+  }
+  .apt-meta-ico {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    flex: none;
+    border-radius: 8px;
+    background: var(--accent-soft);
+    color: var(--accent);
   }
   .apt-langs {
     list-style: none;
