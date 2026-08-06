@@ -34,13 +34,15 @@ const desc = content[lang].hero.subheadline;
     </div>
   </section>
 
-  <Skills lang={lang} />
+  <div class="band">
+    <Skills lang={lang} />
+  </div>
 
   <Aptitude lang={lang} />
 
   {
     featured.length > 0 && (
-      <section class="section">
+      <section class="section band">
         <div class="container">
           <SectionHeader eyebrow={t("nav.projects")} title={t("section.projects")} />
           <div class="grid grid--3" data-reveal-group>
@@ -79,6 +81,12 @@ const desc = content[lang].hero.subheadline;
 </BaseLayout>
 
 <style>
+  /* Alternanza di sfondo per dare respiro tra le sezioni della home.
+     surface-2 è un neutro leggermente più caldo del bg: crea ritmo restando
+     discreto, e fa risaltare le card (che usano --surface). */
+  .band {
+    background: var(--surface-2);
+  }
   .values-section {
     position: relative;
     overflow: hidden;
