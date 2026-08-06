@@ -151,6 +151,44 @@ const intro =
     margin: 1rem 0 0;
     padding: 0;
   }
+
+  /* ── Zig-zag su desktop: card alternate attorno a una linea centrale ── */
+  @media (min-width: 900px) {
+    .timeline-progress {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .timeline-item {
+      width: 50%;
+      padding-left: 0;
+      padding-bottom: 2.5rem;
+    }
+    /* Segmento di linea statica portato al centro */
+    .timeline-item::before {
+      left: auto;
+    }
+    .timeline-item:nth-child(odd) {
+      margin-left: 0;
+      padding-right: 2.75rem;
+    }
+    .timeline-item:nth-child(odd)::before {
+      right: -1px;
+    }
+    .timeline-item:nth-child(odd) .timeline-marker {
+      left: auto;
+      right: -7px;
+    }
+    .timeline-item:nth-child(even) {
+      margin-left: 50%;
+      padding-left: 2.75rem;
+    }
+    .timeline-item:nth-child(even)::before {
+      left: -1px;
+    }
+    .timeline-item:nth-child(even) .timeline-marker {
+      left: -7px;
+    }
+  }
 </style>
 
 <script>
