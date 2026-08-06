@@ -95,10 +95,10 @@ export const content: Record<Locale, PageContent> = {
         "Il mio obiettivo è crescere come Penetration Tester, approfondendo nel tempo anche attività di Red Teaming, perché credo che il modo migliore per difendere un sistema sia comprenderlo fino ai suoi limiti.",
       ],
       highlights: [
-        { label: "Percorso", value: "Design, automazione e sicurezza" },
-        { label: "Oggi", value: "Automation Developer orientata alla cybersecurity" },
-        { label: "Credenziale", value: "CompTIA Security+ (SY0-701)" },
-        { label: "Direzione", value: "Penetration testing e Red Teaming" },
+        { label: "Principi", value: "Etica · Curiosità · Studio" },
+        { label: "Specializzazione", value: "Security+ · Linux · Networking" },
+        { label: "Approccio", value: "Pratica · Laboratori · CTF" },
+        { label: "Obiettivo", value: "Penetration Testing" },
       ],
     },
     values: {
@@ -367,10 +367,10 @@ export const content: Record<Locale, PageContent> = {
         "My goal is to grow as a Penetration Tester, over time also exploring Red Teaming, because I believe the best way to defend a system is to understand it to its limits.",
       ],
       highlights: [
-        { label: "Path", value: "Design, automation and security" },
-        { label: "Today", value: "Automation Developer moving toward cybersecurity" },
-        { label: "Credential", value: "CompTIA Security+ (SY0-701)" },
-        { label: "Direction", value: "Penetration testing and Red Teaming" },
+        { label: "Principles", value: "Ethics · Curiosity · Study" },
+        { label: "Specialization", value: "Security+ · Linux · Networking" },
+        { label: "Approach", value: "Hands-on · Labs · CTF" },
+        { label: "Goal", value: "Penetration Testing" },
       ],
     },
     values: {
