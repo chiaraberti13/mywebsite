@@ -62,6 +62,12 @@ export const ui = {
     "footer.builtWith": "Sito statico, senza cookie di tracciamento.",
     "footer.privacy": "Informativa privacy",
     "footer.nav": "Naviga",
+    "stats.years": "Anni di esperienza",
+    "stats.projects": "Progetti pubblicati",
+    "stats.certifications": "Certificazioni",
+    "stats.skillAreas": "Aree di competenza",
+    "projects.countOne": "1 progetto",
+    "projects.countMany": "{n} progetti",
 
     "privacy.title": "Informativa sulla privacy",
 
@@ -125,6 +131,12 @@ export const ui = {
     "footer.builtWith": "Static site, no tracking cookies.",
     "footer.privacy": "Privacy policy",
     "footer.nav": "Explore",
+    "stats.years": "Years of experience",
+    "stats.projects": "Published projects",
+    "stats.certifications": "Certifications",
+    "stats.skillAreas": "Skill areas",
+    "projects.countOne": "1 project",
+    "projects.countMany": "{n} projects",
 
     "privacy.title": "Privacy policy",
 

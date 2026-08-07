@@ -124,28 +124,44 @@ const aboutGroup = ["about", "values", "skills", "aptitude"];
     <nav class="container" aria-label="Mobile">
       <ul role="list">
         {
-          routes.map((r) => (
-            <li>
-              <a href={localePath(lang, r.path)} class="mobile-link">
-                {t(r.key)}
-                <Icon name="chevronRight" size={18} />
-              </a>
-              {
-                r.children?.length ? (
-                  <ul class="mobile-submenu" role="list">
-                    {r.children.map((child) => (
-                      <li>
-                        <a href={localePath(lang, child.path)} class="mobile-link mobile-link--child">
-                          {t(child.key)}
-                          <Icon name="chevronRight" size={16} />
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                ) : null
-              }
-            </li>
-          ))
+          routes.map((r) =>
+            r.children?.length ? (
+              /* Voci con sotto-menu: accordion, così la lista mobile resta
+                 corta invece di mostrare tutto sempre aperto. */
+              <li class="mobile-group">
+                <div class="mobile-row">
+                  <a href={localePath(lang, r.path)} class="mobile-link mobile-link--flush">
+                    {t(r.key)}
+                  </a>
+                  <button
+                    type="button"
+                    class="mobile-toggle"
+                    aria-expanded="false"
+                    aria-label={t(r.key)}
+                  >
+                    <Icon name="chevronRight" size={18} />
+                  </button>
+                </div>
+                <ul class="mobile-submenu" role="list" hidden>
+                  {r.children.map((child) => (
+                    <li>
+                      <a href={localePath(lang, child.path)} class="mobile-link mobile-link--child">
+                        {t(child.key)}
+                        <Icon name="chevronRight" size={16} />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ) : (
+              <li>
+                <a href={localePath(lang, r.path)} class="mobile-link">
+                  {t(r.key)}
+                  <Icon name="chevronRight" size={18} />
+                </a>
+              </li>
+            ),
+          )
         }
       </ul>
     </nav>
@@ -292,6 +308,12 @@ const aboutGroup = ["about", "values", "skills", "aptitude"];
     visibility: visible;
     translate: 0 0;
   }
+  /* Chiusura esplicita con Esc: vince su hover/focus-within */
+  .nav-item.is-dismissed > .submenu {
+    opacity: 0;
+    visibility: hidden;
+    translate: 0 -0.25rem;
+  }
   .submenu-link {
     display: block;
     padding: 0.55rem 0.7rem;
@@ -305,7 +327,13 @@ const aboutGroup = ["about", "values", "skills", "aptitude"];
     color: var(--text);
     background: var(--surface-2);
   }
+  /* Pagina corrente: pill piena invece del solo colore accent, che su
+     testo piccolo risultava poco leggibile. */
   .nav-link.active {
+    color: var(--accent-text);
+    background: var(--accent-soft);
+  }
+  :root[data-theme="dark"] .nav-link.active {
     color: var(--accent);
   }
   .header-actions {
@@ -344,6 +372,36 @@ const aboutGroup = ["about", "values", "skills", "aptitude"];
   }
   .mobile-submenu {
     padding: 0 0 0.35rem 1rem !important;
+  }
+  .mobile-row {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .mobile-link--flush {
+    flex: 1;
+    border-bottom: 0;
+  }
+  .mobile-toggle {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    flex: none;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .mobile-toggle :global(svg) {
+    transition: rotate 0.2s ease;
+    rotate: 90deg;
+  }
+  .mobile-toggle[aria-expanded="true"] :global(svg) {
+    rotate: -90deg;
+  }
+  .mobile-toggle[aria-expanded="true"] {
+    color: var(--accent);
   }
   .mobile-link {
     display: flex;
@@ -398,6 +456,43 @@ const aboutGroup = ["about", "values", "skills", "aptitude"];
       btn?.setAttribute("aria-label", openLabel);
       menu.hidden = true;
     });
+  });
+
+  // ── Accordion dei sotto-menu nel menu mobile ─────────────────
+  menu?.querySelectorAll<HTMLButtonElement>(".mobile-toggle").forEach((tog) => {
+    tog.addEventListener("click", () => {
+      const open = tog.getAttribute("aria-expanded") === "true";
+      tog.setAttribute("aria-expanded", String(!open));
+      const sub = tog.closest("li")?.querySelector<HTMLElement>(".mobile-submenu");
+      if (sub) sub.hidden = open;
+    });
+  });
+
+  // ── Esc chiude il dropdown desktop mantenendo il focus sulla voce ──
+  // Il submenu apre via :focus-within, quindi serve una classe esplicita
+  // per "chiuderlo" senza perdere la posizione da tastiera. Si azzera
+  // appena ci si sposta altrove.
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    const item = (document.activeElement as HTMLElement | null)?.closest<HTMLElement>(
+      ".nav-item.has-submenu",
+    );
+    if (item) {
+      item.classList.add("is-dismissed");
+      item.querySelector<HTMLAnchorElement>(".nav-link")?.focus();
+    } else if (menu && !menu.hidden) {
+      btn?.setAttribute("aria-expanded", "false");
+      btn?.setAttribute("aria-label", openLabel);
+      menu.hidden = true;
+      btn?.focus();
+    }
+  });
+  document.querySelectorAll<HTMLElement>(".nav-item.has-submenu").forEach((item) => {
+    const clear = () => item.classList.remove("is-dismissed");
+    item.addEventListener("focusout", (e) => {
+      if (!item.contains(e.relatedTarget as Node)) clear();
+    });
+    item.addEventListener("mouseleave", clear);
   });
 
   // ── Header compatto allo scroll ──────────────────────────────

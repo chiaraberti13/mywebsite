@@ -431,6 +431,24 @@ const h = content[lang].hero;
       92%  { opacity: 0.5; }
       100% { transform: translateY(460px); opacity: 0; }
     }
+
+    /* Parallasse leggera al movimento del puntatore: i livelli si spostano
+       di poco e con intensità diversa, dando profondità al grafo.
+       --px/--py sono impostati dallo script (range -1…1). */
+    .hero-net-links,
+    .hero-net-nodes,
+    .hero-net-core {
+      transition: translate 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .hero-visual-panel:hover .hero-net-links {
+      translate: calc(var(--px, 0) * 5px) calc(var(--py, 0) * 5px);
+    }
+    .hero-visual-panel:hover .hero-net-nodes {
+      translate: calc(var(--px, 0) * 11px) calc(var(--py, 0) * 11px);
+    }
+    .hero-visual-panel:hover .hero-net-core {
+      translate: calc(var(--px, 0) * -6px) calc(var(--py, 0) * -6px);
+    }
   }
 
   .hero-visual-caption {
@@ -503,3 +521,31 @@ const h = content[lang].hero;
     opacity: 0.9;
   }
 </style>
+
+<script>
+  // Parallasse del grafo competenze al movimento del puntatore.
+  // Solo puntatori fini (no touch) e solo se l'utente non ha chiesto
+  // meno movimento. Scrive variabili CSS via CSSOM (compatibile con la CSP).
+  const panel = document.querySelector<HTMLElement>(".hero-visual-panel");
+  const fine = window.matchMedia("(pointer: fine)").matches;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (panel && fine && !reduce) {
+    let raf = 0;
+    panel.addEventListener("pointermove", (e) => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        const r = panel.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        panel.style.setProperty("--px", String(Math.max(-1, Math.min(1, px * 2))));
+        panel.style.setProperty("--py", String(Math.max(-1, Math.min(1, py * 2))));
+        raf = 0;
+      });
+    });
+    panel.addEventListener("pointerleave", () => {
+      panel.style.setProperty("--px", "0");
+      panel.style.setProperty("--py", "0");
+    });
+  }
+</script>

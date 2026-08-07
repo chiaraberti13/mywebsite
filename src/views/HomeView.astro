@@ -5,6 +5,7 @@ import About from "@/components/About.astro";
 import Skills from "@/components/Skills.astro";
 import Aptitude from "@/components/Aptitude.astro";
 import SectionHeader from "@/components/SectionHeader.astro";
+import Stats from "@/components/Stats.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
 import Icon from "@/components/Icon.astro";
 import { site, type Locale } from "@/config/site";
@@ -25,7 +26,12 @@ const desc = content[lang].hero.subheadline;
 
   <section class="section section--tight values-section" id="values">
     <div class="container values-layout">
-      <SectionHeader eyebrow={t("nav.about")} title={t("section.values")} />
+      <div class="values-aside">
+        <SectionHeader eyebrow={t("nav.values")} title={t("section.values")} />
+        <div class="values-stats" data-reveal>
+          <Stats lang={lang} />
+        </div>
+      </div>
       <div class="values-panel" data-reveal>
         <div class="stack values-text">
           {content[lang].values.paragraphs.map((p) => <p>{p}</p>)}
@@ -83,9 +89,29 @@ const desc = content[lang].hero.subheadline;
 <style>
   /* Alternanza di sfondo per dare respiro tra le sezioni della home.
      surface-2 è un neutro leggermente più caldo del bg: crea ritmo restando
-     discreto, e fa risaltare le card (che usano --surface). */
+     discreto, e fa risaltare le card (che usano --surface).
+     I bordi sfumano invece di tagliare netto: lo stacco duro faceva
+     percepire le sezioni come blocchi impilati. */
   .band {
+    position: relative;
     background: var(--surface-2);
+  }
+  .band::before,
+  .band::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 3.5rem;
+    pointer-events: none;
+  }
+  .band::before {
+    top: 0;
+    background: linear-gradient(to bottom, var(--bg), transparent);
+  }
+  .band::after {
+    bottom: 0;
+    background: linear-gradient(to top, var(--bg), transparent);
   }
   .values-section {
     position: relative;
@@ -127,14 +153,21 @@ const desc = content[lang].hero.subheadline;
   .values-text {
     max-width: 62ch;
   }
+  .values-stats {
+    margin-top: 1.75rem;
+  }
   @media (min-width: 860px) {
     .values-layout {
-      grid-template-columns: minmax(14rem, 0.65fr) minmax(0, 1fr);
+      grid-template-columns: minmax(16rem, 0.72fr) minmax(0, 1fr);
       align-items: start;
     }
-    .values-layout :global(.section-header) {
+    /* Sticky sull'intera colonna (header + statistiche): prima era sticky
+       solo il titolo e sotto restava un grande vuoto. */
+    .values-aside {
       position: sticky;
       top: 6rem;
+    }
+    .values-aside :global(.section-header) {
       margin-bottom: 0;
     }
     .values-panel {

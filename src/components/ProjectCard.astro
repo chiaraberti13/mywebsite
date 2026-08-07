@@ -83,6 +83,14 @@ const linkEntries = Object.entries(links).filter(([, v]) => Boolean(v)) as [
     padding: 0;
     overflow: hidden;
   }
+  /* Inclinazione 3D leggera che segue il puntatore. Il `transform` è
+     impostato dallo script via CSSOM: il reveal globale usa la stessa
+     proprietà, quindi una regola nel foglio di stile verrebbe sovrascritta.
+     Qui resta solo la transizione di rientro. */
+  .project-card.has-tilt {
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.2s ease, box-shadow 0.2s ease;
+  }
   .project-cover-link {
     position: relative;
     display: block;
@@ -168,3 +176,34 @@ const linkEntries = Object.entries(links).filter(([, v]) => Boolean(v)) as [
     border-color: var(--accent);
   }
 </style>
+
+<script>
+  // Tilt 3D leggero sulle card progetto: solo puntatori fini e solo se
+  // l'utente non ha chiesto meno movimento. Il transform è applicato inline
+  // via CSSOM (CSP-safe) perché il reveal globale usa la stessa proprietà.
+  const fine = window.matchMedia("(pointer: fine)").matches;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (fine && !reduce) {
+    document.querySelectorAll<HTMLElement>(".project-card").forEach((card) => {
+      let raf = 0;
+      card.addEventListener("pointermove", (e) => {
+        // durante il riflusso del filtro il transform è gestito dal FLIP
+        if (card.classList.contains("is-moving")) return;
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          const r = card.getBoundingClientRect();
+          const tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+          const ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+          card.classList.add("has-tilt");
+          card.style.transform = `perspective(900px) rotateX(${(-ty * 3).toFixed(2)}deg) rotateY(${(tx * 3).toFixed(2)}deg)`;
+          raf = 0;
+        });
+      });
+      card.addEventListener("pointerleave", () => {
+        card.style.transform = "";
+        window.setTimeout(() => card.classList.remove("has-tilt"), 260);
+      });
+    });
+  }
+</script>
