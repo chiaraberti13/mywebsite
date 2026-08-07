@@ -10,7 +10,21 @@ interface Props {
   class?: string;
 }
 const { items, class: cls = "" } = Astro.props;
+
+// BreadcrumbList per i rich result di Google (rispecchia la UI qui sotto).
+const site = Astro.site;
+const crumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: items.map((c, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: c.label,
+    ...(c.href && site ? { item: new URL(c.href, site).href } : {}),
+  })),
+};
 ---
+<script type="application/ld+json" is:inline set:html={JSON.stringify(crumbLd)} />
 <nav class:list={["breadcrumb", cls]} aria-label="Breadcrumb">
   <ol role="list">
     {

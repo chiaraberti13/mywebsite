@@ -34,22 +34,60 @@ const t = useTranslations(lang);
     border-color: var(--accent);
     color: var(--accent);
   }
+  /* Le due icone stanno sovrapposte e si scambiano con un crossfade
+     rotante, invece di apparire/sparire di colpo. */
+  .theme-toggle {
+    position: relative;
+    overflow: hidden;
+  }
   .icon {
+    position: absolute;
+    inset: 0;
     display: grid;
     place-items: center;
+    transition: opacity 0.25s ease, rotate 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      scale 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   }
   /* Mostra sole in dark (per passare a light) e luna in light */
-  .icon--sun { display: none; }
-  .icon--moon { display: grid; }
-  :global(:root[data-theme="dark"]) .icon--sun { display: grid; }
-  :global(:root[data-theme="dark"]) .icon--moon { display: none; }
+  .icon--sun {
+    opacity: 0;
+    rotate: -70deg;
+    scale: 0.5;
+  }
+  .icon--moon {
+    opacity: 1;
+    rotate: 0deg;
+    scale: 1;
+  }
+  :global(:root[data-theme="dark"]) .icon--sun {
+    opacity: 1;
+    rotate: 0deg;
+    scale: 1;
+  }
+  :global(:root[data-theme="dark"]) .icon--moon {
+    opacity: 0;
+    rotate: 70deg;
+    scale: 0.5;
+  }
 </style>
 
 <script>
   const btn = document.getElementById("theme-toggle");
+  let switchTimer = 0;
   btn?.addEventListener("click", () => {
     const root = document.documentElement;
     const next = root.dataset.theme === "dark" ? "light" : "dark";
+    // Transizione morbida dei colori solo durante il cambio tema: tenerla
+    // sempre attiva rallenterebbe hover e scroll.
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reduce) {
+      root.classList.add("theme-switching");
+      window.clearTimeout(switchTimer);
+      switchTimer = window.setTimeout(
+        () => root.classList.remove("theme-switching"),
+        320,
+      );
+    }
     root.dataset.theme = next;
     try {
       localStorage.setItem("theme", next);

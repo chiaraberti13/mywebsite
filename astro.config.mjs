@@ -43,7 +43,9 @@ export default defineConfig({
         "font-src 'self'",
         "connect-src 'self'",
         "form-action 'self'",
-        "frame-ancestors 'none'",
+        // frame-ancestors NON va qui: via <meta> i browser lo ignorano
+        // (e lo segnalano in console). È applicato come header HTTP in
+        // vercel.json, insieme a X-Frame-Options.
         "manifest-src 'self'",
       ],
     },
@@ -51,5 +53,17 @@ export default defineConfig({
   build: {
     // asset con hash -> cache-busting sicuro
     assets: "_assets",
+  },
+  vite: {
+    build: {
+      // I subset di font piccoli venivano inlinati come `data:` URI dentro
+      // il CSS, e la CSP (`font-src 'self'`) li rifiutava: il font non si
+      // caricava. Forzandoli su file serviti dal dominio, la regola è
+      // rispettata e il caricamento riesce.
+      assetsInlineLimit(filePath) {
+        if (/\.(woff2?|ttf|otf|eot)$/i.test(filePath)) return false;
+        return undefined; // per tutto il resto vale il comportamento di default
+      },
+    },
   },
 });

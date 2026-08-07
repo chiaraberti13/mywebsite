@@ -28,6 +28,18 @@ const itUrl = new URL(itPath, site.url).href;
 const enUrl = new URL(enPath, site.url).href;
 const ogImage = new URL(image, site.url).href;
 const fullTitle = title === site.name ? title : `${title} · ${site.name}`;
+
+// Dati strutturati: aiutano i motori di ricerca a capire di chi è il sito.
+// Tutti i valori vengono da site.ts, nessun dato inventato.
+const personLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  url: site.url,
+  email: `mailto:${site.email}`,
+  address: { "@type": "PostalAddress", addressLocality: site.location },
+  sameAs: site.socials.map((s) => s.url),
+};
 ---
 <!doctype html>
 <html lang={lang} data-theme="light">
@@ -61,6 +73,8 @@ const fullTitle = title === site.name ? title : `${title} · ${site.name}`;
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content={lang === "it" ? "it_IT" : "en_US"} />
     <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(personLd)} />
 
     <!-- Imposta il tema prima del paint per evitare il flash (CSP: hash whitelisted) -->
     <script is:inline>(function(){try{var t=localStorage.getItem("theme");if(t){document.documentElement.dataset.theme=t;return}}catch(e){}document.documentElement.dataset.theme=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"})();</script>

@@ -156,6 +156,13 @@ p {
   border-radius: 4px;
 }
 
+/* Crossfade dei colori al cambio tema (classe attiva solo per ~300ms) */
+:root.theme-switching,
+:root.theme-switching *:not(.read-progress > span) {
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    color 0.3s ease, fill 0.3s ease, stroke 0.3s ease !important;
+}
+
 /* Selezione testo e scrollbar in palette: dettagli piccoli, resa "curata" */
 ::selection {
   background: var(--accent);
