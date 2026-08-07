@@ -84,57 +84,60 @@ const h = content[lang].hero;
           <rect x="0" y="0" width="400" height="460" fill="url(#heroGrid)" />
           <circle cx="200" cy="205" r="155" fill="url(#heroCore)" />
 
-          <!-- Le competenze (nodi) convergono sul nucleo di sicurezza (centro) -->
+          <!-- Collegamenti: ogni disciplina porta il proprio contributo
+               al centro. `pathLength="1"` normalizza il tratteggio, così
+               si "disegnano" con un'unica regola. -->
           <g class="hero-net-links">
-            <line x1="200" y1="205" x2="78"  y2="98"  />
-            <line x1="200" y1="205" x2="322" y2="110" />
-            <line x1="200" y1="205" x2="54"  y2="236" />
-            <line x1="200" y1="205" x2="346" y2="250" />
-            <line x1="200" y1="205" x2="120" y2="374" />
-            <line x1="200" y1="205" x2="300" y2="388" />
-            <line class="hero-net-link--faint" x1="78"  y1="98"  x2="322" y2="110" />
-            <line class="hero-net-link--faint" x1="54"  y1="236" x2="120" y2="374" />
-            <line class="hero-net-link--faint" x1="346" y1="250" x2="300" y2="388" />
+            <line class="lk lk-1" pathLength="1" x1="200" y1="205" x2="78"  y2="98"  />
+            <line class="lk lk-2" pathLength="1" x1="200" y1="205" x2="54"  y2="236" />
+            <line class="lk lk-3" pathLength="1" x1="200" y1="205" x2="322" y2="110" />
+            <line class="lk lk-4" pathLength="1" x1="200" y1="205" x2="120" y2="374" />
+            <line class="lk lk-5" pathLength="1" x1="200" y1="205" x2="346" y2="250" />
+            <line class="lk lk-6" pathLength="1" x1="200" y1="205" x2="300" y2="388" />
+            <line class="lk lk-7 hero-net-link--faint" pathLength="1" x1="78"  y1="98"  x2="322" y2="110" />
+            <line class="lk lk-8 hero-net-link--faint" pathLength="1" x1="54"  y1="236" x2="120" y2="374" />
+            <line class="lk lk-9 hero-net-link--faint" pathLength="1" x1="346" y1="250" x2="300" y2="388" />
           </g>
 
-          <!-- Nodi-competenza: ognuno porta il glyph del proprio dominio -->
+          <!-- Le discipline, nell'ordine in cui sono entrate nel percorso:
+               Linux · sviluppo · networking · automazione · cloud · offensive -->
           <g class="hero-net-nodes">
-            <g transform="translate(78 98)">
+            <g class="nd nd-1" transform="translate(78 98)">
               <circle class="hnode-halo" r="20" />
               <circle class="hnode-bg" r="20" />
               <g class="hnode-ico" transform="translate(-10 -10) scale(0.83)">
                 <rect x="3" y="4" width="18" height="16" rx="2" /><path d="m7 9 3 3-3 3M13 15h4" />
               </g>
             </g>
-            <g transform="translate(322 110)">
-              <circle class="hnode-halo" r="20" />
-              <circle class="hnode-bg" r="20" />
-              <g class="hnode-ico" transform="translate(-10 -10) scale(0.83)">
-                <circle cx="12" cy="5" r="2.5" /><circle cx="5" cy="19" r="2.5" /><circle cx="19" cy="19" r="2.5" /><path d="M12 7.5 6.6 16.6M12 7.5l5.4 9.1M6.8 19h10.4" />
-              </g>
-            </g>
-            <g transform="translate(54 236)">
+            <g class="nd nd-2" transform="translate(54 236)">
               <circle class="hnode-halo" r="18" />
               <circle class="hnode-bg" r="18" />
               <g class="hnode-ico" transform="translate(-9 -9) scale(0.75)">
                 <path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 6l-3 12" />
               </g>
             </g>
-            <g transform="translate(346 250)">
+            <g class="nd nd-3" transform="translate(322 110)">
+              <circle class="hnode-halo" r="20" />
+              <circle class="hnode-bg" r="20" />
+              <g class="hnode-ico" transform="translate(-10 -10) scale(0.83)">
+                <circle cx="12" cy="5" r="2.5" /><circle cx="5" cy="19" r="2.5" /><circle cx="19" cy="19" r="2.5" /><path d="M12 7.5 6.6 16.6M12 7.5l5.4 9.1M6.8 19h10.4" />
+              </g>
+            </g>
+            <g class="nd nd-4" transform="translate(120 374)">
               <circle class="hnode-halo" r="19" />
               <circle class="hnode-bg" r="19" />
               <g class="hnode-ico" transform="translate(-9.5 -9.5) scale(0.79)">
-                <rect x="6" y="6" width="12" height="12" rx="2" /><rect x="9.5" y="9.5" width="5" height="5" /><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2" />
+                <path d="M20 11.5a8 8 0 1 0-.7 4.5" /><path d="M20 4.5V12h-6" />
               </g>
             </g>
-            <g transform="translate(120 374)">
+            <g class="nd nd-5" transform="translate(346 250)">
               <circle class="hnode-halo" r="19" />
               <circle class="hnode-bg" r="19" />
               <g class="hnode-ico" transform="translate(-9.5 -9.5) scale(0.79)">
-                <path d="M4.9 19.1a10 10 0 0 1 0-14.2M7.8 16.2a6 6 0 0 1 0-8.4M16.2 7.8a6 6 0 0 1 0 8.4M19.1 4.9a10 10 0 0 1 0 14.2" /><circle cx="12" cy="12" r="1.5" />
+                <path d="M7 19a4.5 4.5 0 0 1-.3-9A6 6 0 0 1 18 10.5a4.25 4.25 0 0 1-.5 8.5Z" />
               </g>
             </g>
-            <g transform="translate(300 388)">
+            <g class="nd nd-6" transform="translate(300 388)">
               <circle class="hnode-halo" r="18" />
               <circle class="hnode-bg" r="18" />
               <g class="hnode-ico" transform="translate(-9 -9) scale(0.75)">
@@ -143,23 +146,39 @@ const h = content[lang].hero;
             </g>
           </g>
 
-          <!-- Nucleo: la sicurezza, capita "a strati" (frame ruotati = profondità) -->
+          <!-- Impulsi: la conoscenza che ogni disciplina invia al centro.
+               Continuano anche dopo, perché l'apprendimento non si ferma. -->
+          <g class="hero-net-pulses">
+            <circle class="ps ps-1" r="3.5" />
+            <circle class="ps ps-2" r="3.5" />
+            <circle class="ps ps-3" r="3.5" />
+            <circle class="ps ps-4" r="3.5" />
+            <circle class="ps ps-5" r="3.5" />
+            <circle class="ps ps-6" r="3.5" />
+          </g>
+
+          <!-- Il centro: prima una scintilla (la curiosità), poi — solo
+               quando tutte le discipline hanno contribuito — uno scudo. -->
           <g class="hero-net-core" transform="translate(200 205)">
-            <rect class="core-frame" x="-40" y="-40" width="80" height="80" rx="14" transform="rotate(18)" />
-            <rect class="core-frame" x="-40" y="-40" width="80" height="80" rx="14" transform="rotate(-16)" />
-            <circle class="core-disc" r="42" />
-            <g class="hnode-ico core-shield" transform="translate(-18 -20) scale(1.5)">
-              <path d="M12 3 5 6v5c0 4.5 3 7.6 7 9 4-1.4 7-4.5 7-9V6l-7-3Z" />
-              <path d="m9 12 2 2 4-4" />
+            <circle class="core-ripple" r="10" />
+            <circle class="core-spark" r="7" />
+            <g class="core-formed">
+              <rect class="core-frame" x="-40" y="-40" width="80" height="80" rx="14" transform="rotate(18)" />
+              <rect class="core-frame" x="-40" y="-40" width="80" height="80" rx="14" transform="rotate(-16)" />
+              <circle class="core-disc" r="42" />
+              <g class="hnode-ico core-shield" transform="translate(-18 -20) scale(1.5)">
+                <path d="M12 3 5 6v5c0 4.5 3 7.6 7 9 4-1.4 7-4.5 7-9V6l-7-3Z" />
+                <path d="m9 12 2 2 4-4" />
+              </g>
             </g>
           </g>
 
-          <!-- Linea di scansione (ispezione / pentest) -->
+          <!-- Linea di scansione (ispezione / verifica continua) -->
           <line class="hero-net-scan" x1="0" x2="400" y1="0" y2="0" />
         </svg>
 
         <p class="hero-visual-caption">
-          <span>secure</span><span class="dot">·</span><span>automate</span><span class="dot">·</span><span>understand</span>
+          <span class="cw cw-1">understand</span><span class="dot">→</span><span class="cw cw-2">automate</span><span class="dot">→</span><span class="cw cw-3">secure</span>
         </p>
       </div>
     </div>
@@ -396,34 +415,178 @@ const h = content[lang].hero;
     stroke-width: 1.4;
     opacity: 0;
   }
+  /* Stato di riposo (nessun JS o "riduci movimento"): la scena è già al
+     suo esito — scintilla assorbita, scudo formato. */
+  .core-spark,
+  .core-ripple,
+  .ps {
+    opacity: 0;
+  }
+  .core-spark {
+    fill: var(--accent);
+  }
+  .core-ripple {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.6;
+  }
+  .ps {
+    fill: var(--accent);
+  }
 
+  /* ══════════════════════════════════════════════════════════════
+     LA SCENA — il percorso, non solo la sicurezza.
+     Una scintilla (la curiosità) al centro; attorno nascono le
+     discipline; ciascuna manda impulsi verso il centro; solo quando
+     tutte hanno contribuito la scintilla diventa scudo. Poi i
+     collegamenti continuano a pulsare: la sicurezza è un processo,
+     non uno stato.
+     ══════════════════════════════════════════════════════════════ */
   @media (prefers-reduced-motion: no-preference) {
-    .hnode-halo {
+    /* ── 1. La scintilla: la voglia di capire ───────────────── */
+    .is-playing .core-spark {
+      animation: sparkLife 8.2s ease-in-out 0.15s both;
+    }
+    @keyframes sparkLife {
+      0%   { opacity: 0; scale: 0.2; }
+      6%   { opacity: 1; scale: 1; }
+      20%  { scale: 1.2; }
+      34%  { scale: 1; }
+      48%  { scale: 1.2; }
+      62%  { scale: 1; }
+      76%  { scale: 1.2; }
+      90%  { opacity: 1; scale: 1.45; }
+      100% { opacity: 0; scale: 2.4; }
+    }
+    .is-playing .core-ripple {
       transform-box: fill-box;
       transform-origin: center;
-      animation: haloPulse 3.4s ease-in-out infinite;
+      animation: coreRipple 1.2s ease-out 0.5s 6 both;
     }
-    .hero-net-nodes > g:nth-child(1) .hnode-halo { animation-delay: 0s; }
-    .hero-net-nodes > g:nth-child(2) .hnode-halo { animation-delay: 0.55s; }
-    .hero-net-nodes > g:nth-child(3) .hnode-halo { animation-delay: 1.1s; }
-    .hero-net-nodes > g:nth-child(4) .hnode-halo { animation-delay: 1.65s; }
-    .hero-net-nodes > g:nth-child(5) .hnode-halo { animation-delay: 2.2s; }
-    .hero-net-nodes > g:nth-child(6) .hnode-halo { animation-delay: 2.75s; }
-    @keyframes haloPulse {
-      0%   { opacity: 0.5; transform: scale(1); }
-      60%, 100% { opacity: 0; transform: scale(1.55); }
+    @keyframes coreRipple {
+      0%   { opacity: 0.55; scale: 0.7; }
+      100% { opacity: 0; scale: 3.2; }
     }
-    .hero-net-core {
+
+    /* ── 2. Le discipline nascono, una dopo l'altra ─────────── */
+    .is-playing .nd {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: nodeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .is-playing .nd-1 { animation-delay: 0.90s; }
+    .is-playing .nd-2 { animation-delay: 1.32s; }
+    .is-playing .nd-3 { animation-delay: 1.74s; }
+    .is-playing .nd-4 { animation-delay: 2.16s; }
+    .is-playing .nd-5 { animation-delay: 2.58s; }
+    .is-playing .nd-6 { animation-delay: 3.00s; }
+    @keyframes nodeIn {
+      0%   { opacity: 0; scale: 0.35; }
+      70%  { opacity: 1; scale: 1.12; }
+      100% { opacity: 1; scale: 1; }
+    }
+
+    /* ── 3. I collegamenti si tracciano verso il centro ─────── */
+    .is-playing .lk {
+      stroke-dasharray: 1;
+      animation: linkDraw 0.55s ease-out both;
+    }
+    .is-playing .lk-1 { animation-delay: 1.25s; }
+    .is-playing .lk-2 { animation-delay: 1.67s; }
+    .is-playing .lk-3 { animation-delay: 2.09s; }
+    .is-playing .lk-4 { animation-delay: 2.51s; }
+    .is-playing .lk-5 { animation-delay: 2.93s; }
+    .is-playing .lk-6 { animation-delay: 3.35s; }
+    .is-playing .lk-7 { animation-delay: 3.90s; }
+    .is-playing .lk-8 { animation-delay: 4.10s; }
+    .is-playing .lk-9 { animation-delay: 4.30s; }
+    @keyframes linkDraw {
+      0%   { stroke-dashoffset: 1; }
+      100% { stroke-dashoffset: 0; }
+    }
+
+    /* ── 4. Ogni disciplina invia la sua conoscenza al centro.
+           Il ciclo resta infinito: si continua a imparare. ──── */
+    .is-playing .ps {
+      animation-duration: 5s;
+      animation-timing-function: ease-in;
+      animation-iteration-count: infinite;
+      animation-fill-mode: both;
+    }
+    .is-playing .ps-1 { animation-name: ps1; animation-delay: 4.30s; }
+    .is-playing .ps-2 { animation-name: ps2; animation-delay: 4.63s; }
+    .is-playing .ps-3 { animation-name: ps3; animation-delay: 4.96s; }
+    .is-playing .ps-4 { animation-name: ps4; animation-delay: 5.29s; }
+    .is-playing .ps-5 { animation-name: ps5; animation-delay: 5.62s; }
+    .is-playing .ps-6 { animation-name: ps6; animation-delay: 5.95s; }
+    @keyframes ps1 {
+      0% { translate: 78px 98px; opacity: 0; } 6% { opacity: 1; }
+      26% { opacity: 1; } 32% { translate: 200px 205px; opacity: 0; }
+      100% { translate: 200px 205px; opacity: 0; }
+    }
+    @keyframes ps2 {
+      0% { translate: 54px 236px; opacity: 0; } 6% { opacity: 1; }
+      26% { opacity: 1; } 32% { translate: 200px 205px; opacity: 0; }
+      100% { translate: 200px 205px; opacity: 0; }
+    }
+    @keyframes ps3 {
+      0% { translate: 322px 110px; opacity: 0; } 6% { opacity: 1; }
+      26% { opacity: 1; } 32% { translate: 200px 205px; opacity: 0; }
+      100% { translate: 200px 205px; opacity: 0; }
+    }
+    @keyframes ps4 {
+      0% { translate: 120px 374px; opacity: 0; } 6% { opacity: 1; }
+      26% { opacity: 1; } 32% { translate: 200px 205px; opacity: 0; }
+      100% { translate: 200px 205px; opacity: 0; }
+    }
+    @keyframes ps5 {
+      0% { translate: 346px 250px; opacity: 0; } 6% { opacity: 1; }
+      26% { opacity: 1; } 32% { translate: 200px 205px; opacity: 0; }
+      100% { translate: 200px 205px; opacity: 0; }
+    }
+    @keyframes ps6 {
+      0% { translate: 300px 388px; opacity: 0; } 6% { opacity: 1; }
+      26% { opacity: 1; } 32% { translate: 200px 205px; opacity: 0; }
+      100% { translate: 200px 205px; opacity: 0; }
+    }
+
+    /* ── 5. Lo scudo: l'esito, non il punto di partenza ─────── */
+    .is-playing .core-formed {
+      animation: coreForm 0.95s cubic-bezier(0.22, 1, 0.36, 1) 7.75s both;
+    }
+    @keyframes coreForm {
+      0%   { opacity: 0; scale: 0.2; }
+      65%  { opacity: 1; scale: 1.09; }
+      100% { opacity: 1; scale: 1; }
+    }
+
+    /* ── 6. Il processo continua: respiro e pulsazioni lente ── */
+    .is-playing .hero-net-core {
       transform-box: view-box;
       transform-origin: 200px 205px;
-      animation: coreBreathe 5s ease-in-out infinite;
+      animation: coreBreathe 5s ease-in-out 8.7s infinite;
     }
     @keyframes coreBreathe {
       0%, 100% { transform: translate(200px, 205px) scale(1); }
       50%      { transform: translate(200px, 205px) scale(1.03); }
     }
-    .hero-net-scan {
-      animation: scanMove 6s linear infinite;
+    .is-playing .hnode-halo {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: haloPulse 3.4s ease-in-out infinite;
+    }
+    .is-playing .nd-1 .hnode-halo { animation-delay: 8.70s; }
+    .is-playing .nd-2 .hnode-halo { animation-delay: 9.25s; }
+    .is-playing .nd-3 .hnode-halo { animation-delay: 9.80s; }
+    .is-playing .nd-4 .hnode-halo { animation-delay: 10.35s; }
+    .is-playing .nd-5 .hnode-halo { animation-delay: 10.90s; }
+    .is-playing .nd-6 .hnode-halo { animation-delay: 11.45s; }
+    @keyframes haloPulse {
+      0%   { opacity: 0.5; scale: 1; }
+      60%, 100% { opacity: 0; scale: 1.55; }
+    }
+    .is-playing .hero-net-scan {
+      animation: scanMove 6s linear 8.7s infinite;
     }
     @keyframes scanMove {
       0%   { transform: translateY(0); opacity: 0; }
@@ -446,6 +609,22 @@ const h = content[lang].hero;
     .hero-visual-panel:hover .hero-net-nodes {
       translate: calc(var(--px, 0) * 11px) calc(var(--py, 0) * 11px);
     }
+
+    /* La didascalia segue le tre fasi: capire → automatizzare →
+       proteggere. Il ciclo si ripete: è un percorso, non un traguardo. */
+    .is-playing .cw {
+      animation: wordOn 10.5s ease-in-out infinite both;
+    }
+    .is-playing .cw-1 { animation-delay: 0.9s; }
+    .is-playing .cw-2 { animation-delay: 4.4s; }
+    .is-playing .cw-3 { animation-delay: 7.9s; }
+    @keyframes wordOn {
+      0%   { color: var(--muted); }
+      4%   { color: var(--accent-text); }
+      28%  { color: var(--accent-text); }
+      34%  { color: var(--muted); }
+      100% { color: var(--muted); }
+    }
     .hero-visual-panel:hover .hero-net-core {
       translate: calc(var(--px, 0) * -6px) calc(var(--py, 0) * -6px);
     }
@@ -467,6 +646,10 @@ const h = content[lang].hero;
   }
   .hero-visual-caption .dot {
     color: var(--accent);
+    opacity: 0.75;
+  }
+  .hero-visual-caption .cw {
+    transition: color 0.4s ease;
   }
 
   /* ── Ingresso in cascata ───────────────────────────────────── */
@@ -529,6 +712,13 @@ const h = content[lang].hero;
   const panel = document.querySelector<HTMLElement>(".hero-visual-panel");
   const fine = window.matchMedia("(pointer: fine)").matches;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Avvia la scena narrativa. Senza JS (o con "riduci movimento") la scena
+  // resta al suo stato finale, già comprensibile: nodi, collegamenti e scudo.
+  const scene = document.querySelector<SVGElement>(".hero-net");
+  if (scene && !reduce) {
+    requestAnimationFrame(() => scene.classList.add("is-playing"));
+  }
 
   if (panel && fine && !reduce) {
     let raf = 0;
