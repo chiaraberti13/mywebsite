@@ -1,0 +1,143 @@
+---
+/**
+ * Riga di statistiche con conteggio animato all'ingresso in viewport.
+ * IMPORTANTE: nessun numero è scritto a mano — tutti derivano dai dati
+ * reali del sito (content.ts + collection dei progetti), così restano
+ * corretti da soli quando i contenuti cambiano.
+ */
+import { content } from "@/data/content";
+import { useTranslations } from "@/i18n/ui";
+import type { Locale } from "@/config/site";
+import { getProjects } from "@/lib/content";
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const c = content[lang];
+
+// Anni di attività: dal primo anno che compare nei periodi delle esperienze.
+const years = c.experience.flatMap((e) =>
+  (e.period.match(/\d{4}/g) ?? []).map(Number),
+);
+const firstYear = years.length ? Math.min(...years) : new Date().getFullYear();
+const yearsCount = Math.max(0, new Date().getFullYear() - firstYear);
+
+const projectsCount = (await getProjects(lang)).length;
+const certCount = c.curriculum.certifications.items.length;
+const skillAreas = c.skills.length;
+
+const items = [
+  { value: yearsCount, label: t("stats.years"), suffix: "+" },
+  { value: projectsCount, label: t("stats.projects"), suffix: "" },
+  { value: certCount, label: t("stats.certifications"), suffix: "" },
+  { value: skillAreas, label: t("stats.skillAreas"), suffix: "" },
+];
+---
+<div class="stats-wrap">
+<ul class="stats" role="list" data-stats>
+  {
+    items.map((s) => (
+      <li class="stat">
+        <span class="stat-value">
+          <span class="stat-num" data-to={s.value}>{s.value}</span>{s.suffix}
+        </span>
+        <span class="stat-label">{s.label}</span>
+      </li>
+    ))
+  }
+</ul>
+</div>
+
+<style>
+  /* Container query: la riga si adatta allo spazio che ha davvero
+     (2×2 in colonna stretta, 4 in linea a piena larghezza) invece di
+     seguire la larghezza della finestra. */
+  .stats-wrap {
+    container-type: inline-size;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--border);
+    overflow: hidden;
+  }
+  @container (min-width: 34rem) {
+    .stats {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: clamp(0.9rem, 0.75rem + 0.8vw, 1.35rem);
+    background: var(--surface);
+    transition: background 0.2s ease;
+  }
+  .stat:hover {
+    background: var(--accent-soft);
+  }
+  .stat-value {
+    font-size: clamp(1.75rem, 1.3rem + 2vw, 2.6rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    line-height: 1.35;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-wrap: balance;
+    hyphens: none;
+  }
+</style>
+
+<script>
+  // Conteggio animato: parte quando la riga entra in viewport.
+  const row = document.querySelector<HTMLElement>("[data-stats]");
+  const nums = row ? Array.from(row.querySelectorAll<HTMLElement>(".stat-num")) : [];
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (row && nums.length && !reduce && "IntersectionObserver" in window) {
+    const run = () => {
+      nums.forEach((el) => {
+        const to = Number(el.dataset.to ?? "0");
+        if (!to) return;
+        const dur = 1100;
+        const start = performance.now();
+        const tick = (now: number) => {
+          const p = Math.min(1, (now - start) / dur);
+          // easeOutCubic
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = String(Math.round(to * eased));
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        el.textContent = "0";
+        requestAnimationFrame(tick);
+      });
+    };
+    const io = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            run();
+            obs.disconnect();
+          }
+        });
+      },
+      { threshold: 0.4 },
+    );
+    io.observe(row);
+  }
+</script>

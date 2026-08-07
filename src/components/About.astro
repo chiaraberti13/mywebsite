@@ -48,7 +48,9 @@ const about = content[lang].about;
   @media (min-width: 860px) {
     .about-grid {
       grid-template-columns: minmax(0, 1.45fr) minmax(18rem, 0.9fr);
-      align-items: center;
+      /* start (non center): con una colonna testo molto più alta, il
+         centraggio lasciava un grande vuoto in alto a destra. */
+      align-items: start;
     }
   }
   .about-text {
@@ -59,16 +61,21 @@ const about = content[lang].about;
     display: grid;
     grid-template-columns: 1fr;
     gap: 0.7rem;
-    align-content: center;
   }
   @media (min-width: 860px) {
     .about-highlights {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      /* righe di pari altezza: la griglia 2×2 resta ordinata anche se una
+         card ha più testo */
+      grid-auto-rows: 1fr;
+      position: sticky;
+      top: 6rem;
     }
   }
   .highlight {
     position: relative;
     display: grid;
+    align-content: start;
     gap: 0.45rem;
     padding: clamp(0.95rem, 0.8rem + 0.6vw, 1.2rem) clamp(1rem, 0.85rem + 0.75vw, 1.3rem);
     border: 1px solid var(--border);

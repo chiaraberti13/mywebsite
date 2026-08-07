@@ -15,6 +15,12 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
+  // Prefetch dei link al passaggio del mouse: la navigazione tra pagine
+  // diventa pressoché istantanea. Resta compatibile con la CSP (`connect-src 'self'`).
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: "hover",
+  },
   integrations: [
     sitemap({
       i18n: {
