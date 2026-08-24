@@ -1,6 +1,6 @@
 ---
-title: "TetraEar — TETRA Decoder for SDR"
-summary: "A TETRA (Terrestrial Trunked Radio) decoder and analyzer for RTL-SDR with real-time voice decoding, encryption support and an intuitive GUI on Ubuntu."
+title: "TetraEar — TETRA Installer and SDR Toolkit"
+summary: "Installers and integration tools for TetraEar and the RTL-SDR chain on Linux and Windows, covering channel analysis, clear-traffic decoding and encryption detection."
 lang: "en"
 date: 2026-07-24
 featured: true
@@ -10,24 +10,26 @@ links:
   github: "https://github.com/chiaraberti13/TetraEarUbuntu"
 ---
 
-TetraEar is a **TETRA** (Terrestrial Trunked Radio — the professional digital
-radio standard used by emergency services, transport and utilities) decoder and
-analyzer built for **RTL-SDR** dongles on Ubuntu. It turns a low-cost
-software-defined radio receiver into a station for listening to and analyzing
-TETRA traffic.
+This project provides installers and integration tools for **TetraEar**, an
+upstream open-source TETRA decoder, and its **RTL-SDR** chain. Its goal is to
+make setup reproducible on Linux and Windows while documenting dependencies,
+codecs, hardware compatibility and decoding limits.
 
 ### What it does
-- **Real-time voice decoding** of TETRA traffic received via RTL-SDR.
-- **Analysis** of channels and digital traffic, with **encryption** handling.
-- An intuitive **GUI** that makes a domain usually confined to command-line tools
-  approachable.
+- Automated installation of dependencies, Python environment, ETSI codec and
+  RTL-SDR configuration.
+- Voice decoding for **clear traffic** and detection of encrypted channels.
+- Optional TELIVE-2 integration only for keys already owned: no key recovery
+  or cracking.
+- Diagnostics, logs and passive network-metadata tools.
 
 ### How it's built
-A **Python** application that orchestrates the SDR chain — tuning the RTL-SDR
-receiver, demodulating and decoding the TETRA protocol — behind a graphical
-interface. Designed and tested on **Ubuntu**.
+**Python and shell** installers and utilities configure the upstream project,
+apply compatibility patches and prepare a reproducible chain on Ubuntu, Debian
+and Windows through WSL2. Use is limited to authorized educational and research
+activities.
 
 ### My role
-Application design, integration of the RTL-SDR → TETRA decoding pipeline,
-encryption handling and the graphical interface. A project at the crossroads of
-**radio frequency, networking and security**.
+Development of installers, RTL-SDR pipeline integration, compatibility patches,
+diagnostics, bilingual documentation and complementary-tool wiring. The TetraEar
+decoder remains correctly attributed to its upstream project.
