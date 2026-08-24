@@ -27,7 +27,6 @@ const allRoutes = [
     children: [
       { key: "nav.values", path: "/#values", section: true },
       { key: "nav.skills", path: "/#skills", section: true },
-      { key: "section.aptitude", path: "/#aptitude", section: true },
     ],
   },
   {
@@ -50,7 +49,7 @@ const current = raw.length > 1 ? raw.replace(/\/$/, "") : "/";
 const spyOf = (path: string) =>
   path.startsWith("/#") ? path.slice(2) : undefined;
 // tutte le sotto-sezioni raggruppate sotto la voce padre (per evidenziarla)
-const aboutGroup = ["about", "values", "skills", "aptitude"];
+const aboutGroup = ["about", "values", "skills"];
 ---
 <header class="site-header">
   <div class="container header-inner">
