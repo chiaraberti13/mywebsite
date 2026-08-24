@@ -6,7 +6,7 @@ import sitemap from "@astrojs/sitemap";
 // Nessun adapter: build 100% statica -> minima superficie d'attacco.
 // Il modulo contatti gira come Vercel Serverless Function in /api (fuori da Astro).
 export default defineConfig({
-  site: "https://www.chiaraberti.cloud",
+  site: "https://mywebsite-five-fawn-62.vercel.app",
   trailingSlash: "ignore",
   i18n: {
     defaultLocale: "it",
