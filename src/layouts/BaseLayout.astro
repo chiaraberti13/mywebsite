@@ -27,7 +27,10 @@ const canonical = new URL(path, site.url).href;
 const itUrl = new URL(itPath, site.url).href;
 const enUrl = new URL(enPath, site.url).href;
 const ogImage = new URL(image, site.url).href;
-const fullTitle = title === site.name ? title : `${title} · ${site.name}`;
+const fullTitle =
+  title === site.name
+    ? `${site.name} — Automation Developer & Cybersecurity`
+    : `${title} · ${site.name}`;
 
 // Dati strutturati: aiutano i motori di ricerca a capire di chi è il sito.
 // Tutti i valori vengono da site.ts, nessun dato inventato.
@@ -36,8 +39,21 @@ const personLd = {
   "@type": "Person",
   name: site.name,
   url: site.url,
+  jobTitle: "Automation Developer",
   email: `mailto:${site.email}`,
-  address: { "@type": "PostalAddress", addressLocality: site.location },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Latina",
+    addressCountry: "IT",
+  },
+  knowsAbout: [
+    "Process automation",
+    "Python",
+    "Bash",
+    "Linux",
+    "Cybersecurity",
+    "Networking",
+  ],
   sameAs: site.socials.map((s) => s.url),
 };
 ---
