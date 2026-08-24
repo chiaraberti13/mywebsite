@@ -55,7 +55,7 @@ export const ui = {
     "contact.success": "Grazie! Il messaggio è stato inviato.",
     "contact.error": "Qualcosa è andato storto. Scrivimi pure via email.",
     "contact.privacyNote":
-      "I dati inviati sono usati solo per rispondere alla tua richiesta e non vengono ceduti a terzi.",
+      "I dati sono usati solo per rispondere alla richiesta e inviati tramite il provider email indicato nell'informativa privacy.",
     "contact.orEmail": "Oppure scrivimi direttamente:",
 
     "footer.rights": "Tutti i diritti riservati.",
@@ -124,7 +124,7 @@ export const ui = {
     "contact.success": "Thanks! Your message has been sent.",
     "contact.error": "Something went wrong. Feel free to email me.",
     "contact.privacyNote":
-      "Your data is used only to reply to your request and is never shared with third parties.",
+      "Your data is used only to reply and is delivered through the email provider named in the privacy policy.",
     "contact.orEmail": "Or write to me directly:",
 
     "footer.rights": "All rights reserved.",
