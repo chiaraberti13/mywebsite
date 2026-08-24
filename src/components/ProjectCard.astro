@@ -9,7 +9,11 @@ interface Props {
   href: string;
 }
 const { project, href } = Astro.props;
-const { title, summary, tags, cover, links } = project.data;
+const { title, summary, tags, cover, links, status, lang } = project.data;
+const statusLabels =
+  lang === "it"
+    ? { production: "In produzione", complete: "Completato", beta: "Beta", lab: "Laboratorio" }
+    : { production: "Production", complete: "Complete", beta: "Beta", lab: "Lab" };
 const categories = categoriesOf(slugOf(project.id));
 
 const platformIcon: Record<string, string> = {
@@ -39,6 +43,7 @@ const linkEntries = Object.entries(links).filter(([, v]) => Boolean(v)) as [
     </span>
   </a>
   <div class="project-body">
+    {status && <p class={`project-status project-status--${status}`}>{statusLabels[status]}</p>}
     <h3 class="project-title">
       <a href={href}>{title}</a>
     </h3>
@@ -133,6 +138,22 @@ const linkEntries = Object.entries(links).filter(([, v]) => Boolean(v)) as [
     flex-direction: column;
     gap: 0.85rem;
     padding: clamp(1.2rem, 1rem + 1vw, 1.6rem);
+  }
+  .project-status {
+    width: fit-content;
+    padding: 0.22rem 0.55rem;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent-text);
+    background: var(--accent-soft);
+  }
+  .project-status--production,
+  .project-status--complete {
+    color: var(--success);
+    background: color-mix(in srgb, var(--success) 12%, transparent);
   }
   .project-title {
     font-size: var(--step-1);
