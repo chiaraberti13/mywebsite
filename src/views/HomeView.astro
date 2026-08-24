@@ -3,7 +3,6 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import Hero from "@/components/Hero.astro";
 import About from "@/components/About.astro";
 import Skills from "@/components/Skills.astro";
-import Aptitude from "@/components/Aptitude.astro";
 import SectionHeader from "@/components/SectionHeader.astro";
 import Stats from "@/components/Stats.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
@@ -16,21 +15,26 @@ import { getFeaturedProjects, slugOf } from "@/lib/content";
 interface Props { lang: Locale }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-const featured = await getFeaturedProjects(lang);
+const featured = (await getFeaturedProjects(lang)).slice(0, 3);
+const certificates = content[lang].curriculum.certifications.items.slice(0, 3);
 const desc = content[lang].hero.subheadline;
 ---
 <BaseLayout lang={lang} title={site.name} description={desc}>
   <Hero lang={lang} />
   <div class="hr container"></div>
+
+  <section class="section section--proof" aria-label={lang === "it" ? "Risultati principali" : "Key results"}>
+    <div class="container" data-reveal>
+      <Stats lang={lang} />
+    </div>
+  </section>
+
   <About lang={lang} />
 
   <section class="section section--tight values-section" id="values">
     <div class="container values-layout">
       <div class="values-aside">
         <SectionHeader eyebrow={t("nav.values")} title={t("section.values")} />
-        <div class="values-stats" data-reveal>
-          <Stats lang={lang} />
-        </div>
       </div>
       <div class="values-panel" data-reveal>
         <div class="stack values-text">
@@ -44,7 +48,6 @@ const desc = content[lang].hero.subheadline;
     <Skills lang={lang} />
   </div>
 
-  <Aptitude lang={lang} />
 
   {
     featured.length > 0 && (
@@ -70,6 +73,38 @@ const desc = content[lang].hero.subheadline;
     )
   }
 
+  <section class="section credentials-section">
+    <div class="container">
+      <SectionHeader
+        eyebrow={t("nav.certifications")}
+        title={t("section.certifications")}
+        intro={lang === "it"
+          ? "Credenziali verificate che consolidano il percorso tra sistemi, sviluppo e cybersecurity."
+          : "Verified credentials supporting my path across systems, development and cybersecurity."}
+      />
+      <div class="credential-grid" data-reveal-group>
+        {certificates.map((certificate) => (
+          <article class="card credential-card">
+            <span class="credential-icon" aria-hidden="true">
+              <Icon name={certificate.icon ?? "shieldCheck"} size={20} />
+            </span>
+            <div>
+              <p class="credential-year">{certificate.year}</p>
+              <h3>{certificate.title}</h3>
+              <p class="muted credential-org">{certificate.org}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="see-all">
+        <a class="btn btn--ghost" href={localePath(lang, "/certificazioni")}>
+          {t("nav.certifications")}
+          <Icon name="chevronRight" size={18} />
+        </a>
+      </p>
+    </div>
+  </section>
+
   <section class="section">
     <div class="container">
       <div class="cta-band" data-reveal>
@@ -92,6 +127,9 @@ const desc = content[lang].hero.subheadline;
      discreto, e fa risaltare le card (che usano --surface).
      I bordi sfumano invece di tagliare netto: lo stacco duro faceva
      percepire le sezioni come blocchi impilati. */
+  .section--proof {
+    padding-block: clamp(1.75rem, 1.25rem + 2vw, 3rem);
+  }
   .band {
     position: relative;
     background: var(--surface-2);
@@ -153,9 +191,6 @@ const desc = content[lang].hero.subheadline;
   .values-text {
     max-width: 62ch;
   }
-  .values-stats {
-    margin-top: 1.75rem;
-  }
   @media (min-width: 860px) {
     .values-layout {
       grid-template-columns: minmax(16rem, 0.72fr) minmax(0, 1fr);
@@ -176,6 +211,46 @@ const desc = content[lang].hero.subheadline;
   }
   .see-all {
     margin-top: 2rem;
+  }
+  .credentials-section {
+    background: var(--surface-2);
+  }
+  .credential-grid {
+    display: grid;
+    gap: clamp(1rem, 0.6rem + 1.5vw, 1.5rem);
+  }
+  @media (min-width: 760px) {
+    .credential-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .credential-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+  }
+  .credential-icon {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex: none;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .credential-year {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-bottom: 0.2rem;
+  }
+  .credential-card h3 {
+    font-size: var(--step-0);
+  }
+  .credential-org {
+    margin-top: 0.25rem;
+    font-size: 0.9rem;
   }
   .cta-band {
     display: flex;
