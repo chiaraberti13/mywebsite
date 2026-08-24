@@ -4,6 +4,7 @@ summary: "Piattaforma interattiva e bilingue per lo studio approfondito del mode
 lang: "it"
 date: 2026-07-27
 featured: true
+status: "complete"
 tags: ["TypeScript", "Reti", "Sicurezza"]
 links:
   github: "https://github.com/chiaraberti13/OSI-Cyber-Explorer"
