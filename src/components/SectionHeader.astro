@@ -5,12 +5,14 @@ interface Props {
   intro?: string;
   id?: string;
   align?: "start" | "center";
+  level?: "h1" | "h2";
 }
-const { eyebrow, title, intro, id, align = "start" } = Astro.props;
+const { eyebrow, title, intro, id, align = "start", level = "h2" } = Astro.props;
+const Heading = level;
 ---
 <header class:list={["section-header", { center: align === "center" }]} id={id} data-reveal>
   {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-  <h2>{title}</h2>
+  <Heading>{title}</Heading>
   {intro && <p class="lead">{intro}</p>}
 </header>
 
@@ -19,7 +21,7 @@ const { eyebrow, title, intro, id, align = "start" } = Astro.props;
     margin-bottom: clamp(1.75rem, 1rem + 3vw, 3rem);
     max-width: 60ch;
   }
-  .section-header h2 {
+  .section-header :is(h1, h2) {
     margin-top: 0.6rem;
   }
   .section-header .lead {
