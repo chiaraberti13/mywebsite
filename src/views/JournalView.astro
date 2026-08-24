@@ -19,7 +19,7 @@ const locale = lang === "it" ? "it-IT" : "en-US";
 <BaseLayout lang={lang} title={t("nav.journal")} description={desc}>
   <section class="section">
     <div class="container">
-      <SectionHeader eyebrow={t("nav.journal")} title={t("section.journal")} />
+      <SectionHeader eyebrow={t("nav.journal")} title={t("section.journal")} level="h1" />
       <ul class="post-grid grid grid--2" role="list" data-reveal-group>
         {
           posts.map((post) => (
