@@ -4,6 +4,7 @@ summary: "A TETRA (Terrestrial Trunked Radio) decoder and analyzer for RTL-SDR w
 lang: "en"
 date: 2026-07-24
 featured: true
+status: "lab"
 tags: ["Python", "SDR", "Security"]
 links:
   github: "https://github.com/chiaraberti13/TetraEarUbuntu"
