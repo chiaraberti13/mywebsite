@@ -18,6 +18,8 @@ const projects = defineCollection({
     date: z.coerce.date(),
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
+    /** Stato dichiarato del progetto, mostrato nelle card e nel dettaglio */
+    status: z.enum(["production", "complete", "beta", "lab"]).optional(),
     /** Immagine di copertina opzionale (percorso in /public, es. "/projects/foo.jpg") */
     cover: z.string().optional(),
     /** Link alle piattaforme: mostrati come badge sulla card */

@@ -4,6 +4,7 @@ summary: "An app that automatically generates product datasheets as PDFs, in 6 l
 lang: "en"
 date: 2026-05-01
 featured: true
+status: "production"
 tags: ["Node.js", "Puppeteer", "Security"]
 links:
   github: "https://github.com/chiaraberti13/pdf-datasheet-generator"

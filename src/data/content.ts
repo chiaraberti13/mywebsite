@@ -30,8 +30,6 @@ export interface CertItem {
   url?: string;
   /** Nome icona (vedi Icon.astro) che rappresenta l'ambito della certificazione */
   icon?: string;
-  /** Credential ID / codice di verifica pubblico */
-  credential?: string;
 }
 export interface SkillGroup {
   name: string;
@@ -79,34 +77,29 @@ const LPI_WEB = "https://lpi.org/v/LPI000606561/z85ypb54rc";
 export const content: Record<Locale, PageContent> = {
   it: {
     hero: {
-      eyebrow: "Cybersecurity & Ethical Hacking",
+      eyebrow: "Automation Developer · CompTIA Security+",
       headline: "Non mi interessa usare la tecnologia. Mi interessa capirla davvero.",
       subheadline:
-        "Dal design all'automazione fino alla cybersecurity: capire come funziona la tecnologia, per usarla in modo consapevole e proteggerla.",
-      roles: ["Process Automation", "Penetration Testing", "Red Team"],
+        "Trasformo attività complesse e ripetitive in automazioni affidabili attraverso Python, Bash, PHP, Linux e SQL. Oggi porto questa esperienza nel mio percorso verso la cybersecurity, approfondendo networking, sicurezza applicativa e offensive security.",
+      roles: ["Process Automation", "Linux & Networking", "Offensive Security · in crescita"],
     },
     about: {
       paragraphs: [
-        "Oggi sono un'Automation Developer con oltre dieci anni di esperienza nell'automazione dei processi attraverso Python, Bash, PHP, Linux e SQL. Il mio percorso è iniziato nel design, dove ogni attività ripetitiva è diventata un'occasione per scrivere codice. Oggi porto questa stessa mentalità verso la sicurezza offensiva.",
-        "La curiosità è sempre stata parte di chi sono. Capire come funzionano le cose, metterle alla prova e chiedermi cosa succede quando qualcosa si rompe: è il mio modo di guardare il mondo.",
-        "È così che la programmazione è passata dall'essere una curiosità a diventare parte integrante del mio lavoro. Ho imparato ad analizzare un problema, collegare tecnologie diverse e progettare workflow che eliminano le attività ripetitive, riducono gli errori e migliorano davvero il modo in cui si lavora.",
-        "È stata questa ricerca costante a portarmi, in modo naturale, verso la cybersecurity.",
-        "Nel 2024 ho deciso di trasformare quella passione in un percorso professionale. Nel 2026 ho conseguito la certificazione CompTIA Security+ (SY0-701) e continuo ad approfondire Linux, networking e sicurezza offensiva attraverso studio costante, laboratori pratici su TryHackMe e sperimentazione.",
-        "Il mio obiettivo è crescere come Penetration Tester, approfondendo nel tempo anche attività di Red Teaming, perché credo che il modo migliore per difendere un sistema sia comprenderlo fino ai suoi limiti.",
+        "Sono un'Automation Developer con oltre dieci anni di esperienza nella progettazione di strumenti e workflow attraverso Python, Bash, PHP, Linux e SQL. Il mio percorso è iniziato nel design, dove ogni attività ripetitiva diventava un'occasione per scrivere codice e migliorare il modo di lavorare.",
+        "Questa attitudine mi ha portata naturalmente verso la cybersecurity. Dal 2024 ne ho fatto un percorso professionale strutturato, conseguendo Linux Essentials, TryHackMe Pre Security e CompTIA Security+ (SY0-701).",
+        "Oggi approfondisco networking, sicurezza applicativa e offensive security attraverso laboratori, CTF e progetti personali, con l'obiettivo di crescere nel Penetration Testing e, nel tempo, nel Red Teaming.",
       ],
       highlights: [
-        { label: "Principi", value: "Etica · Curiosità · Studio" },
-        { label: "Specializzazione", value: "Security+ · Linux · Networking" },
-        { label: "Approccio", value: "Pratica · Laboratori · CTF" },
+        { label: "Ruolo", value: "Automation Developer" },
+        { label: "Credenziali", value: "Security+ · Linux Essentials" },
+        { label: "Metodo", value: "Pratica · Laboratori · Progetti" },
         { label: "Obiettivo", value: "Penetration Testing" },
       ],
     },
     values: {
       paragraphs: [
-        "Per me la cybersecurity non è solo una professione: è dove convergono la curiosità che mi muove, il bisogno di migliorare le cose e un'etica che non è mai negoziabile. E la certezza che non si finisce mai di imparare.",
-        "Credo che comprendere una tecnologia sia il primo passo per poterla utilizzare in modo consapevole e proteggerla.",
-        "L'etica è il principio che guida il mio modo di lavorare. La curiosità è ciò che mi spinge a studiare continuamente e a mettere in discussione ciò che già conosco. Lo studio continuo rappresenta il metodo con cui trasformo ogni esperienza in competenza.",
-        "Non cerco scorciatoie. Preferisco costruire una preparazione solida, approfondendo i concetti e sperimentando direttamente ciò che studio, perché sono convinta che la conoscenza più duratura sia quella acquisita attraverso la pratica.",
+        "Etica, curiosità e apprendimento continuo guidano il mio modo di lavorare: studio ciò che non conosco, verifico ciò che costruisco e considero la responsabilità una parte inseparabile della competenza tecnica.",
+        "Preferisco una preparazione solida alle scorciatoie, perché credo che una tecnologia possa essere utilizzata e protetta davvero solo quando se ne comprende il funzionamento.",
       ],
     },
     skills: [
@@ -228,7 +221,6 @@ export const content: Record<Locale, PageContent> = {
             icon: "shieldCheck",
             org: "CompTIA",
             year: "2026",
-            credential: "ID: COMP001023058871 · verifica: 70c5b54fbb344cfd9e494f8632509f30",
             description:
               "Certificazione internazionale che valida competenze fondamentali in cybersecurity, networking, gestione del rischio, sicurezza delle infrastrutture, Identity and Access Management, crittografia, monitoraggio, vulnerability management e incident response. È il punto di partenza del mio percorso nella sicurezza informatica e la base su cui approfondisco offensive security, Penetration Testing e Red Teaming.",
           },
@@ -238,7 +230,6 @@ export const content: Record<Locale, PageContent> = {
             org: "Linux Professional Institute (LPI)",
             year: "2024",
             url: LPI_LINUX,
-            credential: "ID: LPI000606561 · 2jtytje6tw",
             description:
               "Certificazione sui fondamenti dei sistemi Linux: shell, gestione di utenti e permessi, filesystem, processi, networking di base e principi di sicurezza. Ha consolidato competenze che oggi uso quotidianamente nello sviluppo, nell'automazione e nei laboratori di cybersecurity.",
           },
@@ -248,25 +239,22 @@ export const content: Record<Locale, PageContent> = {
             org: "Linux Professional Institute (LPI)",
             year: "2025",
             url: LPI_WEB,
-            credential: "ID: LPI000606561 · z85ypb54rc",
             description:
-              "Percorso sulle tecnologie fondamentali dello sviluppo web: architettura client-server, protocolli web, basi di frontend e backend e funzionamento delle applicazioni web. Una base importante anche per la sicurezza applicativa e l'analisi delle vulnerabilità web.",
+              "Certificazione sulle tecnologie fondamentali dello sviluppo web: architettura client-server, protocolli web, basi di frontend e backend e funzionamento delle applicazioni web. Una base importante anche per la sicurezza applicativa e l'analisi delle vulnerabilità web.",
           },
           {
             title: "Pre Security (SEC0)",
             icon: "flag",
             org: "TryHackMe",
             year: "2026",
-            credential: "ID: THM-69e9c5b286352a6b0d0966aa",
             description:
-              "Percorso introduttivo ai fondamenti della cybersecurity — sistemi operativi, networking, architettura dei computer, web e principi di sicurezza — affrontati con laboratori pratici e attività interattive. Il primo passo nel mio percorso di formazione pratica verso la sicurezza offensiva.",
+              "Certificazione introduttiva sui fondamenti della cybersecurity — sistemi operativi, networking, architettura dei computer, web e principi di sicurezza — verificati tramite esame e attività pratiche. Un passaggio importante nel mio percorso verso la sicurezza offensiva.",
           },
           {
             title: "PHP Developer Fundamentals on MySQL Environment",
             icon: "code",
             org: "Certiport · TESI Automazione S.r.l.",
             year: "2019",
-            credential: "ID: 57B89A03AA0247838AE85E14659F7B32",
             description:
               "Certificazione sui fondamenti dello sviluppo in PHP su ambiente MySQL: sintassi del linguaggio, interazione con il database e logica delle applicazioni web lato server.",
           },
@@ -351,34 +339,29 @@ export const content: Record<Locale, PageContent> = {
 
   en: {
     hero: {
-      eyebrow: "Cybersecurity & Ethical Hacking",
+      eyebrow: "Automation Developer · CompTIA Security+",
       headline: "I'm not interested in using technology. I'm interested in truly understanding it.",
       subheadline:
-        "From design to automation to cybersecurity: understanding how technology works, to use it consciously and protect it.",
-      roles: ["Process Automation", "Penetration Testing", "Red Team"],
+        "I turn complex, repetitive work into reliable automation using Python, Bash, PHP, Linux and SQL. I now bring that experience into my cybersecurity path, deepening networking, application security and offensive security.",
+      roles: ["Process Automation", "Linux & Networking", "Offensive Security · growing"],
     },
     about: {
       paragraphs: [
-        "Today I'm an Automation Developer with over ten years of experience automating processes through Python, Bash, PHP, Linux and SQL. My path started in design, where every repetitive task became a chance to write code. Today I bring that same mindset to offensive security.",
-        "Curiosity has always been part of who I am. Understanding how things work, putting them to the test and asking myself what happens when something breaks: that's my way of looking at the world.",
-        "That's how programming went from being a curiosity to becoming an integral part of my work. I learned to analyze a problem, connect different technologies and design workflows that remove repetitive tasks, reduce errors and genuinely improve the way we work.",
-        "It was this constant search that led me, naturally, toward cybersecurity.",
-        "In 2024 I decided to turn that passion into a professional path. In 2026 I earned the CompTIA Security+ (SY0-701) certification and I keep deepening Linux, networking and offensive security through constant study, hands-on labs on TryHackMe and experimentation.",
-        "My goal is to grow as a Penetration Tester, over time also exploring Red Teaming, because I believe the best way to defend a system is to understand it to its limits.",
+        "I'm an Automation Developer with over ten years of experience designing tools and workflows with Python, Bash, PHP, Linux and SQL. My path began in design, where every repetitive task became an opportunity to write code and improve the way work was done.",
+        "That mindset naturally led me toward cybersecurity. Since 2024 I have followed a structured professional path, earning Linux Essentials, TryHackMe Pre Security and CompTIA Security+ (SY0-701).",
+        "I now deepen networking, application security and offensive security through labs, CTFs and personal projects, aiming to grow into Penetration Testing and, over time, Red Teaming.",
       ],
       highlights: [
-        { label: "Principles", value: "Ethics · Curiosity · Study" },
-        { label: "Specialization", value: "Security+ · Linux · Networking" },
-        { label: "Approach", value: "Hands-on · Labs · CTF" },
+        { label: "Role", value: "Automation Developer" },
+        { label: "Credentials", value: "Security+ · Linux Essentials" },
+        { label: "Method", value: "Hands-on · Labs · Projects" },
         { label: "Goal", value: "Penetration Testing" },
       ],
     },
     values: {
       paragraphs: [
-        "For me cybersecurity isn't just a profession: it's where the curiosity that drives me, the need to improve things and a non-negotiable ethic all converge. Along with the certainty that you never stop learning.",
-        "I believe that understanding a technology is the first step to using it consciously and protecting it.",
-        "Ethics is the principle that guides how I work. Curiosity is what pushes me to keep studying and to question what I already know. Continuous study is the method through which I turn every experience into skill.",
-        "I don't look for shortcuts. I prefer to build a solid foundation, going deep into the concepts and experimenting directly with what I study, because I'm convinced that the most lasting knowledge is the one gained through practice.",
+        "Ethics, curiosity and continuous learning guide how I work: I study what I don't know, verify what I build and treat responsibility as inseparable from technical skill.",
+        "I prefer solid foundations to shortcuts, because technology can only be used and protected effectively when its inner workings are understood.",
       ],
     },
     skills: [
@@ -500,7 +483,6 @@ export const content: Record<Locale, PageContent> = {
             icon: "shieldCheck",
             org: "CompTIA",
             year: "2026",
-            credential: "ID: COMP001023058871 · verifica: 70c5b54fbb344cfd9e494f8632509f30",
             description:
               "An international certification validating core skills in cybersecurity, networking, risk management, infrastructure security, Identity and Access Management, cryptography, monitoring, vulnerability management and incident response. It's the starting point of my security career and the foundation on which I build offensive security, Penetration Testing and Red Teaming.",
           },
@@ -510,7 +492,6 @@ export const content: Record<Locale, PageContent> = {
             org: "Linux Professional Institute (LPI)",
             year: "2024",
             url: LPI_LINUX,
-            credential: "ID: LPI000606561 · 2jtytje6tw",
             description:
               "A certification on Linux fundamentals: shell, user and permission management, filesystem, processes, basic networking and security principles. It consolidated skills I use daily in development, automation and cybersecurity labs.",
           },
@@ -520,25 +501,22 @@ export const content: Record<Locale, PageContent> = {
             org: "Linux Professional Institute (LPI)",
             year: "2025",
             url: LPI_WEB,
-            credential: "ID: LPI000606561 · z85ypb54rc",
             description:
-              "A path on core web technologies: client-server architecture, web protocols, frontend and backend basics and how web applications work. An important foundation also for application security and web vulnerability analysis.",
+              "A certification on core web technologies: client-server architecture, web protocols, frontend and backend basics and how web applications work. An important foundation also for application security and web vulnerability analysis.",
           },
           {
             title: "Pre Security (SEC0)",
             icon: "flag",
             org: "TryHackMe",
             year: "2026",
-            credential: "ID: THM-69e9c5b286352a6b0d0966aa",
             description:
-              "An introductory path to the fundamentals of cybersecurity — operating systems, networking, computer architecture, web and security principles — through hands-on labs and interactive activities. The first step in my practical journey toward offensive security.",
+              "An introductory certification on cybersecurity fundamentals — operating systems, networking, computer architecture, web and security principles — assessed through an exam and hands-on activities. An important step in my path toward offensive security.",
           },
           {
             title: "PHP Developer Fundamentals on MySQL Environment",
             icon: "code",
             org: "Certiport · TESI Automazione S.r.l.",
             year: "2019",
-            credential: "ID: 57B89A03AA0247838AE85E14659F7B32",
             description:
               "A certification on PHP development fundamentals on a MySQL environment: language syntax, database interaction and server-side web application logic.",
           },

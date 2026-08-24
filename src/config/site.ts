@@ -28,7 +28,7 @@ export interface SocialLink {
 
 export const site = {
   /** Dominio di produzione (usato per SEO / canonical) */
-  url: "https://www.chiaraberti.cloud",
+  url: "https://mywebsite-five-fawn-62.vercel.app",
 
   /** Nome completo */
   name: "Chiara Berti",
@@ -42,7 +42,6 @@ export const site = {
 
   /** Contatti diretti — AGGIORNARE se cambiano */
   email: "chiaraberti13@icloud.com",
-  phone: "+39 340 79 96 597",
   location: "Latina, Italia",
 
   /**

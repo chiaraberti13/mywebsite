@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.chiaraberti.cloud/sitemap-index.xml
+Sitemap: https://mywebsite-five-fawn-62.vercel.app/sitemap-index.xml

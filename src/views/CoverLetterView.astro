@@ -20,7 +20,7 @@ const Content = entry ? (await render(entry)).Content : null;
 <BaseLayout lang={lang} title={t("nav.coverLetter")} description={desc}>
   <section class="section">
     <div class="container">
-      <SectionHeader eyebrow={t("nav.coverLetter")} title={t("section.coverLetter")} />
+      <SectionHeader eyebrow={t("nav.coverLetter")} title={t("section.coverLetter")} level="h1" />
       {Content && (
         <Prose>
           <Content />

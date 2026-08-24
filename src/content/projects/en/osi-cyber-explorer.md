@@ -4,6 +4,7 @@ summary: "A bilingual, interactive platform for in-depth study of the OSI model 
 lang: "en"
 date: 2026-07-27
 featured: true
+status: "complete"
 tags: ["TypeScript", "Networking", "Security"]
 links:
   github: "https://github.com/chiaraberti13/OSI-Cyber-Explorer"

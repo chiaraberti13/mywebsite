@@ -4,6 +4,7 @@ summary: "Applicazione che genera automaticamente le schede tecniche di prodotto
 lang: "it"
 date: 2026-05-01
 featured: true
+status: "production"
 tags: ["Node.js", "Puppeteer", "Sicurezza"]
 links:
   github: "https://github.com/chiaraberti13/pdf-datasheet-generator"

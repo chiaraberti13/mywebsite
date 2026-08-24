@@ -23,20 +23,13 @@ const intro =
   <section class="section">
     <div class="container contact-grid" data-reveal-group>
       <div>
-        <SectionHeader eyebrow={t("nav.contact")} title={t("section.contact")} intro={intro} />
+        <SectionHeader eyebrow={t("nav.contact")} title={t("section.contact")} intro={intro} level="h1" />
         <div class="contact-card card">
           <a class="contact-row" href={`mailto:${site.email}`}>
             <span class="contact-ico" aria-hidden="true"><Icon name="mail" size={18} /></span>
             <span>
               <span class="contact-label">Email</span>
               <span class="contact-value">{site.email}</span>
-            </span>
-          </a>
-          <a class="contact-row" href={`tel:${site.phone.replace(/\s+/g, "")}`}>
-            <span class="contact-ico" aria-hidden="true"><Icon name="phone" size={18} /></span>
-            <span>
-              <span class="contact-label">{lang === "it" ? "Telefono" : "Phone"}</span>
-              <span class="contact-value">{site.phone}</span>
             </span>
           </a>
           <div class="contact-row contact-row--static">

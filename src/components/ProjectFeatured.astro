@@ -13,7 +13,11 @@ interface Props {
 }
 const { project, href, lang } = Astro.props;
 const t = useTranslations(lang);
-const { title, summary, tags, cover, links } = project.data;
+const { title, summary, tags, cover, links, status } = project.data;
+const statusLabels =
+  lang === "it"
+    ? { production: "In produzione", complete: "Completato", beta: "Beta", lab: "Laboratorio" }
+    : { production: "Production", complete: "Complete", beta: "Beta", lab: "Lab" };
 const featuredLabel = lang === "it" ? "In evidenza" : "Featured";
 ---
 <article class="featured">
@@ -25,6 +29,7 @@ const featuredLabel = lang === "it" ? "In evidenza" : "Featured";
       <span class="featured-star" aria-hidden="true">★</span>
       {featuredLabel}
     </p>
+    {status && <p class="featured-status">{statusLabels[status]}</p>}
     <h3 class="featured-title">
       <a href={href}>{title}</a>
     </h3>
@@ -127,6 +132,15 @@ const featuredLabel = lang === "it" ? "In evidenza" : "Featured";
   }
   .featured-star {
     color: var(--accent);
+  }
+  .featured-status {
+    width: fit-content;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent-text);
+    background: var(--accent-soft);
   }
   .featured-title {
     font-size: var(--step-2);
