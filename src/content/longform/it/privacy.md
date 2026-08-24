@@ -2,31 +2,39 @@
 title: "Informativa sulla privacy"
 lang: "it"
 page: "privacy"
-updated: 2026-01-15
+updated: 2026-08-24
 ---
 
-Questo sito è pensato nel rispetto della tua privacy.
+Questo sito è progettato per raccogliere il minor numero possibile di dati.
 
 ## Nessun tracciamento
-Il sito è **statico** e **non utilizza cookie di profilazione**, né strumenti di
-analisi che ti identificano. Non sono presenti pixel pubblicitari o social widget
-che tracciano la navigazione. I font sono ospitati localmente o di sistema: non
-vengono effettuate richieste a servizi esterni che raccolgono il tuo indirizzo IP.
+Il sito non utilizza cookie di profilazione, strumenti di analisi che identificano
+i visitatori, pixel pubblicitari o social widget che tracciano la navigazione.
+I font sono ospitati localmente.
 
 ## Modulo contatti
-Se usi il modulo contatti, i dati che inserisci (nome, email, messaggio) sono
-utilizzati **esclusivamente per rispondere alla tua richiesta**. Non vengono
-ceduti a terzi né usati per finalità di marketing. L'invio avviene tramite un
-provider di posta transazionale; i messaggi sono conservati solo per il tempo
-necessario a gestire la conversazione.
+Se utilizzi il modulo contatti, vengono trattati nome, indirizzo email e contenuto
+del messaggio esclusivamente per ricevere la richiesta e rispondere.
 
-## I tuoi diritti (GDPR)
-Ai sensi del Regolamento (UE) 2016/679 hai diritto di accesso, rettifica,
-cancellazione e opposizione al trattamento dei tuoi dati. Per esercitarli, scrivi
-all'indirizzo email di contatto presente sul sito.
+L'invio viene effettuato tramite **Resend**, provider di posta transazionale:
+i dati inseriti sono quindi trasmessi a questo servizio per la consegna del
+messaggio. Il sito non salva i contenuti in un proprio database e non li utilizza
+per marketing o profilazione.
+
+In alternativa è possibile scrivere direttamente all'indirizzo email indicato
+nella pagina Contatti.
+
+## Conservazione
+I messaggi ricevuti sono conservati nella casella email per il tempo necessario
+a gestire la conversazione e gli eventuali adempimenti collegati.
+
+## I tuoi diritti
+Ai sensi del Regolamento (UE) 2016/679 puoi richiedere accesso, rettifica,
+cancellazione, limitazione o opposizione al trattamento dei tuoi dati scrivendo
+all'indirizzo email indicato sul sito.
 
 ## Titolare del trattamento
 Chiara Berti — contatti disponibili nella pagina Contatti.
 
-> ⚠️ Questo è un modello di base: adattalo alla tua situazione reale e, se
-> necessario, fatti supportare per la conformità completa.
+> Questa informativa descrive il funzionamento tecnico attuale del sito e deve
+> essere aggiornata se cambiano provider, finalità o modalità di trattamento.
