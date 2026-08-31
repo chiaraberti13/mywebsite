@@ -62,7 +62,7 @@ const aria =
         </g>
         <g class="radar-data">
           <polygon class="rd-area" points={dataStr} />
-          {axes.map((a, i) => {
+          {axes.map((_, i) => {
             const [x, y] = dataPts[i];
             return (
               <circle class="rd-dot" cx={x.toFixed(1)} cy={y.toFixed(1)} r="4.5" />
