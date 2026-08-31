@@ -1,6 +1,6 @@
 ---
 title: "PRIS MEA — Configuratore LED"
-summary: "Configuratore web per progettare online sistemi di illuminazione LED su misura, generare un preventivo PDF in pochi secondi e instradare il lead al distributore di zona."
+summary: "Applicazione che consente di progettare online un impianto su misura e ottenere in pochi secondi un preventivo PDF dettagliato."
 lang: "it"
 date: 2026-04-05
 featured: true
@@ -9,33 +9,12 @@ links:
   github: "https://github.com/chiaraberti13/pris-mea"
 ---
 
-PRIS MEA permette a installatori, architetti, distributori e clienti finali di
-configurare un impianto LED modulare, ottenere un **preventivo PDF** dettagliato
-e riceverlo via email, con il contatto instradato automaticamente al distributore
-competente. Disponibile in italiano e inglese.
+Applicazione che consente di progettare online un impianto su misura e ottenere in pochi secondi un preventivo PDF dettagliato, inviato via email e instradato automaticamente al referente commerciale di zona.
 
-### Cosa fa
-- Scelta di **forma** (lineare, rettangolo, L, C), misure, finitura, diffusione,
-  tipo di installazione e opzioni (faretti, biemissione, dimmer).
-- **Calcolo automatico** della distinta componenti, di potenza (W) e flusso
-  luminoso (lumen), con generazione di una **planimetria in scala**.
-- **Preventivo PDF** professionale via email + salvataggio e instradamento del
-  lead al distributore di regione/paese.
+Include il calcolo automatico dei componenti e della resa luminosa e la generazione dello schema d'impianto.
 
-### Come è fatta
-**PHP 8** senza framework, organizzato a moduli (namespace, autoload PSR-4):
-calcolatori per forma dietro una factory, catalogo prodotti, generazione PDF con
-**mPDF**, email via **PHPMailer**, planimetrie disegnate a runtime con **GD**,
-raccolta lead su **Google Sheets**. Il motore di calcolo risolve un piccolo
-problema di **ottimizzazione combinatoria** (combinazione di moduli standard con
-scarto minimo).
+Sviluppata in PHP con architettura modulare, supporto multilingua (IT / EN) e sicurezza applicativa: protezione CSRF, validazione degli input e gestione sicura delle credenziali.
 
-### Sicurezza
-Segreti in file `.env` non versionato, protezione **CSRF** sui form, **escaping**
-sistematico dell'output (anti-XSS), cookie di sessione `httponly/secure/samesite`,
-validazione input lato server e una **modalità test** isolata dalla produzione.
+### Apporto personale
 
-### Il mio ruolo
-Progettazione dell'architettura modulare del backend, motore di calcolo,
-pipeline di generazione documenti (planimetria + PDF), sistema multilingua,
-misure di sicurezza applicativa e debugging metodico basato sull'analisi dei log.
+Progettazione dell'architettura modulare, definizione della logica di calcolo e delle misure di sicurezza, impostazione del flusso di test.
