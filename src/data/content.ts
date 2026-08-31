@@ -78,7 +78,7 @@ const LPI_WEB = "https://lpi.org/v/LPI000606561/z85ypb54rc";
 export const content: Record<Locale, PageContent> = {
   it: {
     hero: {
-      eyebrow: "Automation Developer · CompTIA Security+",
+      eyebrow: "Automation Developer · Creative Technologist · CompTIA Security+",
       headline: "Non mi interessa usare la tecnologia. Mi interessa capirla davvero.",
       subheadline:
         "Scripting & Process Automation · Python · Bash · PHP · Linux · SQL",
@@ -216,7 +216,7 @@ export const content: Record<Locale, PageContent> = {
         lead: "Considero le certificazioni uno strumento per consolidare competenze e misurare i progressi raggiunti durante il mio percorso di crescita professionale. Ogni certificazione è un traguardo costruito attraverso studio, esercitazioni pratiche e approfondimento dei concetti fondamentali — ma l'apprendimento non si esaurisce con un esame: continuo a dedicare tempo a studio, laboratori e progetti personali per trasformare la teoria in competenze concrete.",
         items: [
           {
-            title: "CompTIA Security+",
+            title: "CompTIA Security+ (SY0-701)",
             icon: "shieldCheck",
             org: "CompTIA",
             year: "2026",
@@ -270,8 +270,8 @@ export const content: Record<Locale, PageContent> = {
       {
         role: "Automation Developer | Creative Technologist",
         org: "Century Italia S.r.l.",
-        period: "Mar 2013 – Oggi",
-        location: "Latina, Lazio · In sede",
+        period: "2013 – oggi",
+        location: "Latina",
         paragraphs: [
           "Entrata in Century Italia come Packaging Designer, ho progressivamente ampliato il mio ruolo verso lo sviluppo di script, applicazioni web e automazioni. Progetto e realizzo strumenti in Python, Bash, PHP e SQL su ambienti Linux / macOS, con attenzione a sicurezza e manutenibilità.",
           "Applico principi di sicurezza già nel lavoro quotidiano di sviluppo — protezione di dati e credenziali, validazione degli input e difesa dalle vulnerabilità web più comuni: è da qui che nasce il mio percorso verso la sicurezza offensiva.",
@@ -345,7 +345,7 @@ export const content: Record<Locale, PageContent> = {
 
   en: {
     hero: {
-      eyebrow: "Automation Developer · CompTIA Security+",
+      eyebrow: "Automation Developer · Creative Technologist · CompTIA Security+",
       headline: "I'm not interested in using technology. I'm interested in truly understanding it.",
       subheadline:
         "Scripting & Process Automation · Python · Bash · PHP · Linux · SQL",
@@ -483,7 +483,7 @@ export const content: Record<Locale, PageContent> = {
         lead: "I see certifications as a way to consolidate skills and measure the progress made along my professional growth. Each one is a milestone built through study, hands-on practice and a deep dive into the fundamentals — but learning doesn't end with an exam: I keep dedicating time to study, labs and personal projects to turn theory into concrete skills.",
         items: [
           {
-            title: "CompTIA Security+",
+            title: "CompTIA Security+ (SY0-701)",
             icon: "shieldCheck",
             org: "CompTIA",
             year: "2026",
@@ -537,8 +537,8 @@ export const content: Record<Locale, PageContent> = {
       {
         role: "Automation Developer | Creative Technologist",
         org: "Century Italia S.r.l.",
-        period: "Mar 2013 – Present",
-        location: "Latina, Lazio · On-site",
+        period: "2013 – present",
+        location: "Latina",
         paragraphs: [
           "I joined Century Italia as a Packaging Designer and progressively expanded my role toward script development, web applications and automation. I design and build tools in Python, Bash, PHP and SQL on Linux / macOS environments, with attention to security and maintainability.",
           "I apply security principles in everyday development — protecting data and credentials, validating inputs and defending against the most common web vulnerabilities: this is where my path toward offensive security began.",
