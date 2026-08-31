@@ -66,6 +66,7 @@ export interface PageContent {
     axes: { label: string; value: number }[];
     workingOnLabel: string;
     workingOn: { title: string; text: string }[];
+    learning: { title: string; text: string; pathLabel: string; path: string[] };
   };
   languages: { name: string; level: string }[];
   interests: string[];
@@ -80,14 +81,16 @@ export const content: Record<Locale, PageContent> = {
       eyebrow: "Automation Developer · CompTIA Security+",
       headline: "Non mi interessa usare la tecnologia. Mi interessa capirla davvero.",
       subheadline:
-        "Trasformo attività complesse e ripetitive in automazioni affidabili attraverso Python, Bash, PHP, Linux e SQL. Oggi porto questa esperienza nel mio percorso verso la cybersecurity, approfondendo networking, sicurezza applicativa e offensive security.",
-      roles: ["Process Automation", "Linux & Networking", "Offensive Security · in crescita"],
+        "Scripting & Process Automation · Python · Bash · PHP · Linux · SQL",
+      roles: ["Cybersecurity", "Process Automation", "Web Development", "Linux · Bash · PHP · MySQL"],
     },
     about: {
       paragraphs: [
-        "Sono un'Automation Developer con oltre dieci anni di esperienza nella progettazione di strumenti e workflow attraverso Python, Bash, PHP, Linux e SQL. Il mio percorso è iniziato nel design, dove ogni attività ripetitiva diventava un'occasione per scrivere codice e migliorare il modo di lavorare.",
-        "Questa attitudine mi ha portata naturalmente verso la cybersecurity. Dal 2024 ne ho fatto un percorso professionale strutturato, conseguendo Linux Essentials, TryHackMe Pre Security e CompTIA Security+ (SY0-701).",
-        "Oggi approfondisco networking, sicurezza applicativa e offensive security attraverso laboratori, CTF e progetti personali, con l'obiettivo di crescere nel Penetration Testing e, nel tempo, nel Red Teaming.",
+        "Sono un'Automation Developer con oltre dieci anni di esperienza nell'automazione dei processi attraverso Python, Bash, PHP, Linux e SQL. Il mio percorso è iniziato nel design: ogni attività ripetitiva è diventata un'occasione per scrivere codice e capire come le cose funzionano davvero — e cosa succede quando si rompono.",
+        "Con il tempo la programmazione è passata dall'essere una curiosità a parte integrante del mio lavoro: analizzo un problema, collego tecnologie diverse e progetto workflow che eliminano le attività ripetitive, riducono gli errori e migliorano concretamente il modo in cui si lavora.",
+        "È stata questa stessa attitudine — capire un sistema fino ai suoi limiti — a portarmi verso la cybersecurity. Nel 2024 ho scelto di trasformarla in un percorso professionale; nel 2026 ho conseguito la CompTIA Security+ (SY0-701) e continuo ad approfondire Linux, networking e sicurezza offensiva con studio costante e laboratori pratici su TryHackMe.",
+        "Il mio obiettivo è crescere come Penetration Tester e, nel tempo, nel Red Teaming: credo che il modo migliore per difendere un sistema sia comprenderlo fino in fondo.",
+        "Per me la sicurezza non è solo una professione, ma il punto in cui convergono la curiosità che mi muove, il bisogno di migliorare le cose e un'etica non negoziabile. E la certezza che non si finisce mai di imparare.",
       ],
       highlights: [
         { label: "Ruolo", value: "Automation Developer" },
@@ -106,25 +109,24 @@ export const content: Record<Locale, PageContent> = {
       {
         name: "Cybersecurity & sicurezza",
         items: [
-          "CompTIA Security+ (SY0-701)",
-          "Minacce e gestione del rischio",
+          "Fondamenti di sicurezza informatica (CompTIA Security+ SY0-701)",
+          "Minacce, vulnerabilità e gestione del rischio",
           "Crittografia",
-          "Sicurezza offensiva (TryHackMe)",
-          "Sicurezza applicativa (CSRF, XSS)",
-          "Validazione input & credenziali",
-          "Hardening",
+          "Introduzione alla sicurezza offensiva (TryHackMe)",
+          "Sicurezza applicativa (CSRF, XSS, validazione input, gestione sicura delle credenziali, hardening)",
+          "Fondamenti pratici TryHackMe Pre Security",
+          "Fondamenti Windows (permessi NTFS, registro di sistema, Task Scheduler)",
+          "Fondamenti di rete (modello OSI, TCP/IP, subnetting, DNS)",
         ],
       },
       {
         name: "Linux, sistemi & networking",
         items: [
-          "Linux (LPI Essentials)",
-          "Riga di comando & shell",
-          "Fondamenti Windows (NTFS, registro)",
+          "Linux (LPI Linux Essentials)",
+          "Riga di comando e shell",
           "macOS",
-          "Virtualizzazione (VM)",
-          "Docker",
-          "Reti (OSI, TCP/IP, DNS)",
+          "Virtualizzazione (VM) e container Docker",
+          "Fondamenti di reti e protocolli",
         ],
       },
       {
@@ -132,10 +134,8 @@ export const content: Record<Locale, PageContent> = {
         items: [
           "Python",
           "Bash / Shell scripting",
-          "Automazione di processi",
-          "Pipeline",
-          "Logica di programmazione",
-          "Problem solving",
+          "Automazione di processi e pipeline",
+          "Logica di programmazione e problem solving",
         ],
       },
       {
@@ -144,7 +144,7 @@ export const content: Record<Locale, PageContent> = {
           "PHP",
           "JavaScript (Node.js)",
           "HTML5",
-          "CSS",
+          "CSS (LPI Web Development Essentials)",
           "MySQL",
           "SQL",
         ],
@@ -152,11 +152,10 @@ export const content: Record<Locale, PageContent> = {
       {
         name: "Strumenti & metodo",
         items: [
-          "Git / GitHub",
-          "Debugging su log ed evidenze",
-          "Documentazione",
-          "Qualità del codice",
-          "Sviluppo AI-assistito",
+          "Git / GitHub e versionamento",
+          "Debugging basato su log ed evidenze",
+          "Documentazione e qualità del codice",
+          "Sviluppo AI-assistito (sotto direzione tecnica personale e con verifica di ogni modifica)",
         ],
       },
     ],
@@ -222,7 +221,7 @@ export const content: Record<Locale, PageContent> = {
             org: "CompTIA",
             year: "2026",
             description:
-              "Certificazione internazionale che valida competenze fondamentali in cybersecurity, networking, gestione del rischio, sicurezza delle infrastrutture, Identity and Access Management, crittografia, monitoraggio, vulnerability management e incident response. È il punto di partenza del mio percorso nella sicurezza informatica e la base su cui approfondisco offensive security, Penetration Testing e Red Teaming.",
+              "Luglio 2026 — valida fino a luglio 2029. Credential ID: COMP001023058871 · codice di verifica: 70c5b54fbb344cfd9e494f8632509f30.",
           },
           {
             title: "Linux Essentials",
@@ -231,7 +230,7 @@ export const content: Record<Locale, PageContent> = {
             year: "2024",
             url: LPI_LINUX,
             description:
-              "Certificazione sui fondamenti dei sistemi Linux: shell, gestione di utenti e permessi, filesystem, processi, networking di base e principi di sicurezza. Ha consolidato competenze che oggi uso quotidianamente nello sviluppo, nell'automazione e nei laboratori di cybersecurity.",
+              "Credential ID: LPI000606561 · codice di verifica: 2jtytje6tw.",
           },
           {
             title: "Web Development Essentials",
@@ -240,7 +239,7 @@ export const content: Record<Locale, PageContent> = {
             year: "2025",
             url: LPI_WEB,
             description:
-              "Certificazione sulle tecnologie fondamentali dello sviluppo web: architettura client-server, protocolli web, basi di frontend e backend e funzionamento delle applicazioni web. Una base importante anche per la sicurezza applicativa e l'analisi delle vulnerabilità web.",
+              "Credential ID: LPI000606561 · codice di verifica: z85ypb54rc.",
           },
           {
             title: "Pre Security (SEC0)",
@@ -248,7 +247,7 @@ export const content: Record<Locale, PageContent> = {
             org: "TryHackMe",
             year: "2026",
             description:
-              "Certificazione introduttiva sui fondamenti della cybersecurity — sistemi operativi, networking, architettura dei computer, web e principi di sicurezza — verificati tramite esame e attività pratiche. Un passaggio importante nel mio percorso verso la sicurezza offensiva.",
+              "Credential ID: THM-69e9c5b286352a6b0d0966aa.",
           },
           {
             title: "PHP Developer Fundamentals on MySQL Environment",
@@ -256,7 +255,7 @@ export const content: Record<Locale, PageContent> = {
             org: "Certiport · TESI Automazione S.r.l.",
             year: "2019",
             description:
-              "Certificazione sui fondamenti dello sviluppo in PHP su ambiente MySQL: sintassi del linguaggio, interazione con il database e logica delle applicazioni web lato server.",
+              "Certiport (esame erogato da TESI Automazione S.r.l.) · gennaio 2019. Credential ID: 57B89A03AA0247838AE85E14659F7B32.",
           },
         ],
         beyond: {
@@ -274,13 +273,12 @@ export const content: Record<Locale, PageContent> = {
         period: "Mar 2013 – Oggi",
         location: "Latina, Lazio · In sede",
         paragraphs: [
-          "Creo strumenti e automazioni che trasformano attività manuali e ripetitive in processi rapidi e affidabili, utilizzando Python, Bash, PHP, SQL e Linux/macOS. Entrata in Century Italia come Packaging Designer, ho progressivamente ampliato il mio ruolo verso lo sviluppo di script e applicazioni web e l'automazione dei processi.",
+          "Entrata in Century Italia come Packaging Designer, ho progressivamente ampliato il mio ruolo verso lo sviluppo di script, applicazioni web e automazioni. Progetto e realizzo strumenti in Python, Bash, PHP e SQL su ambienti Linux / macOS, con attenzione a sicurezza e manutenibilità.",
           "Applico principi di sicurezza già nel lavoro quotidiano di sviluppo — protezione di dati e credenziali, validazione degli input e difesa dalle vulnerabilità web più comuni: è da qui che nasce il mio percorso verso la sicurezza offensiva.",
-          "Ho sviluppato in Python sistemi che elaborano e ottimizzano automaticamente grandi quantità di file, riducendo i tempi di lavorazione di oltre l'80% e diminuendo gli errori.",
-          "Ho creato applicazioni in PHP collegate a database per gestire in automatico le informazioni di prodotto e la generazione di documenti, con particolare attenzione alla protezione dei dati e alla sicurezza delle credenziali.",
-          "Ho realizzato automazioni in Bash per sincronizzare file tra sistemi diversi, con logica di controllo degli errori e ripristino automatico, organizzate in moduli riutilizzabili.",
-          "Ho creato strumenti di generazione automatica (con JavaScript per Adobe Illustrator) che, partendo da modelli e dati, producono grafica e documenti su larga scala.",
-          "Sviluppo ed eseguo i miei progetti in ambienti Linux virtualizzati, utilizzando macchine virtuali e container Docker per creare ambienti isolati, riproducibili e coerenti.",
+          "Sviluppo di sistemi in Python per l'elaborazione e l'ottimizzazione automatica di grandi quantità di file, con riduzione dei tempi di lavorazione superiore all'80% e diminuzione degli errori.",
+          "Realizzazione di applicazioni PHP collegate a database per la gestione automatica delle informazioni di prodotto e la generazione di documenti, con attenzione alla protezione dei dati e delle credenziali.",
+          "Automazioni in Bash per la sincronizzazione di file tra sistemi diversi, con controllo degli errori e logica di ripristino, organizzate in moduli riutilizzabili.",
+          "Sviluppo ed esecuzione dei progetti in ambienti Linux virtualizzati (macchine virtuali e container Docker), per contesti isolati e riproducibili.",
         ],
         tags: ["Python", "Bash", "Linux", "Docker", "Automazione dei processi", "Virtualizzazione", "Git", "SQL", "MySQL", "PHP", "JavaScript"],
       },
@@ -298,7 +296,7 @@ export const content: Record<Locale, PageContent> = {
       },
     ],
     aptitude: {
-      lead: "Un profilo attitudinale che fotografa il mio modo di lavorare: i punti di forza su cui costruisco e le aree su cui mi alleno ogni giorno.",
+      lead: "",
       radarMax: 5,
       axes: [
         { label: "Problem solving", value: 5 },
@@ -316,13 +314,19 @@ export const content: Record<Locale, PageContent> = {
         },
         {
           title: "Focus ed esecuzione",
-          text: "Sto imparando a canalizzare l'entusiasmo per portare a termine un obiettivo alla volta: il percorso di certificazioni e laboratori è il modo in cui alleno questa disciplina.",
+          text: "Sto imparando a canalizzare l'entusiasmo per portare a termine un obiettivo alla volta: il percorso strutturato di certificazioni e laboratori è il modo in cui alleno questa disciplina.",
         },
       ],
+      learning: {
+        title: "Apprendimento continuo",
+        text: "Laboratori pratici su TryHackMe, sperimentazione in ambienti isolati e aggiornamento costante su cybersecurity ed ethical hacking attraverso contenuti e risorse di settore.",
+        pathLabel: "Percorso di certificazione in programma:",
+        path: ["Cisco CCNA (200-301)", "INE eJPT", "Potenziamento lingua inglese"],
+      },
     },
     languages: [
       { name: "Italiano", level: "Madrelingua" },
-      { name: "Inglese", level: "Comprensione tecnica scritta buona; base nel parlato, in potenziamento (corso pianificato)" },
+      { name: "Inglese", level: "Comprensione tecnica scritta buona; livello base nel parlato, in fase di potenziamento" },
     ],
     interests: [
       "Innovazione e tecnologia",
@@ -334,6 +338,8 @@ export const content: Record<Locale, PageContent> = {
       "Musica",
       "Sport",
       "Calcio a 5",
+      "Calcio",
+      "Pets",
     ],
   },
 
@@ -581,10 +587,16 @@ export const content: Record<Locale, PageContent> = {
           text: "I'm learning to channel my enthusiasm to finish one goal at a time: a structured path of certifications and labs is how I train this discipline.",
         },
       ],
+      learning: {
+        title: "Continuous learning",
+        text: "Hands-on labs on TryHackMe, experimentation in isolated environments, and constant updating on cybersecurity and ethical hacking through industry content and resources.",
+        pathLabel: "Planned certification path:",
+        path: ["Cisco CCNA (200-301)", "INE eJPT", "English language improvement"],
+      },
     },
     languages: [
       { name: "Italian", level: "Native" },
-      { name: "English", level: "Good written technical comprehension; basic spoken, being improved (course planned)" },
+      { name: "English", level: "Good written technical comprehension; basic spoken, currently being improved" },
     ],
     interests: [
       "Innovation & technology",
@@ -596,6 +608,8 @@ export const content: Record<Locale, PageContent> = {
       "Music",
       "Sport",
       "Five-a-side football",
+      "Football",
+      "Pets",
     ],
   },
 };
