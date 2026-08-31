@@ -34,10 +34,6 @@ const levels = Array.from({ length: max }, (_, k) => k + 1);
 const dataPts = axes.map((a, i) => point(i, (R * a.value) / max));
 const dataStr = dataPts.map(fmt).join(" ");
 const axisEnds = axes.map((_, i) => point(i, R));
-const scale = levels.map((l) => {
-  const [x, y] = point(0, (R * l) / max);
-  return { l, x: (x + 7).toFixed(1), y: (y + 4).toFixed(1) };
-});
 const labels = axes.map((a, i) => {
   const ang = ((-90 + (360 / n) * i) * Math.PI) / 180;
   const [x, y] = point(i, labelR);
@@ -45,11 +41,11 @@ const labels = axes.map((a, i) => {
   const sin = Math.sin(ang);
   const anchor = Math.abs(cos) < 0.25 ? "middle" : cos > 0 ? "start" : "end";
   const dy = sin < -0.3 ? "-0.15em" : sin > 0.3 ? "0.9em" : "0.32em";
-  return { label: a.label, value: a.value, x: x.toFixed(1), y: y.toFixed(1), anchor, dy };
+  return { label: a.label, x: x.toFixed(1), y: y.toFixed(1), anchor, dy };
 });
 const aria =
-  (lang === "it" ? "Radar dei punti di forza: " : "Strengths radar: ") +
-  axes.map((a) => `${a.label} ${a.value}/${max}`).join(", ");
+  (lang === "it" ? "Profilo attitudinale: " : "Aptitude profile: ") +
+  axes.map((a) => a.label).join(", ");
 ---
 <section class="section" id="aptitude">
   <div class="container">
@@ -63,18 +59,13 @@ const aria =
           {axisEnds.map(([x, y]) => (
             <line class="rd-axis" x1={cx} y1={cy} x2={x.toFixed(1)} y2={y.toFixed(1)} />
           ))}
-          {scale.map((s) => (
-            <text class="rd-scale" x={s.x} y={s.y}>{s.l}</text>
-          ))}
         </g>
         <g class="radar-data">
           <polygon class="rd-area" points={dataStr} />
           {axes.map((a, i) => {
             const [x, y] = dataPts[i];
             return (
-              <circle class="rd-dot" cx={x.toFixed(1)} cy={y.toFixed(1)} r="4.5">
-                <title>{`${a.label}: ${a.value}/${max}`}</title>
-              </circle>
+              <circle class="rd-dot" cx={x.toFixed(1)} cy={y.toFixed(1)} r="4.5" />
             );
           })}
         </g>
@@ -102,6 +93,17 @@ const aria =
         }
       </div>
     </div>
+    </div>
+
+    <div class="apt-learning card" data-reveal>
+      <h3 class="apt-learning-title">
+        <span aria-hidden="true">$ 10 ·</span> {apt.learning.title}
+      </h3>
+      <p>{apt.learning.text}</p>
+      <p>{apt.learning.pathLabel}</p>
+      <ul class="apt-learning-path" role="list">
+        {apt.learning.path.map((item) => <li class="tag">{item}</li>)}
+      </ul>
     </div>
 
     <div class="apt-meta" data-reveal-group>
@@ -168,11 +170,6 @@ const aria =
   .rd-axis {
     stroke: var(--border);
     stroke-width: 1;
-  }
-  .rd-scale {
-    font-family: var(--font-mono);
-    font-size: 9px;
-    fill: var(--muted);
   }
   .rd-area {
     fill: var(--accent);
@@ -256,6 +253,29 @@ const aria =
     border-radius: 50%;
     background: var(--accent);
     flex: none;
+  }
+
+  .apt-learning {
+    margin-top: clamp(2rem, 1rem + 3vw, 3rem);
+    display: grid;
+    gap: 0.85rem;
+  }
+  .apt-learning-title {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: var(--step-0);
+  }
+  .apt-learning-title span {
+    color: var(--accent);
+  }
+  .apt-learning-path {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
   }
 
   .apt-meta {
