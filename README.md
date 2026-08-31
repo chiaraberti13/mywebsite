@@ -95,3 +95,5 @@ src/
 └─ pages/                # route (IT in /, EN in /en)
 api/contact.ts           # serverless function del modulo contatti
 ```
+
+<!-- Production deployment trigger -->
