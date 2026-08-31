@@ -348,14 +348,16 @@ export const content: Record<Locale, PageContent> = {
       eyebrow: "Automation Developer · CompTIA Security+",
       headline: "I'm not interested in using technology. I'm interested in truly understanding it.",
       subheadline:
-        "I turn complex, repetitive work into reliable automation using Python, Bash, PHP, Linux and SQL. I now bring that experience into my cybersecurity path, deepening networking, application security and offensive security.",
-      roles: ["Process Automation", "Linux & Networking", "Offensive Security · growing"],
+        "Scripting & Process Automation · Python · Bash · PHP · Linux · SQL",
+      roles: ["Cybersecurity", "Process Automation", "Web Development", "Linux · Bash · PHP · MySQL"],
     },
     about: {
       paragraphs: [
-        "I'm an Automation Developer with over ten years of experience designing tools and workflows with Python, Bash, PHP, Linux and SQL. My path began in design, where every repetitive task became an opportunity to write code and improve the way work was done.",
-        "That mindset naturally led me toward cybersecurity. Since 2024 I have followed a structured professional path, earning Linux Essentials, TryHackMe Pre Security and CompTIA Security+ (SY0-701).",
-        "I now deepen networking, application security and offensive security through labs, CTFs and personal projects, aiming to grow into Penetration Testing and, over time, Red Teaming.",
+        "I'm an Automation Developer with over ten years of experience in process automation using Python, Bash, PHP, Linux and SQL. My journey began in design: every repetitive task became an opportunity to write code and understand how things really work — and what happens when they break.",
+        "Over time, programming went from being a curiosity to an integral part of my work: I analyse problems, connect different technologies and design workflows that eliminate repetitive tasks, reduce errors and concretely improve how work gets done.",
+        "That same mindset — understanding a system all the way to its limits — led me to cybersecurity. In 2024 I chose to turn it into a professional path; in 2026 I earned CompTIA Security+ (SY0-701), and I continue to deepen Linux, networking and offensive security through constant study and hands-on labs on TryHackMe.",
+        "My goal is to grow as a Penetration Tester and, over time, into Red Teaming: I believe the best way to defend a system is to understand it thoroughly.",
+        "For me, security is not only a profession, but the point where my curiosity, drive to improve things and non-negotiable ethics converge — together with the certainty that learning never ends.",
       ],
       highlights: [
         { label: "Role", value: "Automation Developer" },
@@ -374,25 +376,24 @@ export const content: Record<Locale, PageContent> = {
       {
         name: "Cybersecurity & security",
         items: [
-          "CompTIA Security+ (SY0-701)",
-          "Threats & risk management",
+          "Cybersecurity fundamentals (CompTIA Security+ SY0-701)",
+          "Threats, vulnerabilities and risk management",
           "Cryptography",
-          "Offensive security (TryHackMe)",
-          "Application security (CSRF, XSS)",
-          "Input validation & credentials",
-          "Hardening",
+          "Introduction to offensive security (TryHackMe)",
+          "Application security (CSRF, XSS, input validation, secure credential management, hardening)",
+          "TryHackMe Pre Security practical fundamentals",
+          "Windows fundamentals (NTFS permissions, registry, Task Scheduler)",
+          "Networking fundamentals (OSI model, TCP/IP, subnetting, DNS)",
         ],
       },
       {
         name: "Linux, systems & networking",
         items: [
-          "Linux (LPI Essentials)",
-          "Command line & shell",
-          "Windows fundamentals (NTFS, registry)",
+          "Linux (LPI Linux Essentials)",
+          "Command line and shell",
           "macOS",
-          "Virtualization (VM)",
-          "Docker",
-          "Networking (OSI, TCP/IP, DNS)",
+          "Virtualization (VM) and Docker containers",
+          "Networking and protocol fundamentals",
         ],
       },
       {
@@ -400,10 +401,8 @@ export const content: Record<Locale, PageContent> = {
         items: [
           "Python",
           "Bash / Shell scripting",
-          "Process automation",
-          "Pipelines",
-          "Programming logic",
-          "Problem solving",
+          "Process automation and pipelines",
+          "Programming logic and problem solving",
         ],
       },
       {
@@ -412,7 +411,7 @@ export const content: Record<Locale, PageContent> = {
           "PHP",
           "JavaScript (Node.js)",
           "HTML5",
-          "CSS",
+          "CSS (LPI Web Development Essentials)",
           "MySQL",
           "SQL",
         ],
@@ -420,11 +419,10 @@ export const content: Record<Locale, PageContent> = {
       {
         name: "Tools & method",
         items: [
-          "Git / GitHub",
-          "Log-based debugging",
-          "Documentation",
-          "Code quality",
-          "AI-assisted development",
+          "Git / GitHub and version control",
+          "Evidence- and log-based debugging",
+          "Documentation and code quality",
+          "AI-assisted development (under personal technical direction and with verification of every change)",
         ],
       },
     ],
@@ -490,7 +488,7 @@ export const content: Record<Locale, PageContent> = {
             org: "CompTIA",
             year: "2026",
             description:
-              "An international certification validating core skills in cybersecurity, networking, risk management, infrastructure security, Identity and Access Management, cryptography, monitoring, vulnerability management and incident response. It's the starting point of my security career and the foundation on which I build offensive security, Penetration Testing and Red Teaming.",
+              "July 2026 — valid until July 2029. Credential ID: COMP001023058871 · verification code: 70c5b54fbb344cfd9e494f8632509f30.",
           },
           {
             title: "Linux Essentials",
@@ -499,7 +497,7 @@ export const content: Record<Locale, PageContent> = {
             year: "2024",
             url: LPI_LINUX,
             description:
-              "A certification on Linux fundamentals: shell, user and permission management, filesystem, processes, basic networking and security principles. It consolidated skills I use daily in development, automation and cybersecurity labs.",
+              "Credential ID: LPI000606561 · verification code: 2jtytje6tw.",
           },
           {
             title: "Web Development Essentials",
@@ -508,7 +506,7 @@ export const content: Record<Locale, PageContent> = {
             year: "2025",
             url: LPI_WEB,
             description:
-              "A certification on core web technologies: client-server architecture, web protocols, frontend and backend basics and how web applications work. An important foundation also for application security and web vulnerability analysis.",
+              "Credential ID: LPI000606561 · verification code: z85ypb54rc.",
           },
           {
             title: "Pre Security (SEC0)",
@@ -516,7 +514,7 @@ export const content: Record<Locale, PageContent> = {
             org: "TryHackMe",
             year: "2026",
             description:
-              "An introductory certification on cybersecurity fundamentals — operating systems, networking, computer architecture, web and security principles — assessed through an exam and hands-on activities. An important step in my path toward offensive security.",
+              "Credential ID: THM-69e9c5b286352a6b0d0966aa.",
           },
           {
             title: "PHP Developer Fundamentals on MySQL Environment",
@@ -524,7 +522,7 @@ export const content: Record<Locale, PageContent> = {
             org: "Certiport · TESI Automazione S.r.l.",
             year: "2019",
             description:
-              "A certification on PHP development fundamentals on a MySQL environment: language syntax, database interaction and server-side web application logic.",
+              "Certiport (exam delivered by TESI Automazione S.r.l.) · January 2019. Credential ID: 57B89A03AA0247838AE85E14659F7B32.",
           },
         ],
         beyond: {
@@ -542,13 +540,12 @@ export const content: Record<Locale, PageContent> = {
         period: "Mar 2013 – Present",
         location: "Latina, Lazio · On-site",
         paragraphs: [
-          "I build tools and automations that turn manual, repetitive tasks into fast, reliable processes, using Python, Bash, PHP, SQL and Linux/macOS. I joined Century Italia as a Packaging Designer and progressively expanded my role toward script and web application development and process automation.",
+          "I joined Century Italia as a Packaging Designer and progressively expanded my role toward script development, web applications and automation. I design and build tools in Python, Bash, PHP and SQL on Linux / macOS environments, with attention to security and maintainability.",
           "I apply security principles in everyday development — protecting data and credentials, validating inputs and defending against the most common web vulnerabilities: this is where my path toward offensive security began.",
-          "I developed Python systems that automatically process and optimize large volumes of files, cutting processing time by over 80% and reducing errors.",
-          "I built PHP applications connected to databases to automatically manage product information and document generation, with particular attention to data protection and credential security.",
-          "I created Bash automations to synchronize files across different systems, with error-handling and automatic recovery logic, organized into reusable modules.",
-          "I created automatic generation tools (with JavaScript for Adobe Illustrator) that, starting from templates and data, produce graphics and documents at scale.",
-          "I develop and run my projects in virtualized Linux environments, using virtual machines and Docker containers to create isolated, reproducible and consistent environments.",
+          "Development of Python systems for automatically processing and optimizing large quantities of files, reducing processing time by more than 80% and decreasing errors.",
+          "Development of PHP applications connected to databases for the automated management of product information and document generation, with attention to data and credential protection.",
+          "Bash automations for synchronizing files between different systems, with error checking and recovery logic, organized into reusable modules.",
+          "Development and execution of projects in virtualized Linux environments (virtual machines and Docker containers), for isolated and reproducible contexts.",
         ],
         tags: ["Python", "Bash", "Linux", "Docker", "Process automation", "Virtualization", "Git", "SQL", "MySQL", "PHP", "JavaScript"],
       },
@@ -566,7 +563,7 @@ export const content: Record<Locale, PageContent> = {
       },
     ],
     aptitude: {
-      lead: "An aptitude profile that captures how I work: the strengths I build on and the areas I train every day.",
+      lead: "",
       radarMax: 5,
       axes: [
         { label: "Problem solving", value: 5 },
@@ -584,7 +581,7 @@ export const content: Record<Locale, PageContent> = {
         },
         {
           title: "Focus & execution",
-          text: "I'm learning to channel my enthusiasm to finish one goal at a time: a structured path of certifications and labs is how I train this discipline.",
+          text: "I'm learning to channel my enthusiasm to complete one goal at a time: the structured path of certifications and labs is how I train this discipline.",
         },
       ],
       learning: {
