@@ -7,8 +7,10 @@ interface Props {
   class?: string;
   /** Escludi alcune piattaforme, es. ["email"] */
   exclude?: string[];
+  showHandles?: boolean;
+  label?: string;
 }
-const { size = 20, class: cls = "", exclude = [] } = Astro.props;
+const { size = 20, class: cls = "", exclude = [], showHandles = false, label } = Astro.props;
 const links = site.socials.filter((s) => !exclude.includes(s.platform));
 const labels: Record<string, string> = {
   github: "GitHub",
@@ -18,9 +20,11 @@ const labels: Record<string, string> = {
   behance: "Behance",
   telegram: "Telegram",
   email: "Email",
+  tryhackme: "TryHackMe",
 };
 ---
-<ul class={`socials ${cls}`} role="list">
+{label && <p class="socials-label">{label}</p>}
+<ul class={`socials ${showHandles ? "socials--handles" : ""} ${cls}`} role="list">
   {
     links.map((s: SocialLink) => (
       <li>
@@ -31,7 +35,8 @@ const labels: Record<string, string> = {
           rel={s.platform === "email" ? undefined : "me noopener noreferrer"}
           target={s.platform === "email" ? undefined : "_blank"}
         >
-          <Icon name={s.platform === "email" ? "mail" : s.platform} size={size} />
+          <Icon name={s.platform === "email" ? "mail" : s.platform === "tryhackme" ? "shieldCheck" : s.platform} size={size} />
+          {showHandles && <span>{s.handle}</span>}
         </a>
       </li>
     ))
@@ -39,6 +44,14 @@ const labels: Record<string, string> = {
 </ul>
 
 <style>
+  .socials-label {
+    margin: 0 0 0.65rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
   .socials {
     display: flex;
     flex-wrap: wrap;
@@ -58,6 +71,20 @@ const labels: Record<string, string> = {
     background: var(--surface);
     transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease,
       background 0.2s ease;
+  }
+  .socials--handles {
+    gap: 0.65rem;
+  }
+  .socials--handles .social-link {
+    display: inline-flex;
+    width: auto;
+    min-height: 2.5rem;
+    padding: 0.55rem 0.8rem;
+    gap: 0.5rem;
+    border-radius: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    text-decoration: none;
   }
   .social-link:hover {
     color: var(--accent);
