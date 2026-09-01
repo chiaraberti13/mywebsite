@@ -16,7 +16,7 @@ const desc =
     : "Chiara Berti's education: the path from design to cybersecurity and academic background.";
 ---
 <BaseLayout lang={lang} title={t("nav.education")} description={desc}>
-  <section class="section">
+  <section class="section" id="percorso">
     <div class="container">
       <div class="cv-head">
         <SectionHeader eyebrow={t("nav.education")} title={t("section.path")} level="h1" />
@@ -35,7 +35,7 @@ const desc =
     </div>
   </section>
 
-  <section class="section section--tight">
+  <section class="section section--tight" id="istruzione">
     <div class="container">
       <SectionHeader eyebrow="Education" title={t("section.education")} intro={cur.education.lead} />
       <ol class="edu-timeline" role="list" data-reveal-group>
