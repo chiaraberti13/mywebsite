@@ -93,7 +93,7 @@ export const content: Record<Locale, PageContent> = {
       ],
       highlights: [
         { label: "Ruolo", value: "Automation Developer" },
-        { label: "Credenziali", value: "Security+ · Linux Essentials" },
+        { label: "Basi certificate", value: "Security+ · Linux Essentials" },
         { label: "Metodo", value: "Pratica · Laboratori · Progetti" },
         { label: "Obiettivo", value: "Penetration Testing" },
       ],
@@ -359,7 +359,7 @@ export const content: Record<Locale, PageContent> = {
       ],
       highlights: [
         { label: "Role", value: "Automation Developer" },
-        { label: "Credentials", value: "Security+ · Linux Essentials" },
+        { label: "Certified foundations", value: "Security+ · Linux Essentials" },
         { label: "Method", value: "Hands-on · Labs · Projects" },
         { label: "Goal", value: "Penetration Testing" },
       ],
