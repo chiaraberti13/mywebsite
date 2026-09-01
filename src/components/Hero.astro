@@ -54,7 +54,12 @@ const h = content[lang].hero;
       </div>
 
       <div class="hero-socials">
-        <SocialLinks size={18} exclude={["email", "x", "instagram"]} />
+        <SocialLinks
+          size={18}
+          exclude={["email", "instagram", "github"]}
+          showHandles
+          label="Social account"
+        />
       </div>
 
       <a class="hero-scroll" href="#about" aria-label={t("cta.scrollDown")}>
@@ -285,6 +290,29 @@ const h = content[lang].hero;
       100% { opacity: 0; transform: translateY(-0.4em); }
     }
   }
+  /* Elenco stabile: evita sovrapposizioni quando le voci vanno a capo. */
+  .hero-roles {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.55rem 1rem;
+    min-height: 0;
+    line-height: 1.45;
+  }
+  .hero-roles .role {
+    position: static !important;
+    inset: auto !important;
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    white-space: nowrap;
+  }
+  @media (max-width: 420px) {
+    .hero-roles .role {
+      white-space: normal;
+    }
+  }
+
   /* Fallback senza animazione: lista statica con separatori */
   @media (prefers-reduced-motion: reduce) {
     .hero-roles {
