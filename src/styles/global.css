@@ -287,6 +287,7 @@ main {
    CARD & TAG
    ═══════════════════════════════════════════════════════════════ */
 .card {
+  position: relative;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -294,13 +295,30 @@ main {
   transition: translate 0.2s ease, transform 0.2s ease,
     border-color 0.2s ease, box-shadow 0.2s ease;
 }
+.card::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  top: 0.9rem;
+  bottom: 0.9rem;
+  width: 3px;
+  border-radius: 999px;
+  background: var(--border);
+  pointer-events: none;
+  transition: background 0.2s ease;
+}
 /* Hover usa la proprietà `translate` (non `transform`) così non entra in
    conflitto con il `transform` usato dalle animazioni di reveal. */
 .card--link:hover,
 .card:hover {
-  translate: 0 -5px;
+  translate: 0 -3px;
   border-color: var(--accent);
   box-shadow: var(--shadow);
+}
+.card--link:hover::before,
+.card:hover::before {
+  background: var(--accent);
 }
 .tag {
   display: inline-block;
