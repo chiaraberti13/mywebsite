@@ -19,7 +19,8 @@ export interface SocialLink {
     | "x"
     | "behance"
     | "telegram"
-    | "email";
+    | "email"
+    | "tryhackme";
   /** URL completo (per email usare mailto:) */
   url: string;
   /** Handle mostrato all'utente, es. "@chiaraberti13" */
@@ -52,7 +53,8 @@ export const site = {
   socials: [
     { platform: "github", url: "https://github.com/chiaraberti13", handle: "@chiaraberti13" },
     { platform: "linkedin", url: "https://www.linkedin.com/in/chiaraberti13", handle: "@chiaraberti13" },
-    { platform: "x", url: "https://x.com/SocratesSatoshi", handle: "@SocratesSatoshi" },
+    { platform: "tryhackme", url: "https://tryhackme.com/p/ZeroD4y", handle: "ZeroD4y" },
+    { platform: "x", url: "https://x.com/khaos_404", handle: "@khaos_404" },
     { platform: "instagram", url: "https://instagram.com/chiaraberti_13", handle: "@chiaraberti_13" },
   ] satisfies SocialLink[],
 
