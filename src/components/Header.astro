@@ -32,7 +32,10 @@ const allRoutes = [
   {
     key: "nav.education",
     path: "/formazione",
-    children: [{ key: "nav.certifications", path: "/certificazioni" }],
+    children: [
+      { key: "nav.instruction", path: "/formazione#percorso" },
+      { key: "nav.certifications", path: "/certificazioni" },
+    ],
   },
   { key: "nav.experience", path: "/esperienze" },
   { key: "nav.projects", path: "/projects" },
