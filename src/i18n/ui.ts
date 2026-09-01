@@ -66,6 +66,7 @@ export const ui = {
     "stats.projects": "Progetti pubblicati",
     "stats.certifications": "Certificazioni",
     "stats.skillAreas": "Aree di competenza",
+    "stats.experience": "Anni di esperienza",
     "projects.countOne": "1 progetto",
     "projects.countMany": "{n} progetti",
 
@@ -135,6 +136,7 @@ export const ui = {
     "stats.projects": "Published projects",
     "stats.certifications": "Certifications",
     "stats.skillAreas": "Skill areas",
+    "stats.experience": "Years of experience",
     "projects.countOne": "1 project",
     "projects.countMany": "{n} projects",
 
