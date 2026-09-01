@@ -11,7 +11,7 @@
 
 > A bilingual personal portfolio focused on cybersecurity, automation, Linux and continuous learning.
 
-<p align="center"><a href="https://chiaraberti.cloud"><strong>Live website</strong></a> · <a href="SECURITY.md">Security</a></p>
+<p align="center"><a href="https://chiaraberti.cloud"><strong>Live website</strong></a> · <a href="SECURITY.md">Security</a> · <a href="LICENSE">Licence</a></p>
 
 ---
 
