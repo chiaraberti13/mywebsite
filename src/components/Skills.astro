@@ -10,7 +10,6 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 const groups = content[lang].skills;
 
-/** Icona per categoria, ricavata dal nome del gruppo. */
 const iconFor = (name: string): string => {
   if (/cyber|sicur|security/i.test(name)) return "shieldCheck";
   if (/linux|network|sistem|system/i.test(name)) return "terminal";
@@ -19,63 +18,125 @@ const iconFor = (name: string): string => {
   if (/strument|tool|metod|method/i.test(name)) return "wrench";
   return "code";
 };
+
+const references =
+  lang === "it"
+    ? {
+        label: "Competenze documentate attraverso progetti e laboratori",
+        github: "Progetti su GitHub",
+        tryhackme: "Laboratori su TryHackMe · ZeroD4y",
+      }
+    : {
+        label: "Skills documented through projects and hands-on labs",
+        github: "Projects on GitHub",
+        tryhackme: "Labs on TryHackMe · ZeroD4y",
+      };
 ---
 <section class="section" id="skills">
   <div class="container">
     <SectionHeader eyebrow={t("nav.skills")} title={t("section.skills")} />
-    <div class="skills-bento" data-reveal-group>
+
+    <div class="skills-grid" data-reveal-group>
       {
         groups.map((g, i) => (
-          <div class:list={["card skill-card", { "skill-card--wide": i === 0 }]}>
+          <article class:list={["card skill-card", { "skill-card--wide": i === 0 }]}>
             <div class="skill-head">
               <span class="skill-ico" aria-hidden="true">
                 <Icon name={iconFor(g.name)} size={20} />
               </span>
               <h3 class="skill-title">{g.name}</h3>
             </div>
-            <ul class="skill-tags" role="list">
+            <ul class="skill-list" role="list">
               {g.items.map((item) => (
-                <li class="tag">{item}</li>
+                <li>{item}</li>
               ))}
             </ul>
-          </div>
+          </article>
         ))
       }
+    </div>
+
+    <div class="skill-references" data-reveal>
+      <p>{references.label}</p>
+      <div class="reference-links">
+        <a href="https://github.com/chiaraberti13" target="_blank" rel="noopener noreferrer">
+          <Icon name="github" size={18} />
+          <span>{references.github}</span>
+        </a>
+        <a href="https://tryhackme.com/p/ZeroD4y" target="_blank" rel="noopener noreferrer">
+          <Icon name="shieldCheck" size={18} />
+          <span>{references.tryhackme}</span>
+        </a>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
-  .skills-bento {
+  .skills-grid {
     display: grid;
     gap: clamp(1rem, 0.5rem + 2vw, 1.6rem);
     grid-template-columns: 1fr;
   }
-  @media (min-width: 640px) {
-    .skills-bento {
-      grid-template-columns: repeat(2, 1fr);
+
+  @media (min-width: 680px) {
+    .skills-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
-  @media (min-width: 900px) {
-    .skills-bento {
-      grid-template-columns: repeat(3, 1fr);
+
+  @media (min-width: 980px) {
+    .skills-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
-    /* La card Cybersecurity (focus del profilo) occupa due colonne */
+
     .skill-card--wide {
       grid-column: span 2;
     }
   }
 
   .skill-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    overflow: hidden;
+    transition:
+      transform 0.28s ease,
+      border-color 0.28s ease,
+      box-shadow 0.28s ease;
   }
+
+  .skill-card::after {
+    content: "";
+    position: absolute;
+    inset: auto 1.25rem 0;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.32s ease;
+  }
+
+  .skill-card:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+    box-shadow: var(--shadow);
+  }
+
+  .skill-card:hover::after {
+    transform: scaleX(1);
+  }
+
   .skill-head {
     display: flex;
     align-items: center;
-    gap: 0.7rem;
+    gap: 0.75rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--border);
   }
+
   .skill-ico {
     display: grid;
     place-items: center;
@@ -87,50 +148,84 @@ const iconFor = (name: string): string => {
     color: var(--accent);
     border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
   }
+
   .skill-title {
     font-size: var(--step-0);
     font-family: var(--font-mono);
     letter-spacing: 0.01em;
     color: var(--accent);
   }
-  .skill-tags {
+
+  .skill-list {
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-  }
-  .skill-card--wide .skill-tags {
-    gap: 0.5rem;
+    display: grid;
+    gap: 0.62rem;
   }
 
-  /* ── Carosello orizzontale con snap su mobile ──────────────── */
-  @media (max-width: 639px) {
-    .skills-bento {
-      grid-template-columns: none;
-      grid-auto-flow: column;
-      grid-auto-columns: 82%;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-padding-inline: 0.2rem;
-      gap: 0.85rem;
-      padding-bottom: 0.6rem;
-      margin-inline: calc(-1 * clamp(1.1rem, 0.5rem + 3vw, 2rem));
-      padding-inline: clamp(1.1rem, 0.5rem + 3vw, 2rem);
-      scrollbar-width: thin;
-      scrollbar-color: var(--accent) transparent;
-      -webkit-overflow-scrolling: touch;
+  .skill-list li {
+    position: relative;
+    padding-left: 1rem;
+    color: var(--text);
+    line-height: 1.55;
+  }
+
+  .skill-list li::before {
+    content: "›";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .skill-references {
+    margin-top: clamp(1.5rem, 1rem + 2vw, 2.25rem);
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .skill-references > p {
+    margin-bottom: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .reference-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+  }
+
+  .reference-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text);
+    text-decoration: none;
+    transition:
+      color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .reference-links a:hover {
+    color: var(--accent);
+    transform: translateX(3px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skill-card,
+    .skill-card::after,
+    .reference-links a {
+      transition: none;
     }
-    .skill-card {
-      scroll-snap-align: start;
-    }
-    .skills-bento::-webkit-scrollbar {
-      height: 6px;
-    }
-    .skills-bento::-webkit-scrollbar-thumb {
-      background: var(--accent);
-      border-radius: 999px;
+
+    .skill-card:hover,
+    .reference-links a:hover {
+      transform: none;
     }
   }
 </style>
