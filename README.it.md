@@ -11,7 +11,7 @@
 
 > Portfolio personale bilingue dedicato a cybersecurity, automazione, Linux e apprendimento continuo.
 
-<p align="center"><a href="https://chiaraberti.cloud"><strong>Sito live</strong></a> · <a href="SECURITY.md">Sicurezza</a></p>
+<p align="center"><a href="https://chiaraberti.cloud"><strong>Sito live</strong></a> · <a href="SECURITY.md">Sicurezza</a> · <a href="LICENSE">Licenza</a></p>
 
 ---
 
