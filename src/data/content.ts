@@ -62,8 +62,7 @@ export interface PageContent {
   experience: ExperienceItem[];
   aptitude: {
     lead: string;
-    radarMax: number;
-    axes: { label: string; value: number }[];
+    axes: string[];
     workingOnLabel: string;
     workingOn: { title: string; text: string }[];
     learning: { title: string; text: string; pathLabel: string; path: string[] };
@@ -297,14 +296,13 @@ export const content: Record<Locale, PageContent> = {
     ],
     aptitude: {
       lead: "",
-      radarMax: 5,
       axes: [
-        { label: "Problem solving", value: 5 },
-        { label: "Pensiero critico", value: 5 },
-        { label: "Capacità realizzativa", value: 4 },
-        { label: "Networking e team", value: 3 },
-        { label: "Adattabilità", value: 4 },
-        { label: "Energia e azione", value: 4 },
+        "Problem solving",
+        "Pensiero critico",
+        "Capacità realizzativa",
+        "Networking e team",
+        "Adattabilità",
+        "Energia e azione",
       ],
       workingOnLabel: "Aree in sviluppo attivo",
       workingOn: [
@@ -564,14 +562,13 @@ export const content: Record<Locale, PageContent> = {
     ],
     aptitude: {
       lead: "",
-      radarMax: 5,
       axes: [
-        { label: "Problem solving", value: 5 },
-        { label: "Critical thinking", value: 5 },
-        { label: "Delivery", value: 4 },
-        { label: "Networking & team", value: 3 },
-        { label: "Adaptability", value: 4 },
-        { label: "Energy & drive", value: 4 },
+        "Problem solving",
+        "Critical thinking",
+        "Delivery",
+        "Networking & team",
+        "Adaptability",
+        "Energy & drive",
       ],
       workingOnLabel: "Areas in active development",
       workingOn: [
