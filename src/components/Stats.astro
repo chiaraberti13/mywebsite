@@ -38,14 +38,10 @@ const items = lang === "it"
   .stats {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1px;
+    gap: clamp(0.7rem, 0.45rem + 0.8vw, 1rem);
     margin: 0;
     padding: 0;
-    overflow: hidden;
     list-style: none;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--border);
   }
   @container (min-width: 34rem) {
     .stats {
@@ -58,18 +54,35 @@ const items = lang === "it"
     }
   }
   .stat {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 0.55rem;
     min-width: 0;
-    padding: clamp(1rem, 0.8rem + 1vw, 1.5rem);
+    padding: clamp(1rem, 0.8rem + 1vw, 1.35rem);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
     background: var(--surface);
-    transition: background 0.22s ease, transform 0.22s ease;
+    transition: translate 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .stat::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.9rem;
+    bottom: 0.9rem;
+    width: 3px;
+    border-radius: 999px;
+    background: var(--border);
+    transition: background 0.2s ease;
   }
   .stat:hover {
-    z-index: 1;
-    background: var(--accent-soft);
-    transform: translateY(-3px);
+    translate: 0 -3px;
+    border-color: var(--accent);
+    box-shadow: var(--shadow);
+  }
+  .stat:hover::before {
+    background: var(--accent);
   }
   .stat-label {
     font-family: var(--font-mono);
