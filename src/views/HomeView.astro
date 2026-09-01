@@ -39,7 +39,7 @@ const desc = content[lang].hero.subheadline;
       <div class="values-aside">
         <SectionHeader eyebrow={t("nav.values")} title={t("section.values")} />
       </div>
-      <div class="values-panel" data-reveal>
+      <div class="card values-panel" data-reveal>
         <div class="stack values-text">
           {content[lang].values.paragraphs.map((p) => <p>{p}</p>)}
         </div>
@@ -110,7 +110,7 @@ const desc = content[lang].hero.subheadline;
 
   <section class="section">
     <div class="container">
-      <div class="cta-band" data-reveal>
+      <div class="card cta-band" data-reveal>
         <div>
           <h2 class="cta-title">{t("section.contact")}</h2>
           <p class="muted">{t("contact.orEmail")} <a class="cta-mail" href={`mailto:${site.email}`}>{site.email}</a></p>
@@ -177,19 +177,6 @@ const desc = content[lang].hero.subheadline;
   .values-panel {
     position: relative;
     padding: clamp(1.35rem, 1rem + 2vw, 2.3rem);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: linear-gradient(135deg, var(--surface), var(--surface-2));
-    box-shadow: var(--shadow);
-  }
-  .values-panel::before {
-    content: "";
-    position: absolute;
-    inset-block: clamp(1.35rem, 1rem + 2vw, 2.3rem);
-    left: 0;
-    width: 3px;
-    border-radius: 999px;
-    background: var(--accent);
   }
   .values-text {
     max-width: 62ch;
@@ -262,9 +249,6 @@ const desc = content[lang].hero.subheadline;
     justify-content: space-between;
     gap: 1.5rem;
     padding: clamp(1.75rem, 1rem + 3vw, 3rem);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--surface);
   }
   .cta-title {
     font-size: var(--step-2);
