@@ -4,152 +4,102 @@ import type { Locale } from "@/config/site";
 interface Props { lang: Locale }
 const { lang } = Astro.props;
 
-const principles = lang === "it"
+const items = lang === "it"
   ? [
-      { key: "CURIOSITÀ", value: "sempre_attiva" },
-      { key: "APPRENDIMENTO", value: "continuo" },
-      { key: "ETICA", value: "non_negoziabile" },
-      { key: "LAVORO DI SQUADRA", value: "naturale" },
-      { key: "ADATTABILITÀ", value: "attiva" },
+      { label: "Curiosità", value: "sempre_attiva" },
+      { label: "Apprendimento", value: "continuo" },
+      { label: "Etica", value: "non_negoziabile" },
+      { label: "Lavoro di squadra", value: "naturale" },
+      { label: "Adattabilità", value: "attiva" },
     ]
   : [
-      { key: "CURIOSITY", value: "always_on" },
-      { key: "LEARNING", value: "continuous" },
-      { key: "ETHICS", value: "non_negotiable" },
-      { key: "TEAMWORK", value: "built_in" },
-      { key: "ADAPTABILITY", value: "active" },
+      { label: "Curiosity", value: "always_on" },
+      { label: "Learning", value: "continuous" },
+      { label: "Ethics", value: "non_negotiable" },
+      { label: "Teamwork", value: "built_in" },
+      { label: "Adaptability", value: "active" },
     ];
-
-const method = lang === "it"
-  ? ["CAPIRE", "COSTRUIRE", "TESTARE", "MIGLIORARE"]
-  : ["UNDERSTAND", "BUILD", "TEST", "IMPROVE"];
 ---
-<div class="principles" data-reveal>
-  <p class="principles-command"><span aria-hidden="true">$</span> cat principles.conf</p>
-
-  <ul class="principles-grid" role="list">
-    {principles.map((item) => (
-      <li>
-        <span class="principle-key">{item.key}</span>
-        <span class="principle-value">{item.value}</span>
+<div class="stats-wrap">
+  <ul class="stats" role="list">
+    {items.map((item) => (
+      <li class="stat">
+        <span class="stat-label">{item.label}</span>
+        <span class="stat-value">{item.value}</span>
       </li>
     ))}
   </ul>
-
-  <div class="principles-footer">
-    <div>
-      <p class="method" aria-label={method.join(", ")}>
-        {method.map((step, index) => (
-          <>
-            <span>{step}</span>
-            {index < method.length - 1 && <b aria-hidden="true">→</b>}
-          </>
-        ))}
-      </p>
-      <p class="principles-values">
-        {lang === "it"
-          ? "ETICA · CURIOSITÀ · APPRENDIMENTO CONTINUO"
-          : "ETHICS · CURIOSITY · CONTINUOUS LEARNING"}
-      </p>
-    </div>
-    <p class="open-to-work"><span aria-hidden="true"></span> OPEN TO WORK</p>
-  </div>
 </div>
 
 <style>
-  .principles {
-    padding: clamp(1.25rem, 0.9rem + 1.8vw, 2rem);
+  .stats-wrap {
+    container-type: inline-size;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    list-style: none;
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    background: var(--surface);
-    font-family: var(--font-mono);
-    overflow: hidden;
+    background: var(--border);
   }
-  .principles-command {
-    margin-bottom: clamp(1.4rem, 1rem + 2vw, 2.2rem);
-    font-size: clamp(1.15rem, 0.95rem + 1vw, 1.6rem);
-    color: var(--accent-text);
+  @container (min-width: 34rem) {
+    .stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
-  .principles-command > span {
-    margin-right: 0.6rem;
-    color: var(--accent);
+  @container (min-width: 62rem) {
+    .stats {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
   }
-  .principles-grid {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: clamp(1rem, 0.6rem + 1.5vw, 2rem);
-    margin: 0;
-    padding: 0 0 clamp(1.5rem, 1rem + 2vw, 2.2rem);
-    list-style: none;
-    border-bottom: 1px solid var(--border);
-  }
-  .principles-grid li {
-    display: grid;
-    gap: 0.65rem;
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
     min-width: 0;
+    padding: clamp(1rem, 0.8rem + 1vw, 1.5rem);
+    background: var(--surface);
+    transition: background 0.22s ease, transform 0.22s ease;
   }
-  .principle-key {
-    font-size: clamp(0.68rem, 0.62rem + 0.25vw, 0.82rem);
+  .stat:hover {
+    z-index: 1;
+    background: var(--accent-soft);
+    transform: translateY(-3px);
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    line-height: 1.35;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     color: var(--accent);
-    letter-spacing: 0.03em;
   }
-  .principle-value {
-    font-size: clamp(0.95rem, 0.82rem + 0.55vw, 1.25rem);
+  .stat-value {
+    font-family: var(--font-mono);
+    font-size: clamp(1rem, 0.9rem + 0.45vw, 1.25rem);
+    font-weight: 600;
+    line-height: 1.25;
     color: var(--text);
     overflow-wrap: anywhere;
   }
-  .principles-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
-    padding-top: clamp(1.25rem, 0.9rem + 1.6vw, 1.8rem);
-  }
-  .method {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.45rem 0.65rem;
-    font-size: clamp(0.82rem, 0.74rem + 0.4vw, 1rem);
-    font-weight: 650;
-    color: var(--text);
-  }
-  .method b {
-    color: var(--accent);
-  }
-  .principles-values {
-    margin-top: 0.85rem;
-    font-size: clamp(0.68rem, 0.62rem + 0.25vw, 0.78rem);
-    color: var(--accent);
-  }
-  .open-to-work {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.65rem;
-    flex: none;
-    color: var(--accent);
-    font-size: 0.8rem;
-    white-space: nowrap;
-  }
-  .open-to-work > span {
-    width: 0.7rem;
-    height: 0.7rem;
-    border-radius: 999px;
-    background: var(--accent);
-    box-shadow: 0 0 0 4px var(--accent-soft);
-  }
-  @media (max-width: 800px) {
-    .principles-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+  @media (prefers-reduced-motion: no-preference) {
+    .stat {
+      opacity: 0;
+      animation: statIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
-    .principles-footer {
-      align-items: flex-start;
-      flex-direction: column;
-    }
-  }
-  @media (max-width: 480px) {
-    .principles-grid {
-      grid-template-columns: 1fr;
+    .stat:nth-child(1) { animation-delay: 0.05s; }
+    .stat:nth-child(2) { animation-delay: 0.13s; }
+    .stat:nth-child(3) { animation-delay: 0.21s; }
+    .stat:nth-child(4) { animation-delay: 0.29s; }
+    .stat:nth-child(5) { animation-delay: 0.37s; }
+    @keyframes statIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   }
 </style>
