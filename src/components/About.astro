@@ -24,7 +24,7 @@ const about = content[lang].about;
         about.highlights.map((h) => {
           const isCredential = /security\+/i.test(h.value);
           return (
-            <div class:list={["highlight", { "is-credential": isCredential }]}>
+            <div class:list={["card highlight", { "is-credential": isCredential }]}>
               <span class="highlight-label">
                 {isCredential && (
                   <Icon name="shieldCheck" size={14} class="highlight-ico" />
@@ -78,29 +78,6 @@ const about = content[lang].about;
     align-content: start;
     gap: 0.45rem;
     padding: clamp(0.95rem, 0.8rem + 0.6vw, 1.2rem) clamp(1rem, 0.85rem + 0.75vw, 1.3rem);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--surface);
-    transition: translate 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-  }
-  .highlight::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.9rem;
-    bottom: 0.9rem;
-    width: 3px;
-    border-radius: 999px;
-    background: var(--border);
-    transition: background 0.2s ease;
-  }
-  .highlight:hover {
-    translate: 0 -3px;
-    border-color: var(--accent);
-    box-shadow: var(--shadow);
-  }
-  .highlight:hover::before {
-    background: var(--accent);
   }
   .highlight.is-credential {
     border-color: var(--accent);
