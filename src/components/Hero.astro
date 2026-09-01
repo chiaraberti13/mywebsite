@@ -290,6 +290,16 @@ const h = content[lang].hero;
       100% { opacity: 0; transform: translateY(-0.4em); }
     }
   }
+  @media (max-width: 560px) {
+    .hero-roles {
+      min-height: 3.2em;
+    }
+    .hero-roles .role {
+      width: 100%;
+      line-height: 1.45;
+    }
+  }
+
   /* Fallback senza animazione: lista statica con separatori */
   @media (prefers-reduced-motion: reduce) {
     .hero-roles {
