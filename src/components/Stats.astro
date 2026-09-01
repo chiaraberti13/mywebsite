@@ -1,138 +1,155 @@
 ---
-/**
- * Tre prove immediate per chi valuta il profilo: un risultato misurabile,
- * i progetti pubblicati e le credenziali conseguite.
- */
-import { content } from "@/data/content";
-import { useTranslations } from "@/i18n/ui";
 import type { Locale } from "@/config/site";
-import { getProjects } from "@/lib/content";
 
 interface Props { lang: Locale }
 const { lang } = Astro.props;
-const t = useTranslations(lang);
-const c = content[lang];
-const projectsCount = (await getProjects(lang)).length;
-const certCount = c.curriculum.certifications.items.length;
 
-const items = [
-  { value: 80, label: t("stats.efficiency"), prefix: ">", suffix: "%" },
-  { value: projectsCount, label: t("stats.projects"), prefix: "", suffix: "" },
-  { value: certCount, label: t("stats.certifications"), prefix: "", suffix: "" },
-  { value: 10, label: t("stats.experience"), prefix: "", suffix: "+" },
-  { value: c.skills.length, label: t("stats.skillAreas"), prefix: "", suffix: "" },
-];
+const principles = lang === "it"
+  ? [
+      { key: "CURIOSITÀ", value: "sempre_attiva" },
+      { key: "APPRENDIMENTO", value: "continuo" },
+      { key: "ETICA", value: "non_negoziabile" },
+      { key: "LAVORO DI SQUADRA", value: "naturale" },
+      { key: "ADATTABILITÀ", value: "attiva" },
+    ]
+  : [
+      { key: "CURIOSITY", value: "always_on" },
+      { key: "LEARNING", value: "continuous" },
+      { key: "ETHICS", value: "non_negotiable" },
+      { key: "TEAMWORK", value: "built_in" },
+      { key: "ADAPTABILITY", value: "active" },
+    ];
+
+const method = lang === "it"
+  ? ["CAPIRE", "COSTRUIRE", "TESTARE", "MIGLIORARE"]
+  : ["UNDERSTAND", "BUILD", "TEST", "IMPROVE"];
 ---
-<div class="stats-wrap">
-<ul class="stats" role="list" data-stats>
-  {
-    items.map((s) => (
-      <li class="stat">
-        <span class="stat-value">
-          {s.prefix}<span class="stat-num" data-to={s.value}>{s.value}</span>{s.suffix}
-        </span>
-        <span class="stat-label">{s.label}</span>
+<div class="principles" data-reveal>
+  <p class="principles-command"><span aria-hidden="true">$</span> cat principles.conf</p>
+
+  <ul class="principles-grid" role="list">
+    {principles.map((item) => (
+      <li>
+        <span class="principle-key">{item.key}</span>
+        <span class="principle-value">{item.value}</span>
       </li>
-    ))
-  }
-</ul>
+    ))}
+  </ul>
+
+  <div class="principles-footer">
+    <div>
+      <p class="method" aria-label={method.join(", ")}>
+        {method.map((step, index) => (
+          <>
+            <span>{step}</span>
+            {index < method.length - 1 && <b aria-hidden="true">→</b>}
+          </>
+        ))}
+      </p>
+      <p class="principles-values">
+        {lang === "it"
+          ? "ETICA · CURIOSITÀ · APPRENDIMENTO CONTINUO"
+          : "ETHICS · CURIOSITY · CONTINUOUS LEARNING"}
+      </p>
+    </div>
+    <p class="open-to-work"><span aria-hidden="true"></span> OPEN TO WORK</p>
+  </div>
 </div>
 
 <style>
-  /* Container query: la riga si adatta allo spazio che ha davvero
-     (2×2 in colonna stretta, 4 in linea a piena larghezza) invece di
-     seguire la larghezza della finestra. */
-  .stats-wrap {
-    container-type: inline-size;
-  }
-  .stats {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .principles {
+    padding: clamp(1.25rem, 0.9rem + 1.8vw, 2rem);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    background: var(--border);
+    background: var(--surface);
+    font-family: var(--font-mono);
     overflow: hidden;
   }
-  @container (min-width: 34rem) {
-    .stats {
+  .principles-command {
+    margin-bottom: clamp(1.4rem, 1rem + 2vw, 2.2rem);
+    font-size: clamp(1.15rem, 0.95rem + 1vw, 1.6rem);
+    color: var(--accent-text);
+  }
+  .principles-command > span {
+    margin-right: 0.6rem;
+    color: var(--accent);
+  }
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(1rem, 0.6rem + 1.5vw, 2rem);
+    margin: 0;
+    padding: 0 0 clamp(1.5rem, 1rem + 2vw, 2.2rem);
+    list-style: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .principles-grid li {
+    display: grid;
+    gap: 0.65rem;
+    min-width: 0;
+  }
+  .principle-key {
+    font-size: clamp(0.68rem, 0.62rem + 0.25vw, 0.82rem);
+    color: var(--accent);
+    letter-spacing: 0.03em;
+  }
+  .principle-value {
+    font-size: clamp(0.95rem, 0.82rem + 0.55vw, 1.25rem);
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+  .principles-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-top: clamp(1.25rem, 0.9rem + 1.6vw, 1.8rem);
+  }
+  .method {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem 0.65rem;
+    font-size: clamp(0.82rem, 0.74rem + 0.4vw, 1rem);
+    font-weight: 650;
+    color: var(--text);
+  }
+  .method b {
+    color: var(--accent);
+  }
+  .principles-values {
+    margin-top: 0.85rem;
+    font-size: clamp(0.68rem, 0.62rem + 0.25vw, 0.78rem);
+    color: var(--accent);
+  }
+  .open-to-work {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex: none;
+    color: var(--accent);
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+  .open-to-work > span {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+  @media (max-width: 800px) {
+    .principles-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-  }
-  @container (min-width: 62rem) {
-    .stats {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+    .principles-footer {
+      align-items: flex-start;
+      flex-direction: column;
     }
   }
-  .stat {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    padding: clamp(0.9rem, 0.75rem + 0.8vw, 1.35rem);
-    background: var(--surface);
-    transition: background 0.2s ease;
-  }
-  .stat:hover {
-    background: var(--accent-soft);
-  }
-  .stat-value {
-    font-size: clamp(1.75rem, 1.3rem + 2vw, 2.6rem);
-    font-weight: 700;
-    line-height: 1;
-    letter-spacing: -0.02em;
-    color: var(--accent);
-    font-variant-numeric: tabular-nums;
-  }
-  .stat-label {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    line-height: 1.35;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-wrap: balance;
-    hyphens: none;
+  @media (max-width: 480px) {
+    .principles-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
-
-<script>
-  // Conteggio animato: parte quando la riga entra in viewport.
-  const row = document.querySelector<HTMLElement>("[data-stats]");
-  const nums = row ? Array.from(row.querySelectorAll<HTMLElement>(".stat-num")) : [];
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  if (row && nums.length && !reduce && "IntersectionObserver" in window) {
-    const run = () => {
-      nums.forEach((el) => {
-        const to = Number(el.dataset.to ?? "0");
-        if (!to) return;
-        const dur = 1100;
-        const start = performance.now();
-        const tick = (now: number) => {
-          const p = Math.min(1, (now - start) / dur);
-          // easeOutCubic
-          const eased = 1 - Math.pow(1 - p, 3);
-          el.textContent = String(Math.round(to * eased));
-          if (p < 1) requestAnimationFrame(tick);
-        };
-        el.textContent = "0";
-        requestAnimationFrame(tick);
-      });
-    };
-    const io = new IntersectionObserver(
-      (entries, obs) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            run();
-            obs.disconnect();
-          }
-        });
-      },
-      { threshold: 0.4 },
-    );
-    io.observe(row);
-  }
-</script>
