@@ -19,6 +19,8 @@ const items = [
   { value: 80, label: t("stats.efficiency"), prefix: ">", suffix: "%" },
   { value: projectsCount, label: t("stats.projects"), prefix: "", suffix: "" },
   { value: certCount, label: t("stats.certifications"), prefix: "", suffix: "" },
+  { value: 10, label: t("stats.experience"), prefix: "", suffix: "+" },
+  { value: c.skills.length, label: t("stats.skillAreas"), prefix: "", suffix: "" },
 ];
 ---
 <div class="stats-wrap">
@@ -57,7 +59,12 @@ const items = [
   }
   @container (min-width: 34rem) {
     .stats {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @container (min-width: 62rem) {
+    .stats {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
     }
   }
   .stat {
