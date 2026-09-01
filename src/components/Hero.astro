@@ -14,7 +14,6 @@ const h = content[lang].hero;
 <section class="hero">
   <div class="container hero-inner">
     <div class="hero-text">
-      <p class="eyebrow">{h.eyebrow}</p>
       <h1 class="hero-title">{h.headline}</h1>
 
       <p class="hero-badge">
@@ -215,7 +214,7 @@ const h = content[lang].hero;
     max-width: 40rem;
   }
   .hero-title {
-    margin-top: 1rem;
+    margin-top: 0;
     max-width: 18ch;
   }
 
@@ -249,7 +248,7 @@ const h = content[lang].hero;
     letter-spacing: 0.04em;
   }
 
-  /* ── Ruoli a rotazione (crossfade) ─────────────────────────── */
+  /* ── Aree a rotazione (crossfade) ──────────────────────────── */
   .hero-roles {
     position: relative;
     margin-top: 1.25rem;
@@ -272,16 +271,17 @@ const h = content[lang].hero;
     flex: none;
   }
   @media (prefers-reduced-motion: no-preference) {
-    /* 3 ruoli · 2.8s ciascuno = ciclo di 8.4s */
+    /* 4 aree · 3s ciascuna = ciclo di 12s */
     .hero-roles .role {
       position: absolute;
       inset: 0;
       opacity: 0;
-      animation: roleCycle 8.4s infinite;
+      animation: roleCycle 12s infinite;
     }
     .hero-roles .role:nth-child(1) { animation-delay: 0s; }
-    .hero-roles .role:nth-child(2) { animation-delay: 2.8s; }
-    .hero-roles .role:nth-child(3) { animation-delay: 5.6s; }
+    .hero-roles .role:nth-child(2) { animation-delay: 3s; }
+    .hero-roles .role:nth-child(3) { animation-delay: 6s; }
+    .hero-roles .role:nth-child(4) { animation-delay: 9s; }
     @keyframes roleCycle {
       0%   { opacity: 0; transform: translateY(0.4em); }
       6%   { opacity: 1; transform: translateY(0); }
@@ -290,26 +290,13 @@ const h = content[lang].hero;
       100% { opacity: 0; transform: translateY(-0.4em); }
     }
   }
-  /* Elenco stabile e responsive: evita sovrapposizioni quando le voci vanno a capo. */
-  .hero-roles {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.55rem 1rem;
-    min-height: 0;
-    line-height: 1.45;
-  }
-  .hero-roles .role {
-    position: static !important;
-    inset: auto !important;
-    opacity: 1 !important;
-    transform: none !important;
-    animation: none !important;
-    white-space: nowrap;
-  }
-  @media (max-width: 420px) {
+  @media (max-width: 560px) {
+    .hero-roles {
+      min-height: 3.2em;
+    }
     .hero-roles .role {
-      white-space: normal;
+      width: 100%;
+      line-height: 1.45;
     }
   }
 
@@ -689,7 +676,6 @@ const h = content[lang].hero;
     .hero-text > * {
       animation: heroIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
-    .hero-text > .eyebrow      { animation-delay: 0.05s; }
     .hero-text > .hero-title   { animation-delay: 0.13s; }
     .hero-text > .hero-badge   { animation-delay: 0.21s; }
     .hero-text > .hero-roles   { animation-delay: 0.29s; }
