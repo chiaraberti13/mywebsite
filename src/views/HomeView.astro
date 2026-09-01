@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Hero from "@/components/Hero.astro";
 import About from "@/components/About.astro";
+import Aptitude from "@/components/Aptitude.astro";
 import Skills from "@/components/Skills.astro";
 import SectionHeader from "@/components/SectionHeader.astro";
 import Stats from "@/components/Stats.astro";
@@ -30,6 +31,8 @@ const desc = content[lang].hero.subheadline;
   </section>
 
   <About lang={lang} />
+
+  <Aptitude lang={lang} />
 
   <section class="section section--tight values-section" id="values">
     <div class="container values-layout">
