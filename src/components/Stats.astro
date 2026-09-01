@@ -23,7 +23,7 @@ const items = lang === "it"
 <div class="stats-wrap">
   <ul class="stats" role="list">
     {items.map((item) => (
-      <li class="stat">
+      <li class="card stat">
         <span class="stat-label">{item.label}</span>
         <span class="stat-value">{item.value}</span>
       </li>
@@ -60,29 +60,6 @@ const items = lang === "it"
     gap: 0.55rem;
     min-width: 0;
     padding: clamp(1rem, 0.8rem + 1vw, 1.35rem);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--surface);
-    transition: translate 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-  }
-  .stat::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.9rem;
-    bottom: 0.9rem;
-    width: 3px;
-    border-radius: 999px;
-    background: var(--border);
-    transition: background 0.2s ease;
-  }
-  .stat:hover {
-    translate: 0 -3px;
-    border-color: var(--accent);
-    box-shadow: var(--shadow);
-  }
-  .stat:hover::before {
-    background: var(--accent);
   }
   .stat-label {
     font-family: var(--font-mono);
