@@ -1,32 +1,36 @@
 ---
 title: "OSI Cyber Explorer"
-summary: "A bilingual, interactive platform for in-depth study of the OSI model and its security implications, layer by layer."
+summary: "An interactive bilingual lab for exploring the seven OSI layers, packet encapsulation, network attacks and their corresponding defenses."
 lang: "en"
 date: 2026-07-27
+category: "network-security"
 featured: true
-status: "complete"
-tags: ["TypeScript", "Networking", "Security"]
+status: "active"
+tags: ["Network security", "TypeScript", "React", "OSI model", "Networking"]
 links:
-  github: "https://github.com/chiaraberti13/OSI-Cyber-Explorer"
+  github: "https://github.com/chiaraberti13/OSI-CYBER-EXPLORER"
+  live: "https://osi-cyber-explorer.vercel.app"
 ---
 
-OSI Cyber Explorer is a **bilingual, interactive** platform dedicated to the
-in-depth study of the **OSI model** (Open Systems Interconnection) and its
-**security implications**. It makes a fundamental theoretical model tangible,
-connecting each layer to the threats and defenses that belong to it.
+An **interactive, bilingual lab** that makes the seven OSI layers explorable
+and connects each layer to protocols, encapsulation, attack surfaces and
+defensive controls.
 
-### What it does
-- **Layer-by-layer** exploration of the OSI model, focused on the **security
-  implications** of each level.
-- **Bilingual** content (Italian/English) for accessible study.
-- An **interactive** approach that turns networking theory into a concrete
-  learning path.
+### Main features
 
-### How it's built
-A **TypeScript** application built to teach: the layered structure of the OSI
-model is reflected in how the content and interface are organized.
+- Guided exploration of all seven OSI layers.
+- Packet-encapsulation visualization.
+- Mapping between network attacks and relevant defenses.
+- Educational content in Italian and English.
 
-### My role
-Concept, design and development of the platform, writing the bilingual content and
-mapping OSI layers to attack surfaces. A bridge between **networking and
-cybersecurity**.
+### Architecture
+
+A deterministic client-side application built with **React and TypeScript**,
+supported by tests and continuous integration to keep the learning experience
+reliable.
+
+### My contribution
+
+Concept, interface design, development and bilingual content structure. The
+specific category is **network security**, which is more accurate than a broad
+cybersecurity label.

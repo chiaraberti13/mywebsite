@@ -1,29 +1,36 @@
 ---
 title: "CompTIA Security+ SY0-701 — Piattaforma di studio"
-summary: "Web app full-stack per la preparazione intensiva all'esame CompTIA Security+ SY0-701, con studio strutturato sui domini della certificazione."
+summary: "Piattaforma full-stack bilingue per preparare Security+ SY0-701 con checklist dei domini, glossario, simulazione d'esame e trainer assistito dall'AI."
 lang: "it"
 date: 2026-07-27
-featured: false
-tags: ["TypeScript", "Full-stack", "Sicurezza"]
+category: "cybersecurity-learning"
+featured: true
+status: "active"
+tags: ["Formazione cybersecurity", "TypeScript", "React", "Express", "Gemini"]
 links:
-  github: "https://github.com/chiaraberti13/CompTIA-Security-SY0-701"
+  github: "https://github.com/chiaraberti13/COMPTIA-SECURITY-SY0-701"
+  live: "https://comp-tia-security-sy-0-701.vercel.app"
 ---
 
-Una **web app full-stack** pensata per la preparazione intensiva all'esame
-**CompTIA Security+ SY0-701**, una delle certificazioni di riferimento per chi
-entra nella sicurezza informatica. Nasce dal mio percorso di studio e trasforma
-il ripasso in un'esperienza interattiva e misurabile.
+Ambiente di studio **bilingue e full-stack** dedicato alla preparazione
+dell'esame **CompTIA Security+ SY0-701**. Trasforma il programma della
+certificazione in un percorso consultabile, verificabile e misurabile.
 
-### Cosa fa
-- Studio strutturato sui **domini della certificazione** SY0-701.
-- Percorso di preparazione **interattivo**, per fissare i concetti e monitorare
-  i progressi verso l'esame.
+### Funzioni principali
 
-### Come è fatta
-Applicazione **full-stack in TypeScript**, con la stessa tipizzazione forte end-to-end
-usata per rendere il codice affidabile e manutenibile.
+- Checklist organizzate secondo i domini ufficiali dell'esame.
+- Glossario e contenuti di ripasso in italiano e inglese.
+- Simulazione d'esame e trainer assistito dall'AI.
+- Possibilità di esecuzione autonoma con impostazione privacy-first.
 
-### Il mio ruolo
-Progettazione e sviluppo dell'applicazione e organizzazione dei contenuti di
-studio. Un progetto che unisce il **learning by building** alla preparazione di
-una certificazione di cybersecurity.
+### Architettura
+
+Frontend in **React e TypeScript**, backend **Express** e proxy server-side per
+l'integrazione con Gemini: le credenziali dell'API non vengono esposte al
+browser.
+
+### Il mio contributo
+
+Progettazione del prodotto, sviluppo full-stack, organizzazione dei contenuti e
+integrazione del trainer. La categoria corretta è **formazione cybersecurity**:
+è una piattaforma didattica, non uno strumento di pentesting.

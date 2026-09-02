@@ -8,57 +8,50 @@ export function slugOf(id: string): string {
   return parts[parts.length - 1];
 }
 
-/* ─────────────────────────────────────────────────────────────
- *  CATEGORIE PROGETTI (filtri rapidi)
- *  Unica fonte di verità: 4 macro-categorie + mappa progetto→categorie.
- *  Per aggiungere/ricategorizzare un progetto basta modificare qui,
- *  usando lo slug (nome del file .md senza estensione).
- * ───────────────────────────────────────────────────────────── */
+/* Macro-categorie professionali usate nei filtri della pagina progetti.
+ * La categoria effettiva vive nel frontmatter di ciascun progetto, così
+ * contenuto, card e filtri condividono la stessa fonte di verità.
+ */
 export const PROJECT_CATEGORIES = [
-  { key: "cybersecurity", it: "Cybersecurity", en: "Cybersecurity" },
-  { key: "automazione", it: "Automazione", en: "Automation" },
-  { key: "pentesting", it: "Pentesting", en: "Pentesting" },
-  { key: "algoritmi", it: "Algoritmi", en: "Algorithms" },
+  {
+    key: "cybersecurity-learning",
+    it: "Formazione cybersecurity",
+    en: "Cybersecurity learning",
+  },
+  {
+    key: "network-security",
+    it: "Sicurezza delle reti",
+    en: "Network security",
+  },
+  { key: "sdr-radio", it: "SDR e radio", en: "SDR & radio" },
+  {
+    key: "automation-utilities",
+    it: "Automazione e utility",
+    en: "Automation & utilities",
+  },
 ] as const;
 
 export type ProjectCategoryKey = (typeof PROJECT_CATEGORIES)[number]["key"];
 
-const CATEGORY_BY_SLUG: Record<string, ProjectCategoryKey[]> = {
-  "osi-cyber-explorer": ["cybersecurity"],
-  "vulnerability-assessment-platform": ["pentesting", "cybersecurity"],
-  "tetra-ear": ["pentesting", "cybersecurity"],
-  "comptia-security-plus": ["cybersecurity"],
-  "pdf-datasheet-generator": ["automazione"],
-  "pris-mea": ["automazione"],
-  "rfnm-sdrpp-setup": ["automazione"],
-  "barcode-eps-generator": ["algoritmi"],
-  "php-image-converter": ["algoritmi"],
-};
-
-/** Categorie di un progetto dal suo slug (vuoto se non mappato). */
-export function categoriesOf(slug: string): ProjectCategoryKey[] {
-  return CATEGORY_BY_SLUG[slug] ?? [];
-}
-
 /** Etichetta localizzata di una categoria. */
 export function categoryLabel(key: string, lang: Locale): string {
-  const c = PROJECT_CATEGORIES.find((x) => x.key === key);
-  return c ? c[lang] : key;
+  const category = PROJECT_CATEGORIES.find((item) => item.key === key);
+  return category ? category[lang] : key;
 }
 
 export async function getProjects(lang: Locale): Promise<CollectionEntry<"projects">[]> {
-  const items = await getCollection("projects", (e) => e.data.lang === lang);
+  const items = await getCollection("projects", (entry) => entry.data.lang === lang);
   return items.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 }
 
 export async function getFeaturedProjects(lang: Locale): Promise<CollectionEntry<"projects">[]> {
-  return (await getProjects(lang)).filter((p) => p.data.featured);
+  return (await getProjects(lang)).filter((project) => project.data.featured);
 }
 
 export async function getJournal(lang: Locale): Promise<CollectionEntry<"journal">[]> {
   const items = await getCollection(
     "journal",
-    (e) => e.data.lang === lang && e.data.draft !== true,
+    (entry) => entry.data.lang === lang && entry.data.draft !== true,
   );
   return items.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 }
@@ -69,7 +62,7 @@ export async function getLongform(
 ): Promise<CollectionEntry<"longform"> | undefined> {
   const items = await getCollection(
     "longform",
-    (e) => e.data.lang === lang && e.data.page === page,
+    (entry) => entry.data.lang === lang && entry.data.page === page,
   );
   return items[0];
 }

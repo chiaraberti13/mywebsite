@@ -2,19 +2,33 @@
 import type { CollectionEntry } from "astro:content";
 import Icon from "./Icon.astro";
 import ProjectCover from "./ProjectCover.astro";
-import { slugOf, categoriesOf } from "@/lib/content";
+import { slugOf, categoryLabel } from "@/lib/content";
 
 interface Props {
   project: CollectionEntry<"projects">;
   href: string;
 }
 const { project, href } = Astro.props;
-const { title, summary, tags, cover, links, status, lang } = project.data;
+const { title, summary, tags, cover, links, status, lang, category: categoryKey } = project.data;
 const statusLabels =
   lang === "it"
-    ? { production: "In produzione", complete: "Completato", beta: "Beta", lab: "Laboratorio" }
-    : { production: "Production", complete: "Complete", beta: "Beta", lab: "Lab" };
-const categories = categoriesOf(slugOf(project.id));
+    ? {
+        active: "Attivo",
+        maintained: "Mantenuto",
+        production: "In produzione",
+        complete: "Completato",
+        beta: "Beta",
+        lab: "Laboratorio",
+      }
+    : {
+        active: "Active",
+        maintained: "Maintained",
+        production: "Production",
+        complete: "Complete",
+        beta: "Beta",
+        lab: "Lab",
+      };
+const category = categoryLabel(categoryKey, lang);
 
 const platformIcon: Record<string, string> = {
   github: "github",
@@ -30,12 +44,9 @@ const platformLabel: Record<string, string> = {
   instagram: "Instagram",
   live: "Live",
 };
-const linkEntries = Object.entries(links).filter(([, v]) => Boolean(v)) as [
-  string,
-  string,
-][];
+const linkEntries = Object.entries(links).filter(([, value]) => Boolean(value)) as [string, string][];
 ---
-<article class="card card--link project-card" data-categories={categories.join("|")}>
+<article class="card card--link project-card" data-category={categoryKey}>
   <a href={href} class="project-cover-link" tabindex="-1" aria-hidden="true">
     <ProjectCover tags={tags} cover={cover} seed={slugOf(project.id)} />
     <span class="project-cover-arrow" aria-hidden="true">
@@ -43,7 +54,10 @@ const linkEntries = Object.entries(links).filter(([, v]) => Boolean(v)) as [
     </span>
   </a>
   <div class="project-body">
-    {status && <p class={`project-status project-status--${status}`}>{statusLabels[status]}</p>}
+    <div class="project-meta">
+      <p class="project-category">{category}</p>
+      {status && <p class={`project-status project-status--${status}`}>{statusLabels[status]}</p>}
+    </div>
     <h3 class="project-title">
       <a href={href}>{title}</a>
     </h3>
@@ -88,10 +102,6 @@ const linkEntries = Object.entries(links).filter(([, v]) => Boolean(v)) as [
     padding: 0;
     overflow: hidden;
   }
-  /* Inclinazione 3D leggera che segue il puntatore. Il `transform` è
-     impostato dallo script via CSSOM: il reveal globale usa la stessa
-     proprietà, quindi una regola nel foglio di stile verrebbe sovrascritta.
-     Qui resta solo la transizione di rientro. */
   .project-card.has-tilt {
     transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
       border-color 0.2s ease, box-shadow 0.2s ease;
@@ -139,6 +149,13 @@ const linkEntries = Object.entries(links).filter(([, v]) => Boolean(v)) as [
     gap: 0.85rem;
     padding: clamp(1.2rem, 1rem + 1vw, 1.6rem);
   }
+  .project-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .project-category,
   .project-status {
     width: fit-content;
     padding: 0.22rem 0.55rem;
@@ -146,6 +163,12 @@ const linkEntries = Object.entries(links).filter(([, v]) => Boolean(v)) as [
     font-family: var(--font-mono);
     font-size: 0.68rem;
     letter-spacing: 0.04em;
+  }
+  .project-category {
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .project-status {
     text-transform: uppercase;
     color: var(--accent-text);
     background: var(--accent-soft);
@@ -199,23 +222,19 @@ const linkEntries = Object.entries(links).filter(([, v]) => Boolean(v)) as [
 </style>
 
 <script>
-  // Tilt 3D leggero sulle card progetto: solo puntatori fini e solo se
-  // l'utente non ha chiesto meno movimento. Il transform è applicato inline
-  // via CSSOM (CSP-safe) perché il reveal globale usa la stessa proprietà.
   const fine = window.matchMedia("(pointer: fine)").matches;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (fine && !reduce) {
     document.querySelectorAll<HTMLElement>(".project-card").forEach((card) => {
       let raf = 0;
-      card.addEventListener("pointermove", (e) => {
-        // durante il riflusso del filtro il transform è gestito dal FLIP
+      card.addEventListener("pointermove", (event) => {
         if (card.classList.contains("is-moving")) return;
         if (raf) return;
         raf = requestAnimationFrame(() => {
-          const r = card.getBoundingClientRect();
-          const tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
-          const ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+          const rect = card.getBoundingClientRect();
+          const tx = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+          const ty = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
           card.classList.add("has-tilt");
           card.style.transform = `perspective(900px) rotateX(${(-ty * 3).toFixed(2)}deg) rotateY(${(tx * 3).toFixed(2)}deg)`;
           raf = 0;

@@ -1,37 +1,33 @@
 ---
-title: "TetraEar — Installer e toolkit TETRA per SDR"
-summary: "Installer e toolkit per configurare TetraEar e la catena RTL-SDR su Linux e Windows, con analisi dei canali, decodifica del traffico in chiaro e riconoscimento della cifratura."
+title: "TetraEar — Ambiente di analisi TETRA per SDR"
+summary: "Ambiente automatizzato per installare, eseguire e diagnosticare TetraEar con RTL-SDR su Ubuntu, Debian e Windows."
 lang: "it"
-date: 2026-07-24
+date: 2026-07-13
+category: "sdr-radio"
 featured: true
-status: "lab"
-tags: ["Python", "SDR", "Sicurezza"]
+status: "active"
+tags: ["SDR e radio", "Python", "RTL-SDR", "TETRA", "Linux"]
 links:
   github: "https://github.com/chiaraberti13/TetraEarUbuntu"
 ---
 
-Questo progetto fornisce installer e strumenti di integrazione per **TetraEar**,
-decoder TETRA open source sviluppato a monte, e per la relativa catena
-**RTL-SDR**. L'obiettivo è rendere riproducibile la configurazione su Linux e
-Windows, documentando dipendenze, codec, compatibilità hardware e limiti della
-decodifica.
+TetraEarUbuntu prepara un ambiente riproducibile per usare **TetraEar** con
+hardware **RTL-SDR** su Ubuntu, Debian e Windows.
 
-### Cosa fa
-- Installazione automatizzata di dipendenze, ambiente Python, codec ETSI e
-  configurazione RTL-SDR.
-- Decodifica vocale del traffico **in chiaro** e riconoscimento dei canali cifrati.
-- Integrazione opzionale con TELIVE-2 esclusivamente per chiavi già possedute:
-  nessun recupero o cracking delle chiavi.
-- Diagnostica, log e strumenti passivi per i metadati di rete.
+### Funzioni principali
 
-### Come è fatta
-Installer e utility in **Python e shell** che configurano il progetto upstream,
-applicano correzioni di compatibilità e preparano una catena riproducibile su
-Ubuntu, Debian e Windows tramite WSL2. L'uso è limitato ad attività autorizzate,
-didattiche e di ricerca.
+- Installazione guidata di dipendenze, ambiente Python e codec.
+- Configurazione della catena RTL-SDR.
+- Diagnostica e riparazione dell'ambiente.
+- Strumenti e documentazione per l'analisi autorizzata dei segnali TETRA.
 
-### Il mio ruolo
-Sviluppo degli installer, integrazione della pipeline RTL-SDR, patch di
-compatibilità, diagnostica, documentazione bilingue e collegamento degli strumenti
-complementari. Il decoder TetraEar resta correttamente attribuito al progetto
-upstream.
+### Architettura
+
+Automazione in **Python** e script di sistema coordinano componenti e
+dipendenze, riducendo gli errori tipici della configurazione manuale.
+
+### Il mio contributo
+
+Sviluppo degli installer, integrazione della pipeline, diagnostica, correzioni
+di compatibilità e documentazione. La categoria corretta è **SDR e radio**:
+il progetto riguarda ricezione e analisi di segnali, non pentesting.

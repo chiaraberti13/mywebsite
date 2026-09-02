@@ -5,26 +5,25 @@ import ProjectCard from "@/components/ProjectCard.astro";
 import ProjectFeatured from "@/components/ProjectFeatured.astro";
 import { type Locale } from "@/config/site";
 import { useTranslations, localePath } from "@/i18n/ui";
-import { getProjects, slugOf, categoriesOf, PROJECT_CATEGORIES, categoryLabel } from "@/lib/content";
+import { getProjects, slugOf, PROJECT_CATEGORIES, categoryLabel } from "@/lib/content";
 
 interface Props { lang: Locale }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const projects = await getProjects(lang);
-const featured = projects.find((p) => p.data.featured);
-const rest = featured ? projects.filter((p) => p.id !== featured.id) : projects;
-// Categorie presenti tra i progetti in griglia (nell'ordine definito)
-const present = new Set(rest.flatMap((p) => categoriesOf(slugOf(p.id))));
-const filterCats = PROJECT_CATEGORIES.filter((c) => present.has(c.key));
+const featured = projects.find((project) => project.data.featured);
+const rest = featured ? projects.filter((project) => project.id !== featured.id) : projects;
+const present = new Set(rest.map((project) => project.data.category));
+const filterCats = PROJECT_CATEGORIES.filter((category) => present.has(category.key));
 const allLabel = lang === "it" ? "Tutte" : "All";
 const desc =
   lang === "it"
-    ? "Progetti di Chiara Berti: sicurezza, automazione e design."
-    : "Chiara Berti's projects: security, automation and design.";
+    ? "Progetti di Chiara Berti tra formazione cybersecurity, sicurezza delle reti, SDR e automazione."
+    : "Chiara Berti's projects across cybersecurity learning, network security, SDR and automation.";
 const intro =
   lang === "it"
-    ? "Una selezione di lavori tra sicurezza, sviluppo full-stack e automazione."
-    : "A selection of work across security, full-stack development and automation.";
+    ? "Una selezione di progetti tra formazione cybersecurity, sicurezza delle reti, radio software-defined e strumenti di automazione."
+    : "Selected work across cybersecurity learning, network security, software-defined radio and automation tools.";
 ---
 <BaseLayout lang={lang} title={t("nav.projects")} description={desc}>
   <section class="section">
@@ -47,9 +46,9 @@ const intro =
             <button type="button" class="filter-pill is-active" data-filter="*" aria-pressed="true">
               {allLabel}
             </button>
-            {filterCats.map((c) => (
-              <button type="button" class="filter-pill" data-filter={c.key} aria-pressed="false">
-                {categoryLabel(c.key, lang)}
+            {filterCats.map((category) => (
+              <button type="button" class="filter-pill" data-filter={category.key} aria-pressed="false">
+                {categoryLabel(category.key, lang)}
               </button>
             ))}
             <span class="filter-count" data-filter-count aria-live="polite" />
@@ -64,8 +63,8 @@ const intro =
         data-count-many={t("projects.countMany")}
       >
         {
-          rest.map((p) => (
-            <ProjectCard project={p} href={localePath(lang, `/projects/${slugOf(p.id)}`)} />
+          rest.map((project) => (
+            <ProjectCard project={project} href={localePath(lang, `/projects/${slugOf(project.id)}`)} />
           ))
         }
       </div>
@@ -82,7 +81,6 @@ const intro =
   }
   .proj-filters {
     position: sticky;
-    /* allineata all'header compatto (3.5rem) così non resta un salto */
     top: 3.5rem;
     z-index: 10;
     display: flex;
@@ -126,12 +124,9 @@ const intro =
     color: var(--muted);
     padding: 2rem 0;
   }
-  /* Card nascosta dal filtro */
   :global(.project-card.is-hidden) {
     display: none;
   }
-  /* Riflusso animato della griglia (FLIP): le card che restano si
-     riposizionano con una transizione invece di saltare. */
   @media (prefers-reduced-motion: no-preference) {
     :global(.project-card.is-moving) {
       transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
@@ -166,24 +161,25 @@ const intro =
     setCount(cards.length);
 
     const apply = (filter: string) => {
-      // FLIP: memorizza la posizione di partenza delle card visibili…
       const first = new Map<HTMLElement, DOMRect>();
       if (!reduce) {
-        cards.forEach((c) => {
-          if (!c.classList.contains("is-hidden")) first.set(c, c.getBoundingClientRect());
+        cards.forEach((card) => {
+          if (!card.classList.contains("is-hidden")) first.set(card, card.getBoundingClientRect());
         });
       }
 
       let visible = 0;
-      const appeared: HTMLElement[] = [];
       cards.forEach((card) => {
-        const cats = (card.dataset.categories ?? "").split("|");
-        const show = filter === "*" || cats.includes(filter);
+        const show = filter === "*" || card.dataset.category === filter;
         const wasHidden = card.classList.contains("is-hidden");
         card.classList.toggle("is-hidden", !show);
         if (show) {
           visible++;
-          if (wasHidden) appeared.push(card);
+          if (wasHidden) {
+            card.classList.remove("is-entering");
+            void card.offsetWidth;
+            card.classList.add("is-entering");
+          }
         }
       });
       if (empty) empty.hidden = visible > 0;
@@ -191,17 +187,10 @@ const intro =
 
       if (reduce) return;
 
-      // …e le riporta visivamente al punto di partenza, per poi lasciarle
-      // scivolare nella nuova posizione.
       cards.forEach((card) => {
         if (card.classList.contains("is-hidden")) return;
         const prev = first.get(card);
-        if (!prev) {
-          card.classList.remove("is-entering");
-          void card.offsetWidth;
-          card.classList.add("is-entering");
-          return;
-        }
+        if (!prev) return;
         const next = card.getBoundingClientRect();
         const dx = prev.left - next.left;
         const dy = prev.top - next.top;
@@ -215,21 +204,21 @@ const intro =
       });
     };
 
-    cards.forEach((c) =>
-      c.addEventListener("transitionend", () => {
-        c.classList.remove("is-moving");
-        c.style.transform = "";
+    cards.forEach((card) =>
+      card.addEventListener("transitionend", () => {
+        card.classList.remove("is-moving");
+        card.style.transform = "";
       }),
     );
 
-    root.addEventListener("click", (e) => {
-      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>(".filter-pill");
-      if (!btn) return;
-      const filter = btn.dataset.filter ?? "*";
-      pills.forEach((p) => {
-        const on = p === btn;
-        p.classList.toggle("is-active", on);
-        p.setAttribute("aria-pressed", String(on));
+    root.addEventListener("click", (event) => {
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>(".filter-pill");
+      if (!button) return;
+      const filter = button.dataset.filter ?? "*";
+      pills.forEach((pill) => {
+        const active = pill === button;
+        pill.classList.toggle("is-active", active);
+        pill.setAttribute("aria-pressed", String(active));
       });
       apply(filter);
     });

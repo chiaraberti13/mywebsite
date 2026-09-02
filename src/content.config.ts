@@ -2,12 +2,18 @@
  * Content Collections (Astro 5 — Content Layer API).
  * I contenuti "lunghi" (progetti, articoli, lettera, privacy) sono file
  * Markdown validati da schemi Zod: aggiungere/modificare un file .md
- * aggiorna automaticamente il sito.  Il campo `lang` separa IT/EN.
+ * aggiorna automaticamente il sito. Il campo `lang` separa IT/EN.
  */
 import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
 const langField = z.enum(["it", "en"]);
+const projectCategory = z.enum([
+  "cybersecurity-learning",
+  "network-security",
+  "sdr-radio",
+  "automation-utilities",
+]);
 
 const projects = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/projects" }),
@@ -16,10 +22,13 @@ const projects = defineCollection({
     summary: z.string(),
     lang: langField,
     date: z.coerce.date(),
+    category: projectCategory,
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
     /** Stato dichiarato del progetto, mostrato nelle card e nel dettaglio */
-    status: z.enum(["production", "complete", "beta", "lab"]).optional(),
+    status: z
+      .enum(["active", "maintained", "production", "complete", "beta", "lab"])
+      .optional(),
     /** Immagine di copertina opzionale (percorso in /public, es. "/projects/foo.jpg") */
     cover: z.string().optional(),
     /** Link alle piattaforme: mostrati come badge sulla card */

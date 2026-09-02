@@ -1,33 +1,36 @@
 ---
 title: "OSI Cyber Explorer"
-summary: "Piattaforma interattiva e bilingue per lo studio approfondito del modello OSI e delle sue implicazioni di sicurezza, layer per layer."
+summary: "Laboratorio interattivo bilingue per esplorare i sette livelli OSI, l'incapsulamento dei pacchetti, gli attacchi di rete e le difese corrispondenti."
 lang: "it"
 date: 2026-07-27
+category: "network-security"
 featured: true
-status: "complete"
-tags: ["TypeScript", "Reti", "Sicurezza"]
+status: "active"
+tags: ["Sicurezza delle reti", "TypeScript", "React", "Modello OSI", "Networking"]
 links:
-  github: "https://github.com/chiaraberti13/OSI-Cyber-Explorer"
+  github: "https://github.com/chiaraberti13/OSI-CYBER-EXPLORER"
+  live: "https://osi-cyber-explorer.vercel.app"
 ---
 
-OSI Cyber Explorer è una piattaforma **interattiva e bilingue** dedicata allo
-studio approfondito del **modello OSI** (Open Systems Interconnection) e delle sue
-**implicazioni di sicurezza**. Rende tangibile un modello teorico fondamentale,
-collegando ogni livello alle minacce e alle difese che gli competono.
+Laboratorio **interattivo e bilingue** che rende esplorabili i sette livelli del
+modello OSI e collega ogni livello a protocolli, incapsulamento, superfici
+d'attacco e contromisure.
 
-### Cosa fa
-- Esplorazione **layer per layer** del modello OSI, con focus sulle **implicazioni
-  di sicurezza** di ciascun livello.
-- Contenuti **bilingue** (italiano/inglese), per uno studio accessibile.
-- Approccio **interattivo** che trasforma la teoria di rete in un percorso di
-  apprendimento concreto.
+### Funzioni principali
 
-### Come è fatta
-Applicazione in **TypeScript**, costruita per essere didattica: la struttura a
-livelli del modello OSI si riflette nell'organizzazione dei contenuti e
-dell'interfaccia.
+- Esplorazione guidata dei sette livelli OSI.
+- Visualizzazione dell'incapsulamento dei pacchetti.
+- Associazione tra attacchi di rete e difese pertinenti.
+- Contenuti didattici in italiano e inglese.
 
-### Il mio ruolo
-Ideazione, progettazione e sviluppo della piattaforma, stesura dei contenuti
-bilingue e mappatura tra livelli OSI e superfici d'attacco. Un ponte tra
-**networking e cybersecurity**.
+### Architettura
+
+Applicazione client-side in **React e TypeScript**, con comportamento
+deterministico, test e integrazione continua per mantenere affidabile
+l'esperienza didattica.
+
+### Il mio contributo
+
+Ideazione, progettazione dell'interfaccia, sviluppo e organizzazione dei
+contenuti bilingue. La categoria specifica è **sicurezza delle reti**, più
+precisa della generica etichetta cybersecurity.

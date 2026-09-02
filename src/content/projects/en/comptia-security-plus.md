@@ -1,29 +1,35 @@
 ---
 title: "CompTIA Security+ SY0-701 — Study platform"
-summary: "A full-stack web app for intensive preparation for the CompTIA Security+ SY0-701 exam, with structured study across the certification domains."
+summary: "A bilingual full-stack platform for Security+ SY0-701 preparation, with domain checklists, a glossary, exam simulation and an AI-assisted trainer."
 lang: "en"
 date: 2026-07-27
-featured: false
-tags: ["TypeScript", "Full-stack", "Security"]
+category: "cybersecurity-learning"
+featured: true
+status: "active"
+tags: ["Cybersecurity learning", "TypeScript", "React", "Express", "Gemini"]
 links:
-  github: "https://github.com/chiaraberti13/CompTIA-Security-SY0-701"
+  github: "https://github.com/chiaraberti13/COMPTIA-SECURITY-SY0-701"
+  live: "https://comp-tia-security-sy-0-701.vercel.app"
 ---
 
-A **full-stack web app** built for intensive preparation for the **CompTIA
-Security+ SY0-701** exam, one of the reference certifications for people entering
-information security. It grew out of my own study path and turns revision into an
-interactive, measurable experience.
+A **bilingual, full-stack study environment** for the **CompTIA Security+
+SY0-701** exam. It turns the certification syllabus into a structured,
+searchable and measurable preparation path.
 
-### What it does
-- Structured study across the **certification domains** of SY0-701.
-- An **interactive** preparation path to lock in concepts and track progress
-  toward the exam.
+### Main features
 
-### How it's built
-A **full-stack TypeScript** application, using strong end-to-end typing to keep
-the code reliable and maintainable.
+- Checklists organized around the official exam domains.
+- Italian and English glossary and revision material.
+- Exam simulation and an AI-assisted trainer.
+- Self-hosting support with a privacy-first approach.
 
-### My role
-Design and development of the application and organization of the study content.
-A project that combines **learning by building** with preparing for a
-cybersecurity certification.
+### Architecture
+
+A **React and TypeScript** frontend, an **Express** backend and a server-side
+proxy for Gemini keep API credentials out of the browser.
+
+### My contribution
+
+Product design, full-stack development, content structure and trainer
+integration. The accurate category is **cybersecurity learning**: this is an
+educational platform, not a penetration-testing tool.

@@ -6,6 +6,7 @@ import Breadcrumb from "@/components/Breadcrumb.astro";
 import { render, type CollectionEntry } from "astro:content";
 import { type Locale } from "@/config/site";
 import { useTranslations, localePath } from "@/i18n/ui";
+import { categoryLabel } from "@/lib/content";
 
 interface Props {
   lang: Locale;
@@ -13,11 +14,26 @@ interface Props {
 }
 const { lang, project } = Astro.props;
 const t = useTranslations(lang);
-const { title, summary, tags, links, cover, status } = project.data;
+const { title, summary, tags, links, cover, status, category: categoryKey } = project.data;
+const category = categoryLabel(categoryKey, lang);
 const statusLabels =
   lang === "it"
-    ? { production: "In produzione", complete: "Completato", beta: "Beta", lab: "Laboratorio" }
-    : { production: "Production", complete: "Complete", beta: "Beta", lab: "Lab" };
+    ? {
+        active: "Attivo",
+        maintained: "Mantenuto",
+        production: "In produzione",
+        complete: "Completato",
+        beta: "Beta",
+        lab: "Laboratorio",
+      }
+    : {
+        active: "Active",
+        maintained: "Maintained",
+        production: "Production",
+        complete: "Complete",
+        beta: "Beta",
+        lab: "Lab",
+      };
 const { Content } = await render(project);
 
 const platformIcon: Record<string, string> = {
@@ -34,7 +50,7 @@ const platformLabel: Record<string, string> = {
   instagram: "Instagram",
   live: "Live",
 };
-const linkEntries = Object.entries(links).filter(([, v]) => Boolean(v)) as [string, string][];
+const linkEntries = Object.entries(links).filter(([, value]) => Boolean(value)) as [string, string][];
 ---
 <BaseLayout lang={lang} title={title} description={summary} image={cover}>
   <article class="section">
@@ -48,13 +64,16 @@ const linkEntries = Object.entries(links).filter(([, v]) => Boolean(v)) as [stri
       />
 
       <header class="detail-head">
-        {status && <p class="detail-status">{statusLabels[status]}</p>}
+        <div class="detail-meta">
+          <p class="detail-category">{category}</p>
+          {status && <p class="detail-status">{statusLabels[status]}</p>}
+        </div>
         <h1>{title}</h1>
         <p class="lead">{summary}</p>
         {
           tags.length > 0 && (
             <ul class="detail-tags" role="list">
-              {tags.map((tg) => <li class="tag">{tg}</li>)}
+              {tags.map((tag) => <li class="tag">{tag}</li>)}
             </ul>
           )
         }
@@ -82,13 +101,25 @@ const linkEntries = Object.entries(links).filter(([, v]) => Boolean(v)) as [stri
 </BaseLayout>
 
 <style>
+  .detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .detail-category,
   .detail-status {
     width: fit-content;
-    margin-bottom: 0.75rem;
     padding: 0.25rem 0.65rem;
     border-radius: 999px;
     font-family: var(--font-mono);
     font-size: 0.72rem;
+  }
+  .detail-category {
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .detail-status {
     color: var(--accent-text);
     background: var(--accent-soft);
   }
