@@ -9,11 +9,24 @@
   <img src="https://img.shields.io/badge/deploy-Vercel-000000?style=flat-square" alt="Vercel">
 </p>
 
-> Portfolio personale bilingue dedicato a cybersecurity, automazione, Linux e apprendimento continuo.
+> Portfolio personale bilingue dedicato a formazione cybersecurity, sicurezza delle reti, software-defined radio e automazione.
 
-<p align="center"><a href="https://chiaraberti.cloud"><strong>Sito live</strong></a> · <a href="SECURITY.md">Sicurezza</a> · <a href="LICENSE">Licenza</a></p>
+<p align="center"><a href="https://www.chiaraberti.cloud"><strong>Sito live</strong></a> · <a href="SECURITY.md">Sicurezza</a> · <a href="LICENSE">Licenza</a></p>
 
 ---
+
+## Selezione attuale dei progetti
+
+Il portfolio riporta al momento i sei repository in evidenza sul profilo GitHub. La selezione è temporanea e potrà essere rivista in seguito senza cambiare il modello delle categorie.
+
+| Progetto | Categoria | Ambito |
+| --- | --- | --- |
+| [COMPTIA-SECURITY-SY0-701](https://github.com/chiaraberti13/COMPTIA-SECURITY-SY0-701) | Formazione cybersecurity | Piattaforma bilingue per Security+ SY0-701 |
+| [OSI-CYBER-EXPLORER](https://github.com/chiaraberti13/OSI-CYBER-EXPLORER) | Sicurezza delle reti | Laboratorio interattivo su OSI, attacchi e difese |
+| [TetraEarUbuntu](https://github.com/chiaraberti13/TetraEarUbuntu) | SDR e radio | Ambiente automatizzato TetraEar e RTL-SDR |
+| [OsmoTetraUbuntu](https://github.com/chiaraberti13/OsmoTetraUbuntu) | SDR e radio | Ambiente guidato Ubuntu per ricezione e analisi TETRA |
+| [SDR-PLUS](https://github.com/chiaraberti13/SDR-PLUS) | SDR e radio | Fork mantenuto di SDR++ con supporto RFNM mirato |
+| [UTILITY-FORGE](https://github.com/chiaraberti13/UTILITY-FORGE) | Automazione e utility | Strumenti locali e privacy-first per documenti e file |
 
 ## 🚀 Comandi
 
@@ -45,7 +58,7 @@ Tutto ciò che serve modificare vive in pochi file:
 
 ### Aggiungere un progetto
 Crea un file in `src/content/projects/it/` (e la versione `en/`) copiando uno
-esistente. I campi `links.github`, `links.behance`, `links.x`, `links.instagram`,
+esistente. Il campo `category` alimenta sia l'etichetta della scheda sia i filtri. I campi `links.github`, `links.behance`, `links.x`, `links.instagram`,
 `links.live` generano automaticamente i badge con l'icona della piattaforma.
 
 ### CV scaricabile
