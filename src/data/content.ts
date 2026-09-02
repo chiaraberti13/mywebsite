@@ -283,7 +283,7 @@ export const content: Record<Locale, PageContent> = {
       },
       {
         role: "Web Developer & Designer",
-        period: "2007 – 2013",
+        period: "2009 – 2013",
         location: "Latina",
         paragraphs: [
           "Progettazione e sviluppo di siti web su misura, dalla definizione dei requisiti alla struttura tecnica, fino al design delle pagine e alla messa online.",
@@ -549,7 +549,7 @@ export const content: Record<Locale, PageContent> = {
       },
       {
         role: "Web Developer & Designer",
-        period: "2007 – 2013",
+        period: "2009 – 2013",
         location: "Latina",
         paragraphs: [
           "Custom website design and development, from requirements gathering to technical architecture, page design, and deployment.",
