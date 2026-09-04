@@ -58,6 +58,11 @@ export const ui = {
     "contact.privacyNote":
       "I dati sono usati solo per rispondere alla richiesta e inviati tramite il provider email indicato nell'informativa privacy.",
     "contact.orEmail": "Oppure scrivimi direttamente:",
+    "contact.requiredHint": "I campi con * sono obbligatori.",
+    "contact.errName": "Inserisci il tuo nome.",
+    "contact.errEmail": "Inserisci un indirizzo email valido, es. nome@dominio.it",
+    "contact.errMessage": "Scrivi il messaggio che vuoi inviarmi.",
+    "contact.errSummary": "Controlla i campi segnalati e riprova.",
 
     "footer.rights": "Tutti i diritti riservati.",
     "footer.builtWith": "Sito statico, senza cookie di tracciamento.",
@@ -129,6 +134,11 @@ export const ui = {
     "contact.privacyNote":
       "Your data is used only to reply and is delivered through the email provider named in the privacy policy.",
     "contact.orEmail": "Or write to me directly:",
+    "contact.requiredHint": "Fields marked with * are required.",
+    "contact.errName": "Please enter your name.",
+    "contact.errEmail": "Please enter a valid email address, e.g. name@domain.com",
+    "contact.errMessage": "Please write the message you want to send.",
+    "contact.errSummary": "Please check the highlighted fields and try again.",
 
     "footer.rights": "All rights reserved.",
     "footer.builtWith": "Static site, no tracking cookies.",

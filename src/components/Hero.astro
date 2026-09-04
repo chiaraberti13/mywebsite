@@ -14,6 +14,10 @@ const h = content[lang].hero;
 <section class="hero">
   <div class="container hero-inner">
     <div class="hero-text">
+      {/* Il ruolo prima del manifesto: `hero.eyebrow` esisteva già nei dati
+          ma non veniva mai stampato, così sopra la piega mancava del tutto
+          l'informazione su CHI sta parlando. */}
+      <p class="eyebrow hero-eyebrow">{h.eyebrow}</p>
       <h1 class="hero-title">{h.headline}</h1>
 
       <p class="hero-badge">
@@ -22,15 +26,13 @@ const h = content[lang].hero;
         <span class="hero-badge-sub">SY0-701</span>
       </p>
 
-      <p class="hero-roles" aria-label={h.roles.join(", ")}>
-        {
-          h.roles.map((r, i) => (
-            <span class="role" aria-hidden={i > 0 ? "true" : undefined}>
-              {r}
-            </span>
-          ))
-        }
-      </p>
+      {/* Elenco statico invece della rotazione a crossfade: chi resta pochi
+          secondi sulla pagina vedeva solo una voce su quattro, su mobile la
+          riga riservava spazio per la voce più lunga lasciando un buco, e il
+          ciclo da 12s era movimento perpetuo accanto al testo da leggere. */}
+      <ul class="hero-roles" role="list">
+        {h.roles.map((r) => <li class="role">{r}</li>)}
+      </ul>
 
       <p class="lead hero-sub">{h.subheadline}</p>
 
@@ -216,6 +218,11 @@ const h = content[lang].hero;
   .hero-title {
     margin-top: 0;
     max-width: 18ch;
+    /* Più contenuto del --step-4 globale (fino a 4.2rem): il manifesto
+       occupa comunque quattro righe, ma ~100px in meno, che è esattamente
+       quello che serviva per riportare la CTA sopra la piega su un
+       portatile (viewport utile ~780px). Resta l'elemento dominante. */
+    font-size: clamp(2.2rem, 1.55rem + 2.9vw, 3.6rem);
   }
 
   /* ── Credenziale Security+ (accanto al titolo) ─────────────── */
@@ -223,7 +230,7 @@ const h = content[lang].hero;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 1.25rem;
+    margin-top: 1rem;
     padding: 0.4rem 0.85rem;
     border: 1px solid var(--accent);
     border-radius: 999px;
@@ -241,80 +248,54 @@ const h = content[lang].hero;
   }
   .hero-badge-name {
     font-weight: 650;
-    color: var(--accent);
+    color: var(--accent-text);
   }
   .hero-badge-sub {
     color: var(--muted);
     letter-spacing: 0.04em;
   }
 
-  /* ── Aree a rotazione (crossfade) ──────────────────────────── */
+  /* ── Aree di competenza (elenco statico) ───────────────────── */
+  .hero-eyebrow {
+    margin-bottom: 1rem;
+    /* L'occhiello del hero è lungo e va a capo: il trattino accento deve
+       restare agganciato alla PRIMA riga, non centrarsi fra le due. */
+    align-items: flex-start;
+  }
+  .hero-eyebrow::before {
+    margin-top: 0.62em;
+  }
   .hero-roles {
-    position: relative;
-    margin-top: 1.25rem;
-    min-height: 1.6em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.1rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
     font-family: var(--font-mono);
-    font-size: var(--step-0);
+    font-size: var(--step--1);
     color: var(--text);
   }
   .hero-roles .role {
     display: inline-flex;
     align-items: center;
-    gap: 0.55rem;
+    gap: 0.5rem;
+    line-height: 1.5;
   }
   .hero-roles .role::before {
     content: "";
-    width: 0.5rem;
-    height: 0.5rem;
+    width: 0.45rem;
+    height: 0.45rem;
     border-radius: 50%;
     background: var(--accent);
     flex: none;
   }
-  @media (prefers-reduced-motion: no-preference) {
-    /* 4 aree · 3s ciascuna = ciclo di 12s */
-    .hero-roles .role {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      animation: roleCycle 12s infinite;
-    }
-    .hero-roles .role:nth-child(1) { animation-delay: 0s; }
-    .hero-roles .role:nth-child(2) { animation-delay: 3s; }
-    .hero-roles .role:nth-child(3) { animation-delay: 6s; }
-    .hero-roles .role:nth-child(4) { animation-delay: 9s; }
-    @keyframes roleCycle {
-      0%   { opacity: 0; transform: translateY(0.4em); }
-      4%   { opacity: 1; transform: translateY(0); }
-      20%  { opacity: 1; transform: translateY(0); }
-      24%  { opacity: 0; transform: translateY(-0.4em); }
-      100% { opacity: 0; transform: translateY(-0.4em); }
-    }
-  }
-  @media (max-width: 560px) {
-    .hero-roles {
-      min-height: 3.2em;
-    }
-    .hero-roles .role {
-      width: 100%;
-      line-height: 1.45;
-    }
-  }
 
-  /* Fallback senza animazione: lista statica con separatori */
-  @media (prefers-reduced-motion: reduce) {
-    .hero-roles {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem 0.9rem;
-      color: var(--muted);
-    }
-    .hero-roles .role[aria-hidden="true"] {
-      display: inline-flex;
-    }
-  }
-
+  /* Spaziature del blocco testo: compattate perché su un portatile da
+     1440×900 il viewport utile è ~780px e la CTA principale finiva sotto
+     la piega. */
   .hero-sub {
-    margin-top: 1.5rem;
+    margin-top: 1.1rem;
     max-width: 52ch;
     color: var(--muted);
   }
@@ -322,10 +303,10 @@ const h = content[lang].hero;
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-    margin-top: 2rem;
+    margin-top: 1.6rem;
   }
   .hero-socials {
-    margin-top: 2.25rem;
+    margin-top: 1.6rem;
   }
 
   /* ── Indicatore di scroll ──────────────────────────────────── */
@@ -334,12 +315,12 @@ const h = content[lang].hero;
     flex-direction: column;
     align-items: center;
     gap: 0.35rem;
-    margin-top: 2.5rem;
+    margin-top: 1.75rem;
     color: var(--muted);
     transition: color 0.2s ease;
   }
   .hero-scroll:hover {
-    color: var(--accent);
+    color: var(--accent-text);
   }
   .hero-scroll-line {
     width: 1px;
@@ -429,6 +410,11 @@ const h = content[lang].hero;
     stroke: var(--accent);
     stroke-width: 1.4;
     opacity: 0;
+  }
+  /* Sospensione della scena quando il hero non è visibile (vedi script). */
+  .hero-net.is-paused,
+  .hero-net.is-paused * {
+    animation-play-state: paused !important;
   }
   /* Stato di riposo (nessun JS o "riduci movimento"): la scena è già al
      suo esito — scintilla assorbita, scudo formato. */
@@ -625,21 +611,12 @@ const h = content[lang].hero;
       translate: calc(var(--px, 0) * 11px) calc(var(--py, 0) * 11px);
     }
 
-    /* La didascalia segue le tre fasi: capire → automatizzare →
-       proteggere. Il ciclo si ripete: è un percorso, non un traguardo. */
-    .is-playing .cw {
-      animation: wordOn 10.5s ease-in-out infinite both;
-    }
-    .is-playing .cw-1 { animation-delay: 0.9s; }
-    .is-playing .cw-2 { animation-delay: 4.4s; }
-    .is-playing .cw-3 { animation-delay: 7.9s; }
-    @keyframes wordOn {
-      0%   { color: var(--muted); }
-      4%   { color: var(--accent-text); }
-      28%  { color: var(--accent-text); }
-      34%  { color: var(--muted); }
-      100% { color: var(--muted); }
-    }
+    /* NB: le regole `.is-playing .cw` che stavano qui erano codice morto.
+       `is-playing` viene applicata all'<svg class="hero-net">, mentre le
+       parole `.cw` vivono nella didascalia, che è SORELLA dell'svg e non sua
+       discendente: il selettore non ha mai potuto corrispondere e la
+       didascalia non si è mai animata. Rimosse invece che riattivate, in
+       coerenza con la riduzione del movimento perpetuo sopra la piega. */
     .hero-visual-panel:hover .hero-net-core {
       translate: calc(var(--px, 0) * -6px) calc(var(--py, 0) * -6px);
     }
@@ -660,7 +637,7 @@ const h = content[lang].hero;
     color: var(--muted);
   }
   .hero-visual-caption .dot {
-    color: var(--accent);
+    color: var(--accent-text);
     opacity: 0.75;
   }
   .hero-visual-caption .cw {
@@ -676,6 +653,7 @@ const h = content[lang].hero;
     .hero-text > * {
       animation: heroIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
+    .hero-text > .hero-eyebrow { animation-delay: 0.06s; }
     .hero-text > .hero-title   { animation-delay: 0.13s; }
     .hero-text > .hero-badge   { animation-delay: 0.21s; }
     .hero-text > .hero-roles   { animation-delay: 0.29s; }
@@ -732,6 +710,20 @@ const h = content[lang].hero;
   const scene = document.querySelector<SVGElement>(".hero-net");
   if (scene && !reduce) {
     requestAnimationFrame(() => scene.classList.add("is-playing"));
+
+    // La scena contiene sette animazioni infinite (impulsi, respiro del
+    // nucleo, aloni, scansione). I browser NON sospendono le animazioni CSS
+    // fuori dal viewport: continuavano a girare per tutta la pagina, a
+    // consumo di CPU e batteria. Qui vengono messe in pausa quando il hero
+    // esce dallo schermo e riprese da dove erano quando rientra (pausa, non
+    // riavvio: l'introduzione narrativa non si ripete a ogni scroll).
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver(
+        ([entry]) => scene.classList.toggle("is-paused", !entry.isIntersecting),
+        { threshold: 0 },
+      );
+      io.observe(scene);
+    }
   }
 
   if (panel && fine && !reduce) {

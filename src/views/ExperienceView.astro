@@ -21,7 +21,7 @@ const intro =
 <BaseLayout lang={lang} title={t("section.experience")} description={desc}>
   <section class="section">
     <div class="container">
-      <SectionHeader eyebrow={t("nav.experience")} title={t("section.experience")} intro={intro} level="h1" />
+      <SectionHeader title={t("section.experience")} intro={intro} level="h1" />
 
       <div class="timeline-wrap">
         <div class="timeline-progress" aria-hidden="true"><span class="timeline-cursor"></span></div>
@@ -40,7 +40,7 @@ const intro =
                 {item.tags && item.tags.length > 0 && (
                   <ul class="timeline-tags" role="list">
                     {item.tags.map((tg) => (
-                      <li class="tag">{tg}</li>
+                      <li class="tag tag--neutral">{tg}</li>
                     ))}
                   </ul>
                 )}
@@ -133,11 +133,16 @@ const intro =
   }
   .timeline-role {
     font-size: var(--step-1);
+    /* Il respiro sotto il titolo era delegato a .timeline-org, che però è
+       opzionale: nelle voci senza organizzazione il primo paragrafo
+       finiva incollato al titolo. Ora il margine è del titolo stesso e
+       .timeline-org lo riassorbe quando c'è. */
+    margin-bottom: 0.8rem;
   }
   .timeline-org {
-    color: var(--accent);
+    color: var(--accent-text);
     font-weight: 550;
-    margin: 0.15rem 0 0.8rem;
+    margin: -0.65rem 0 0.8rem;
   }
   .timeline-body {
     max-width: 68ch;
@@ -152,41 +157,20 @@ const intro =
     padding: 0;
   }
 
-  /* ── Zig-zag su desktop: card alternate attorno a una linea centrale ── */
+  /* ── Timeline verticale, a piena larghezza ─────────────────────
+     Qui c'era uno zig-zag con le card al 50% alternate attorno a una linea
+     centrale. È un layout che funziona con sei-otto tappe: con due
+     esperienze produceva una card stretta a sinistra con settecento pixel
+     di bianco a destra e viceversa, e costringeva paragrafi lunghi in
+     colonne strette e altissime. La timeline verticale — la stessa usata
+     in Formazione, quindi anche più coerente — usa tutta la larghezza e
+     mantiene la lunghezza di riga leggibile.
+     Se un giorno le tappe diventeranno molte, lo zig-zag è recuperabile
+     dalla cronologia git di questo file. */
   @media (min-width: 900px) {
-    .timeline-progress {
-      left: 50%;
-      transform: translateX(-50%);
-    }
     .timeline-item {
-      width: 50%;
-      padding-left: 0;
-      padding-bottom: 2.5rem;
-    }
-    /* Segmento di linea statica portato al centro */
-    .timeline-item::before {
-      left: auto;
-    }
-    .timeline-item:nth-child(odd) {
-      margin-left: 0;
-      padding-right: 2.75rem;
-    }
-    .timeline-item:nth-child(odd)::before {
-      right: -1px;
-    }
-    .timeline-item:nth-child(odd) .timeline-marker {
-      left: auto;
-      right: -7px;
-    }
-    .timeline-item:nth-child(even) {
-      margin-left: 50%;
-      padding-left: 2.75rem;
-    }
-    .timeline-item:nth-child(even)::before {
-      left: -1px;
-    }
-    .timeline-item:nth-child(even) .timeline-marker {
-      left: -7px;
+      padding-left: 2.5rem;
+      padding-bottom: 2.25rem;
     }
   }
 </style>

@@ -34,7 +34,7 @@ const references =
 ---
 <section class="section" id="skills">
   <div class="container">
-    <SectionHeader eyebrow={t("nav.skills")} title={t("section.skills")} />
+    <SectionHeader title={t("section.skills")} />
 
     <div class="skills-grid" data-reveal-group>
       {
@@ -93,6 +93,15 @@ const references =
     .skill-card--wide {
       grid-column: span 2;
     }
+
+    /* La card larga occupa due colonne, ma il suo elenco restava a una:
+       le righe arrivavano a ~90 caratteri (oltre il limite di leggibilità)
+       mentre la card accanto lasciava un vuoto verticale. Su due colonne
+       interne la riga torna leggibile e le due card si riallineano. */
+    .skill-card--wide .skill-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 2.25rem;
+    }
   }
 
   .skill-card {
@@ -119,7 +128,7 @@ const references =
     flex: none;
     border-radius: 10px;
     background: var(--accent-soft);
-    color: var(--accent);
+    color: var(--accent-text);
     border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
   }
 
@@ -127,7 +136,7 @@ const references =
     font-size: var(--step-0);
     font-family: var(--font-mono);
     letter-spacing: 0.01em;
-    color: var(--accent);
+    color: var(--accent-text);
   }
 
   .skill-list {
@@ -149,7 +158,7 @@ const references =
     content: "›";
     position: absolute;
     left: 0;
-    color: var(--accent);
+    color: var(--accent-text);
     font-weight: 700;
   }
 
@@ -186,7 +195,7 @@ const references =
   }
 
   .reference-links a:hover {
-    color: var(--accent);
+    color: var(--accent-text);
     transform: translateX(3px);
   }
 

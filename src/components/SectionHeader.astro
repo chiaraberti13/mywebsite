@@ -10,7 +10,14 @@ interface Props {
 const { eyebrow, title, intro, id, align = "start", level = "h2" } = Astro.props;
 const Heading = level;
 ---
-<header class:list={["section-header", { center: align === "center" }]} id={id} data-reveal>
+<header
+  class:list={[
+    "section-header",
+    { center: align === "center", "no-eyebrow": !eyebrow },
+  ]}
+  id={id}
+  data-reveal
+>
   {eyebrow && <p class="eyebrow">{eyebrow}</p>}
   <Heading>{title}</Heading>
   {intro && <p class="lead">{intro}</p>}
@@ -24,6 +31,26 @@ const Heading = level;
   .section-header :is(h1, h2) {
     margin-top: 0.6rem;
     font-size: var(--step-3);
+  }
+  /* Quando l'occhiello ripeteva parola per parola il titolo ("PROGETTI /
+     Progetti") è stato tolto: non era un secondo livello di informazione,
+     solo una riga in più. Il trattino accento, però, è un elemento
+     riconoscibile del sito e resta — spostato sopra il titolo, così il
+     ritmo visivo delle sezioni non cambia. */
+  .section-header.no-eyebrow::before {
+    content: "";
+    display: block;
+    width: 2.5rem;
+    height: 3px;
+    border-radius: 999px;
+    background: var(--accent);
+    margin-bottom: 1.1rem;
+  }
+  .section-header.no-eyebrow :is(h1, h2) {
+    margin-top: 0;
+  }
+  .section-header.center.no-eyebrow::before {
+    margin-inline: auto;
   }
   .section-header .lead {
     margin-top: 0.9rem;

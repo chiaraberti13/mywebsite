@@ -37,7 +37,7 @@ const desc = content[lang].hero.subheadline;
   <section class="section section--tight values-section" id="values">
     <div class="container values-layout">
       <div class="values-aside">
-        <SectionHeader eyebrow={t("nav.values")} title={t("section.values")} />
+        <SectionHeader title={t("section.values")} />
       </div>
       <div class="card values-panel" data-reveal>
         <div class="stack values-text">
@@ -56,7 +56,7 @@ const desc = content[lang].hero.subheadline;
     featured.length > 0 && (
       <section class="section band">
         <div class="container">
-          <SectionHeader eyebrow={t("nav.projects")} title={t("section.projects")} />
+          <SectionHeader title={t("section.projects")} />
           <div class="grid grid--3" data-reveal-group>
             {featured.map((p) => (
               <ProjectCard
@@ -79,7 +79,6 @@ const desc = content[lang].hero.subheadline;
   <section class="section credentials-section">
     <div class="container">
       <SectionHeader
-        eyebrow={t("nav.certifications")}
         title={t("section.certifications")}
         intro={lang === "it"
           ? "Credenziali verificate che consolidano il percorso tra sistemi, sviluppo e cybersecurity."
@@ -227,7 +226,7 @@ const desc = content[lang].hero.subheadline;
     flex: none;
     border-radius: 10px;
     background: var(--accent-soft);
-    color: var(--accent);
+    color: var(--accent-text);
   }
   .credential-year {
     font-family: var(--font-mono);
@@ -254,7 +253,7 @@ const desc = content[lang].hero.subheadline;
     font-size: var(--step-2);
   }
   .cta-mail {
-    color: var(--accent);
+    color: var(--accent-text);
   }
   .cta-mail:hover {
     text-decoration: underline;

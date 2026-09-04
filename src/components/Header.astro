@@ -25,6 +25,10 @@ const allRoutes = [
     path: "/#about",
     section: true,
     children: [
+      /* "Profilo attitudinale" è una delle sezioni più lunghe della home e
+         sta proprio in mezzo alle altre due, ma mancava dal menu: chi
+         navigava da qui la saltava (e lo scroll-spy non la evidenziava). */
+      { key: "section.aptitude", path: "/#aptitude", section: true },
       { key: "nav.values", path: "/#values", section: true },
       { key: "nav.skills", path: "/#skills", section: true },
     ],
@@ -52,7 +56,7 @@ const current = raw.length > 1 ? raw.replace(/\/$/, "") : "/";
 const spyOf = (path: string) =>
   path.startsWith("/#") ? path.slice(2) : undefined;
 // tutte le sotto-sezioni raggruppate sotto la voce padre (per evidenziarla)
-const aboutGroup = ["about", "values", "skills"];
+const aboutGroup = ["about", "aptitude", "values", "skills"];
 ---
 <header class="site-header">
   <div class="container header-inner">
@@ -170,6 +174,20 @@ const aboutGroup = ["about", "values", "skills"];
   </div>
 </header>
 
+{
+  /* Barra CTA fissa su telefono e tablet. Sopra i 960px il pulsante
+     "Contattami" vive nell'header; sotto era nascosto, e dopo il hero
+     l'unico modo per contattare era aprire l'hamburger o arrivare in fondo
+     alla pagina. Compare solo dopo aver superato il hero (dove la CTA è
+     già visibile) e non sulla pagina Contatti, dove sarebbe ridondante. */
+  current !== "/contact" && (
+    <a class="mobile-cta" id="mobile-cta" href={localePath(lang, "/contact")}>
+      {t("cta.contact")}
+      <Icon name="chevronRight" size={18} />
+    </a>
+  )
+}
+
 <style>
   .site-header {
     position: sticky;
@@ -275,7 +293,7 @@ const aboutGroup = ["about", "values", "skills"];
     background: var(--accent);
   }
   .submenu-link.spy-active {
-    color: var(--accent);
+    color: var(--accent-text);
     background: var(--accent-soft);
   }
   .nav-link:hover,
@@ -403,7 +421,7 @@ const aboutGroup = ["about", "values", "skills"];
     rotate: -90deg;
   }
   .mobile-toggle[aria-expanded="true"] {
-    color: var(--accent);
+    color: var(--accent-text);
   }
   .mobile-link {
     display: flex;
@@ -416,7 +434,7 @@ const aboutGroup = ["about", "values", "skills"];
     font-weight: 550;
   }
   .mobile-link:hover {
-    color: var(--accent);
+    color: var(--accent-text);
   }
   .mobile-link--child {
     padding-block: 0.7rem;
@@ -424,7 +442,11 @@ const aboutGroup = ["about", "values", "skills"];
     font-size: 0.98rem;
   }
 
-  @media (max-width: 820px) {
+  /* Soglia allineata a quella del CTA in header (960px). Fino a 959px i
+     sotto-menu si aprivano solo in hover: su un tablet in verticale, che
+     hover non ha, "Chi sono" e "Formazione" restavano di fatto chiusi.
+     Sotto quella soglia vale ora il menu mobile, che funziona a tocco. */
+  @media (max-width: 959px) {
     .nav-desktop {
       display: none;
     }
@@ -432,9 +454,44 @@ const aboutGroup = ["about", "values", "skills"];
       display: grid;
     }
   }
-  @media (min-width: 821px) {
+  @media (min-width: 960px) {
     .mobile-menu {
       display: none !important;
+    }
+  }
+
+  /* ── Barra CTA fissa (solo mobile/tablet) ──────────────────── */
+  .mobile-cta {
+    display: none;
+    position: fixed;
+    left: 50%;
+    bottom: 0.85rem;
+    z-index: 45;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.8rem 1.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--accent-contrast);
+    font-weight: 650;
+    line-height: 1;
+    box-shadow: 0 8px 24px -8px rgba(20, 20, 26, 0.45);
+    /* Parte fuori schermo e sale quando si supera il hero. */
+    transform: translate(-50%, 150%);
+    transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .mobile-cta.is-visible {
+    transform: translate(-50%, 0);
+  }
+  @media (max-width: 959px) {
+    .mobile-cta {
+      display: inline-flex;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-cta {
+      transition: none;
     }
   }
 </style>
@@ -497,9 +554,15 @@ const aboutGroup = ["about", "values", "skills"];
     item.addEventListener("mouseleave", clear);
   });
 
-  // ── Header compatto allo scroll ──────────────────────────────
+  // ── Header compatto allo scroll + CTA mobile ─────────────────
   const header = document.querySelector(".site-header");
-  const onScroll = () => header?.classList.toggle("is-compact", window.scrollY > 12);
+  const mobileCta = document.getElementById("mobile-cta");
+  const onScroll = () => {
+    header?.classList.toggle("is-compact", window.scrollY > 12);
+    // Soglia legata all'altezza dello schermo: la CTA compare quando il
+    // hero (con il suo pulsante) è ormai scorso via.
+    mobileCta?.classList.toggle("is-visible", window.scrollY > window.innerHeight * 0.7);
+  };
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
 

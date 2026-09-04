@@ -34,10 +34,15 @@ const statusLabels =
         lab: "Lab",
       };
 const featuredLabel = lang === "it" ? "In evidenza" : "Featured";
+/* Come nelle card: il primo tag ripete l'etichetta della categoria, già
+   mostrata nell'occhiello qui sopra. Si filtra in render, senza toccare i .md. */
+const techTags = tags.filter(
+  (tag) => tag.toLowerCase() !== category.toLowerCase(),
+);
 ---
 <article class="featured">
   <a href={href} class="featured-cover" tabindex="-1" aria-hidden="true">
-    <ProjectCover tags={tags} cover={cover} seed={slugOf(project.id)} large />
+    <ProjectCover tags={tags} cover={cover} seed={slugOf(project.id)} category={categoryKey} large />
   </a>
   <div class="featured-body">
     <p class="featured-eyebrow">
@@ -51,10 +56,10 @@ const featuredLabel = lang === "it" ? "In evidenza" : "Featured";
     <p class="featured-summary">{summary}</p>
 
     {
-      tags.length > 0 && (
+      techTags.length > 0 && (
         <ul class="featured-tags" role="list">
-          {tags.map((tag) => (
-            <li class="tag">{tag}</li>
+          {techTags.map((tag) => (
+            <li class="tag tag--neutral">{tag}</li>
           ))}
         </ul>
       )
@@ -133,10 +138,10 @@ const featuredLabel = lang === "it" ? "In evidenza" : "Featured";
     font-size: var(--step--1);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: var(--accent-text);
   }
   .featured-star {
-    color: var(--accent);
+    color: var(--accent-text);
   }
   .featured-status {
     width: fit-content;

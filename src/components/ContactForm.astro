@@ -15,21 +15,61 @@ const t = useTranslations(lang);
   data-error={t("contact.error")}
   data-sending={t("contact.sending")}
   data-send={t("contact.send")}
+  data-invalid={t("contact.errSummary")}
   data-email={site.email}
 >
+  {/* Tutti e tre i campi erano obbligatori, ma nulla lo diceva e la
+      validazione era affidata a form.reportValidity(): il tooltip nativo
+      del browser sparisce da solo, non è collegato al campo per gli screen
+      reader e non è stilabile. Ora l'obbligatorietà è dichiarata e ogni
+      errore è un messaggio persistente, associato via aria-describedby. */}
+  <p class="required-hint" id="cf-required-hint">{t("contact.requiredHint")}</p>
+
   <div class="field">
-    <input id="cf-name" name="name" type="text" required autocomplete="name" maxlength="120" placeholder=" " />
-    <label for="cf-name">{t("contact.name")}</label>
+    <input
+      id="cf-name"
+      name="name"
+      type="text"
+      required
+      autocomplete="name"
+      maxlength="120"
+      placeholder=" "
+      aria-describedby="cf-name-err"
+      data-error-message={t("contact.errName")}
+    />
+    <label for="cf-name">{t("contact.name")} <span class="req" aria-hidden="true">*</span></label>
+    <p class="field-error" id="cf-name-err" hidden></p>
   </div>
 
   <div class="field">
-    <input id="cf-email" name="email" type="email" required autocomplete="email" maxlength="200" placeholder=" " />
-    <label for="cf-email">{t("contact.email")}</label>
+    <input
+      id="cf-email"
+      name="email"
+      type="email"
+      required
+      autocomplete="email"
+      maxlength="200"
+      placeholder=" "
+      aria-describedby="cf-email-err"
+      data-error-message={t("contact.errEmail")}
+    />
+    <label for="cf-email">{t("contact.email")} <span class="req" aria-hidden="true">*</span></label>
+    <p class="field-error" id="cf-email-err" hidden></p>
   </div>
 
   <div class="field">
-    <textarea id="cf-message" name="message" required rows="5" maxlength="4000" placeholder=" "></textarea>
-    <label for="cf-message">{t("contact.message")}</label>
+    <textarea
+      id="cf-message"
+      name="message"
+      required
+      rows="5"
+      maxlength="4000"
+      placeholder=" "
+      aria-describedby="cf-message-err"
+      data-error-message={t("contact.errMessage")}
+    ></textarea>
+    <label for="cf-message">{t("contact.message")} <span class="req" aria-hidden="true">*</span></label>
+    <p class="field-error" id="cf-message-err" hidden></p>
   </div>
 
   <!-- Honeypot anti-spam: invisibile agli umani, ignorato dagli screen reader -->
@@ -53,9 +93,69 @@ const t = useTranslations(lang);
 
   if (form && statusEl && submitBtn) {
     const cfg = form.dataset;
+    type Field = HTMLInputElement | HTMLTextAreaElement;
+    const fields = Array.from(
+      form.querySelectorAll<Field>("input[data-error-message], textarea[data-error-message]"),
+    );
+    // La convalida "dal vivo" si attiva solo dopo il primo invio fallito:
+    // segnalare un errore mentre si sta ancora scrivendo il campo è
+    // fastidioso e prematuro.
+    let validateLive = false;
+
+    const errorBoxOf = (field: Field) =>
+      document.getElementById(`${field.id}-err`);
+
+    const showError = (field: Field, message: string) => {
+      const box = errorBoxOf(field);
+      if (box) {
+        box.textContent = message;
+        box.hidden = false;
+      }
+      field.setAttribute("aria-invalid", "true");
+      field.closest(".field")?.classList.add("has-error");
+    };
+
+    const clearError = (field: Field) => {
+      const box = errorBoxOf(field);
+      if (box) {
+        box.textContent = "";
+        box.hidden = true;
+      }
+      field.removeAttribute("aria-invalid");
+      field.closest(".field")?.classList.remove("has-error");
+    };
+
+    /** Usa la Constraint Validation API del browser ma con messaggi nostri,
+        in italiano/inglese e coerenti con il resto dell'interfaccia. */
+    const validate = (field: Field): boolean => {
+      if (field.validity.valid) {
+        clearError(field);
+        return true;
+      }
+      showError(field, field.dataset.errorMessage ?? "");
+      return false;
+    };
+
+    fields.forEach((field) => {
+      field.addEventListener("blur", () => {
+        if (validateLive || field.value.trim() !== "") validate(field);
+      });
+      field.addEventListener("input", () => {
+        if (validateLive) validate(field);
+      });
+    });
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (!form.reportValidity()) return;
+
+      validateLive = true;
+      const invalid = fields.filter((field) => !validate(field));
+      if (invalid.length > 0) {
+        statusEl.textContent = cfg.invalid ?? "";
+        statusEl.className = "form-status err";
+        invalid[0].focus();
+        return;
+      }
 
       submitBtn.disabled = true;
       submitBtn.textContent = cfg.sending ?? "…";
@@ -71,6 +171,8 @@ const t = useTranslations(lang);
         });
         if (!res.ok) throw new Error("bad status");
         form.reset();
+        fields.forEach(clearError);
+        validateLive = false;
         statusEl.textContent = cfg.success ?? "OK";
         statusEl.classList.add("ok");
       } catch {
@@ -96,6 +198,11 @@ const t = useTranslations(lang);
     gap: 1.1rem;
     max-width: 34rem;
   }
+  .required-hint {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
   /* Floating labels: l'etichetta parte dentro il campo e "risale"
      al focus o quando il campo non è vuoto (placeholder=" "). */
   .field {
@@ -106,11 +213,20 @@ const t = useTranslations(lang);
     left: 0.7rem;
     top: 0.72rem;
     padding: 0 0.35rem;
-    background: var(--bg);
+    /* A riposo l'etichetta sta DENTRO il campo (fondo --bg), da salita sta
+       sul bordo della CARD (fondo --surface): un colore fisso sbaglia in uno
+       dei due stati — con --bg si vedeva un rettangolo crema sul bianco della
+       card, con --surface un rettangolo bianco dentro il campo crema.
+       Trasparente a riposo, opaco solo da salita, dove serve a "tagliare"
+       il bordo del campo. */
+    background: transparent;
     color: var(--muted);
     font-size: 0.95rem;
     pointer-events: none;
     transition: top 0.15s ease, font-size 0.15s ease, color 0.15s ease;
+  }
+  .req {
+    color: var(--danger);
   }
   input,
   textarea {
@@ -137,7 +253,29 @@ const t = useTranslations(lang);
     top: -0.6rem;
     font-size: 0.75rem;
     font-weight: 600;
-    color: var(--accent);
+    background: var(--surface);
+    color: var(--accent-text);
+  }
+  /* Stato di errore: bordo + messaggio. Il colore non è l'unico segnale
+     (WCAG 1.4.1): c'è anche il testo esplicito sotto al campo. */
+  .field.has-error input,
+  .field.has-error textarea {
+    border-color: var(--danger);
+  }
+  .field.has-error input:focus,
+  .field.has-error textarea:focus {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 18%, transparent);
+  }
+  .field.has-error label,
+  .field.has-error input:focus + label,
+  .field.has-error textarea:focus + label {
+    color: var(--danger);
+  }
+  .field-error {
+    margin: 0.35rem 0 0;
+    font-size: 0.82rem;
+    font-weight: 550;
+    color: var(--danger);
   }
   .hp {
     position: absolute;

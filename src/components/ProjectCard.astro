@@ -3,6 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import Icon from "./Icon.astro";
 import ProjectCover from "./ProjectCover.astro";
 import { slugOf, categoryLabel } from "@/lib/content";
+import { useTranslations } from "@/i18n/ui";
 
 interface Props {
   project: CollectionEntry<"projects">;
@@ -29,6 +30,7 @@ const statusLabels =
         lab: "Lab",
       };
 const category = categoryLabel(categoryKey, lang);
+const t = useTranslations(lang);
 
 const platformIcon: Record<string, string> = {
   github: "github",
@@ -45,10 +47,19 @@ const platformLabel: Record<string, string> = {
   live: "Live",
 };
 const linkEntries = Object.entries(links).filter(([, value]) => Boolean(value)) as [string, string][];
+
+/* La categoria compariva tre volte per card: chip sulla copertina, chip nel
+   corpo e primo tag dell'elenco (nel frontmatter il primo tag ripete
+   l'etichetta della categoria). Il chip sulla copertina è stato rimosso in
+   ProjectCover; qui si filtra il tag ridondante, senza toccare i contenuti
+   dei file .md — l'etichetta resta quella già mostrata da .project-category. */
+const techTags = tags.filter(
+  (tag) => tag.toLowerCase() !== category.toLowerCase(),
+);
 ---
 <article class="card card--link project-card" data-category={categoryKey}>
   <a href={href} class="project-cover-link" tabindex="-1" aria-hidden="true">
-    <ProjectCover tags={tags} cover={cover} seed={slugOf(project.id)} />
+    <ProjectCover tags={tags} cover={cover} seed={slugOf(project.id)} category={categoryKey} />
     <span class="project-cover-arrow" aria-hidden="true">
       <Icon name="arrowUpRight" size={18} />
     </span>
@@ -64,10 +75,10 @@ const linkEntries = Object.entries(links).filter(([, value]) => Boolean(value)) 
     <p class="muted project-summary">{summary}</p>
 
     {
-      tags.length > 0 && (
+      techTags.length > 0 && (
         <ul class="project-tags" role="list">
-          {tags.map((tag) => (
-            <li class="tag">{tag}</li>
+          {techTags.map((tag) => (
+            <li class="tag tag--neutral">{tag}</li>
           ))}
         </ul>
       )
@@ -91,6 +102,14 @@ const linkEntries = Object.entries(links).filter(([, value]) => Boolean(value)) 
         </div>
       )
     }
+
+    {/* Affordance di lettura esplicita, coerente con le card del Journal:
+        prima l'unico segnale cliccabile era la freccia che appariva in
+        hover sulla copertina — invisibile a chi non passa col mouse. */}
+    <span class="project-more">
+      {t("cta.readMore")}
+      <Icon name="chevronRight" size={16} />
+    </span>
   </div>
 </article>
 
@@ -102,20 +121,10 @@ const linkEntries = Object.entries(links).filter(([, value]) => Boolean(value)) 
     padding: 0;
     overflow: hidden;
   }
-  .project-card.has-tilt {
-    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-      border-color 0.2s ease, box-shadow 0.2s ease;
-  }
   .project-cover-link {
     position: relative;
     display: block;
     overflow: hidden;
-  }
-  .project-cover-link :global(.project-cover) {
-    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .project-card:hover .project-cover-link :global(.project-cover) {
-    transform: scale(1.045);
   }
   .project-cover-arrow {
     position: absolute;
@@ -137,11 +146,6 @@ const linkEntries = Object.entries(links).filter(([, value]) => Boolean(value)) 
   .project-card:focus-within .project-cover-arrow {
     opacity: 1;
     transform: translateY(0);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .project-card:hover .project-cover-link :global(.project-cover) {
-      transform: none;
-    }
   }
   .project-body {
     display: flex;
@@ -216,34 +220,40 @@ const linkEntries = Object.entries(links).filter(([, value]) => Boolean(value)) 
     transition: color 0.2s ease, border-color 0.2s ease;
   }
   .project-link:hover {
-    color: var(--accent);
+    color: var(--accent-text);
     border-color: var(--accent);
+  }
+  .project-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: auto;
+    padding-top: 0.15rem;
+    color: var(--accent-text);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: gap 0.2s ease;
+  }
+  .project-card:hover .project-more {
+    gap: 0.5rem;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .project-more {
+      transition: none;
+    }
+    .project-card:hover .project-more {
+      gap: 0.25rem;
+    }
   }
 </style>
 
-<script>
-  const fine = window.matchMedia("(pointer: fine)").matches;
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  if (fine && !reduce) {
-    document.querySelectorAll<HTMLElement>(".project-card").forEach((card) => {
-      let raf = 0;
-      card.addEventListener("pointermove", (event) => {
-        if (card.classList.contains("is-moving")) return;
-        if (raf) return;
-        raf = requestAnimationFrame(() => {
-          const rect = card.getBoundingClientRect();
-          const tx = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
-          const ty = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
-          card.classList.add("has-tilt");
-          card.style.transform = `perspective(900px) rotateX(${(-ty * 3).toFixed(2)}deg) rotateY(${(tx * 3).toFixed(2)}deg)`;
-          raf = 0;
-        });
-      });
-      card.addEventListener("pointerleave", () => {
-        card.style.transform = "";
-        window.setTimeout(() => card.classList.remove("has-tilt"), 260);
-      });
-    });
-  }
-</script>
+{/*
+  Qui c'era il tilt 3D al passaggio del puntatore. È stato rimosso: un solo
+  hover innescava cinque effetti insieme (sollevamento della card, bordo
+  accento, barretta laterale, ingrandimento della copertina, freccia in
+  comparsa) più la rotazione prospettica, che per giunta forza il rendering
+  del testo su un piano ruotato — su molti schermi le scritte della card
+  diventavano leggermente sfocate proprio mentre le si stava leggendo.
+  Restano il sollevamento, il bordo e la freccia: sufficienti a comunicare
+  che la card è cliccabile. Meno JavaScript, nessun listener per card.
+*/}

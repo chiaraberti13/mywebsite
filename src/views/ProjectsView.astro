@@ -28,7 +28,7 @@ const intro =
 <BaseLayout lang={lang} title={t("nav.projects")} description={desc}>
   <section class="section">
     <div class="container">
-      <SectionHeader eyebrow={t("nav.projects")} title={t("section.projects")} intro={intro} align="center" level="h1" />
+      <SectionHeader title={t("section.projects")} intro={intro} align="center" level="h1" />
       {
         featured && (
           <div class="projects-featured" data-reveal>
@@ -105,7 +105,7 @@ const intro =
   }
   .filter-pill:hover {
     border-color: var(--accent);
-    color: var(--accent);
+    color: var(--accent-text);
   }
   .filter-pill.is-active {
     background: var(--accent);

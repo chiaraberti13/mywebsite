@@ -51,6 +51,11 @@ const platformLabel: Record<string, string> = {
   live: "Live",
 };
 const linkEntries = Object.entries(links).filter(([, value]) => Boolean(value)) as [string, string][];
+/* Il primo tag ripete l'etichetta della categoria, già mostrata nel chip
+   qui sopra: si filtra in render, senza toccare i file .md. */
+const techTags = tags.filter(
+  (tag) => tag.toLowerCase() !== category.toLowerCase(),
+);
 ---
 <BaseLayout lang={lang} title={title} description={summary} image={cover}>
   <article class="section">
@@ -71,9 +76,9 @@ const linkEntries = Object.entries(links).filter(([, value]) => Boolean(value)) 
         <h1>{title}</h1>
         <p class="lead">{summary}</p>
         {
-          tags.length > 0 && (
+          techTags.length > 0 && (
             <ul class="detail-tags" role="list">
-              {tags.map((tag) => <li class="tag">{tag}</li>)}
+              {techTags.map((tag) => <li class="tag tag--neutral">{tag}</li>)}
             </ul>
           )
         }

@@ -13,7 +13,7 @@ const about = content[lang].about;
 <section class="section" id="about">
   <div class="container about-grid">
     <div>
-      <SectionHeader eyebrow={t("nav.about")} title={t("section.about")} />
+      <SectionHeader title={t("section.about")} />
       <div class="stack about-text" data-reveal>
         {about.paragraphs.map((p) => <p>{p}</p>)}
       </div>
@@ -41,35 +41,37 @@ const about = content[lang].about;
 </section>
 
 <style>
+  /* Il testo e le quattro sintesi erano due colonne affiancate: la colonna
+     di destra (4 card in 2×2, sticky) finiva molto prima dei paragrafi e
+     sotto restavano ~400px di bianco prima della sezione successiva, che
+     sommati alla spaziatura di sezione facevano percepire i blocchi come
+     scollegati. Le sintesi diventano una fascia orizzontale sotto al testo:
+     riempiono la riga, chiudono la sezione e restano leggibili. */
   .about-grid {
     display: grid;
-    gap: clamp(1.75rem, 1.1rem + 3vw, 3.5rem);
-  }
-  @media (min-width: 860px) {
-    .about-grid {
-      grid-template-columns: minmax(0, 1.45fr) minmax(18rem, 0.9fr);
-      /* start (non center): con una colonna testo molto più alta, il
-         centraggio lasciava un grande vuoto in alto a destra. */
-      align-items: start;
-    }
+    gap: clamp(1.75rem, 1.1rem + 2.5vw, 2.75rem);
   }
   .about-text {
+    /* Misura di riga: a piena larghezza il paragrafo arrivava a ~90
+       caratteri, ben oltre il limite di lettura confortevole (~75). */
     max-width: 62ch;
   }
   .about-highlights {
     position: relative;
     display: grid;
     grid-template-columns: 1fr;
+    grid-auto-rows: 1fr;
     gap: 0.7rem;
   }
-  @media (min-width: 860px) {
+  @media (min-width: 560px) {
     .about-highlights {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      /* righe di pari altezza: la griglia 2×2 resta ordinata anche se una
-         card ha più testo */
-      grid-auto-rows: 1fr;
-      position: sticky;
-      top: 6rem;
+    }
+  }
+  @media (min-width: 900px) {
+    .about-highlights {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(0.7rem, 0.4rem + 1vw, 1.1rem);
     }
   }
   .highlight {
@@ -94,10 +96,10 @@ const about = content[lang].about;
     font-size: 0.72rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: var(--accent-text);
   }
   .highlight-ico {
-    color: var(--accent);
+    color: var(--accent-text);
   }
   .highlight-value {
     font-size: clamp(1rem, 0.96rem + 0.2vw, 1.12rem);
@@ -105,17 +107,13 @@ const about = content[lang].about;
     line-height: 1.35;
     color: var(--text);
   }
-  @media (max-width: 859px) {
-    .about-highlights {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+  /* Su due colonne la credenziale certificata occupa la riga intera:
+     è l'informazione con più peso e merita di non essere una card fra
+     quattro uguali. Su quattro colonne resta in linea con le altre,
+     distinta dal bordo e dallo sfondo accento. */
+  @media (min-width: 560px) and (max-width: 899px) {
     .highlight.is-credential {
       grid-column: 1 / -1;
-    }
-  }
-  @media (max-width: 560px) {
-    .about-highlights {
-      grid-template-columns: 1fr;
     }
   }
 </style>
