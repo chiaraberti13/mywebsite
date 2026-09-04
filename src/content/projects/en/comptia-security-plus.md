@@ -3,7 +3,7 @@ title: "CompTIA Security+ SY0-701 — Study platform"
 summary: "A bilingual full-stack platform for Security+ SY0-701 preparation, with domain checklists, a glossary, exam simulation and an AI-assisted trainer."
 lang: "en"
 date: 2026-07-27
-category: "cybersecurity-learning"
+category: "interactive-labs"
 featured: true
 status: "active"
 tags: ["Cybersecurity learning", "TypeScript", "React", "Express", "Gemini"]

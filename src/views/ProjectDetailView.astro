@@ -71,7 +71,7 @@ const techTags = tags.filter(
       <header class="detail-head">
         <div class="detail-meta">
           <p class="detail-category">{category}</p>
-          {status && <p class="detail-status">{statusLabels[status]}</p>}
+          {status && <p class:list={["detail-status", `detail-status--${status}`]}>{statusLabels[status]}</p>}
         </div>
         <h1>{title}</h1>
         <p class="lead">{summary}</p>
@@ -127,6 +127,13 @@ const techTags = tags.filter(
   .detail-status {
     color: var(--accent-text);
     background: var(--accent-soft);
+  }
+  /* Stessa distinzione già presente sulle card: "in produzione" e
+     "completato" sono esiti, non stati di lavorazione, e usano il verde. */
+  .detail-status--production,
+  .detail-status--complete {
+    color: var(--success);
+    background: color-mix(in srgb, var(--success) 12%, transparent);
   }
   .detail-head h1 {
     font-size: var(--step-3);

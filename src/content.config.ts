@@ -9,10 +9,11 @@ import { glob } from "astro/loaders";
 
 const langField = z.enum(["it", "en"]);
 const projectCategory = z.enum([
-  "cybersecurity-learning",
-  "network-security",
+  "cybersecurity",
+  "interactive-labs",
   "sdr-radio",
   "automation-utilities",
+  "professional-work",
 ]);
 
 const projects = defineCollection({
