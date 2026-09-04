@@ -576,6 +576,8 @@ main {
   .see-all,
   .cta-band,
   .mobile-cta,
+  .hero-actions,
+  a[download],
   .breadcrumb {
     display: none !important;
   }

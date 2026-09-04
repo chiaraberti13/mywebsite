@@ -64,7 +64,7 @@ export const site = {
   features: {
     journal: true, // blog / articoli
     coverLetter: true, // lettera di presentazione
-    cvDownload: false, // pulsante "Scarica CV (PDF)" — riattivare a true dopo aver caricato il PDF in /public
+    cvDownload: true, // pulsante "Scarica CV (PDF)" — il file è in /public (vedi cvFile qui sotto)
   },
 
   /** Percorso del CV scaricabile (mettere il file in /public) */
