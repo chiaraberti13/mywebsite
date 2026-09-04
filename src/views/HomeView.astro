@@ -17,7 +17,10 @@ interface Props { lang: Locale }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const featured = (await getFeaturedProjects(lang)).slice(0, 3);
-const certificates = content[lang].curriculum.certifications.items.slice(0, 3);
+/* Tutte le credenziali, non più le prime tre: la home ne tagliava due
+   (Pre Security e PHP Developer Fundamentals) rispetto all'elenco completo
+   del CV e della pagina Certificazioni. */
+const certificates = content[lang].curriculum.certifications.items;
 const desc = content[lang].hero.subheadline;
 ---
 <BaseLayout lang={lang} title={site.name} description={desc}>
@@ -208,7 +211,16 @@ const desc = content[lang].hero.subheadline;
     display: grid;
     gap: clamp(1rem, 0.6rem + 1.5vw, 1.5rem);
   }
-  @media (min-width: 760px) {
+  @media (min-width: 620px) {
+    .credential-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  /* Tre colonne, non quattro: con cinque credenziali le quattro colonne
+     riempivano meglio la riga ma stringevano le card a ~240px, spezzando
+     "CompTIA Security+ (SY0-701)" su tre righe e il titolo del Certiport
+     su quattro. Meglio una riga da 3 + 2 con i titoli leggibili. */
+  @media (min-width: 900px) {
     .credential-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
@@ -217,6 +229,8 @@ const desc = content[lang].hero.subheadline;
     display: flex;
     align-items: flex-start;
     gap: 0.9rem;
+    /* Righe di pari altezza anche se un titolo va a capo. */
+    height: 100%;
   }
   .credential-icon {
     display: grid;

@@ -26,15 +26,13 @@ const h = content[lang].hero;
         <span class="hero-badge-sub">SY0-701</span>
       </p>
 
-      {/* Elenco statico invece della rotazione a crossfade: chi resta pochi
-          secondi sulla pagina vedeva solo una voce su quattro, su mobile la
-          riga riservava spazio per la voce più lunga lasciando un buco, e il
-          ciclo da 12s era movimento perpetuo accanto al testo da leggere. */}
+      {/* Le quattro aree restano SEMPRE tutte leggibili: l'animazione è una
+          luce che le percorre a turno, non una rotazione che ne nasconde tre
+          su quattro. Chi guarda un istante le vede comunque tutte; chi resta
+          vede il movimento. */}
       <ul class="hero-roles" role="list">
         {h.roles.map((r) => <li class="role">{r}</li>)}
       </ul>
-
-      <p class="lead hero-sub">{h.subheadline}</p>
 
       <div class="hero-actions">
         <a class="btn btn--primary" href={localePath(lang, "/contact")}>
@@ -268,37 +266,68 @@ const h = content[lang].hero;
   .hero-roles {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.35rem 1.1rem;
-    margin: 1rem 0 0;
+    gap: 0.5rem 1.4rem;
+    margin: 1.35rem 0 0;
     padding: 0;
     list-style: none;
     font-family: var(--font-mono);
-    font-size: var(--step--1);
-    color: var(--text);
+    font-size: var(--step-0);
   }
   .hero-roles .role {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.55rem;
     line-height: 1.5;
+    /* Stato di riposo — e stato unico senza JS o con "riduci movimento".
+       --muted sta a 7,25:1 su fondo chiaro: anche la voce non evidenziata
+       resta ampiamente leggibile, l'animazione non è mai l'unico modo per
+       accedere all'informazione. */
+    color: var(--muted);
   }
   .hero-roles .role::before {
     content: "";
-    width: 0.45rem;
-    height: 0.45rem;
+    width: 0.5rem;
+    height: 0.5rem;
     border-radius: 50%;
     background: var(--accent);
     flex: none;
   }
 
-  /* Spaziature del blocco testo: compattate perché su un portatile da
-     1440×900 il viewport utile è ~780px e la CTA principale finiva sotto
-     la piega. */
-  .hero-sub {
-    margin-top: 1.1rem;
-    max-width: 52ch;
-    color: var(--muted);
+  /* ── La luce che percorre le quattro aree ──────────────────────
+     Ciclo di 10s: ogni voce resta accesa ~2s. Nessun testo viene
+     nascosto, cambia solo il livello di enfasi. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-roles .role {
+      animation: roleGlow 10s ease-in-out infinite both;
+    }
+    .hero-roles .role::before {
+      animation: roleDot 10s ease-in-out infinite both;
+    }
+    .hero-roles .role:nth-child(1),
+    .hero-roles .role:nth-child(1)::before { animation-delay: 1.1s; }
+    .hero-roles .role:nth-child(2),
+    .hero-roles .role:nth-child(2)::before { animation-delay: 3.6s; }
+    .hero-roles .role:nth-child(3),
+    .hero-roles .role:nth-child(3)::before { animation-delay: 6.1s; }
+    .hero-roles .role:nth-child(4),
+    .hero-roles .role:nth-child(4)::before { animation-delay: 8.6s; }
+
+    @keyframes roleGlow {
+      0%   { color: var(--muted); }
+      4%   { color: var(--text); }
+      20%  { color: var(--text); }
+      26%  { color: var(--muted); }
+      100% { color: var(--muted); }
+    }
+    @keyframes roleDot {
+      0%   { scale: 1; box-shadow: 0 0 0 0 var(--accent-soft); }
+      4%   { scale: 1.5; box-shadow: 0 0 0 5px var(--accent-soft); }
+      20%  { scale: 1.5; box-shadow: 0 0 0 5px var(--accent-soft); }
+      26%  { scale: 1; box-shadow: 0 0 0 0 var(--accent-soft); }
+      100% { scale: 1; box-shadow: 0 0 0 0 var(--accent-soft); }
+    }
   }
+
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
@@ -411,9 +440,16 @@ const h = content[lang].hero;
     stroke-width: 1.4;
     opacity: 0;
   }
-  /* Sospensione della scena quando il hero non è visibile (vedi script). */
-  .hero-net.is-paused,
-  .hero-net.is-paused * {
+  /* Sospensione di TUTTE le animazioni infinite del hero quando la sezione
+     non è visibile (vedi script): scena del grafo, luce sulle aree di
+     competenza, chevron di scorrimento. Elencate una per una invece di un
+     `*` globale, così le animazioni d'ingresso (che sono `both` e devono
+     poter finire) non restano bloccate al loro fotogramma iniziale. */
+  .hero.is-paused .hero-net,
+  .hero.is-paused .hero-net *,
+  .hero.is-paused .hero-roles .role,
+  .hero.is-paused .hero-roles .role::before,
+  .hero.is-paused .hero-scroll-chevron {
     animation-play-state: paused !important;
   }
   /* Stato di riposo (nessun JS o "riduci movimento"): la scena è già al
@@ -657,10 +693,9 @@ const h = content[lang].hero;
     .hero-text > .hero-title   { animation-delay: 0.13s; }
     .hero-text > .hero-badge   { animation-delay: 0.21s; }
     .hero-text > .hero-roles   { animation-delay: 0.29s; }
-    .hero-text > .hero-sub     { animation-delay: 0.37s; }
-    .hero-text > .hero-actions { animation-delay: 0.45s; }
-    .hero-text > .hero-socials { animation-delay: 0.53s; }
-    .hero-text > .hero-scroll  { animation-delay: 0.61s; }
+    .hero-text > .hero-actions { animation-delay: 0.37s; }
+    .hero-text > .hero-socials { animation-delay: 0.45s; }
+    .hero-text > .hero-scroll  { animation-delay: 0.53s; }
 
     @keyframes heroVisualIn {
       from { opacity: 0; transform: translateY(24px) scale(0.97); }
@@ -711,18 +746,21 @@ const h = content[lang].hero;
   if (scene && !reduce) {
     requestAnimationFrame(() => scene.classList.add("is-playing"));
 
-    // La scena contiene sette animazioni infinite (impulsi, respiro del
-    // nucleo, aloni, scansione). I browser NON sospendono le animazioni CSS
+    // Il hero contiene diverse animazioni infinite (impulsi del grafo,
+    // respiro del nucleo, aloni, scansione, la luce sulle aree di
+    // competenza, il chevron). I browser NON sospendono le animazioni CSS
     // fuori dal viewport: continuavano a girare per tutta la pagina, a
-    // consumo di CPU e batteria. Qui vengono messe in pausa quando il hero
-    // esce dallo schermo e riprese da dove erano quando rientra (pausa, non
-    // riavvio: l'introduzione narrativa non si ripete a ogni scroll).
-    if ("IntersectionObserver" in window) {
+    // consumo di CPU e batteria. Qui vengono messe in pausa quando la
+    // sezione esce dallo schermo e riprese da dove erano quando rientra
+    // (pausa, non riavvio: l'introduzione narrativa non si ripete a ogni
+    // scroll, e la luce sulle aree non riparte sempre dalla prima).
+    const heroSection = document.querySelector<HTMLElement>(".hero");
+    if (heroSection && "IntersectionObserver" in window) {
       const io = new IntersectionObserver(
-        ([entry]) => scene.classList.toggle("is-paused", !entry.isIntersecting),
+        ([entry]) => heroSection.classList.toggle("is-paused", !entry.isIntersecting),
         { threshold: 0 },
       );
-      io.observe(scene);
+      io.observe(heroSection);
     }
   }
 
