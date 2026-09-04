@@ -37,7 +37,10 @@ const allRoutes = [
     key: "nav.education",
     path: "/formazione",
     children: [
-      { key: "nav.instruction", path: "/formazione#percorso" },
+      /* #istruzione, non #percorso: la voce si chiama "Istruzione" ma
+         puntava alla sezione di apertura della pagina ("Il mio percorso"),
+         cioè al titolo, non all'elenco degli studi più in basso. */
+      { key: "nav.instruction", path: "/formazione#istruzione" },
       { key: "nav.certifications", path: "/certificazioni" },
     ],
   },
