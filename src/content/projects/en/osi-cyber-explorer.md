@@ -3,7 +3,7 @@ title: "OSI Cyber Explorer"
 summary: "An interactive bilingual lab for exploring the seven OSI layers, packet encapsulation, network attacks and their corresponding defenses."
 lang: "en"
 date: 2026-07-27
-category: "network-security"
+category: "interactive-labs"
 featured: true
 status: "active"
 tags: ["Network security", "TypeScript", "React", "OSI model", "Networking"]

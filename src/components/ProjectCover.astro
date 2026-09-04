@@ -29,10 +29,11 @@ const { tags, cover, seed, category, large = false } = Astro.props;
 
 /** Glyph di dominio per categoria: fonte primaria, stabile e dichiarata. */
 const categoryGlyph: Record<string, string> = {
-  "cybersecurity-learning": "shieldCheck",
-  "network-security": "network",
+  cybersecurity: "shieldCheck",
+  "interactive-labs": "layers",
   "sdr-radio": "radio",
   "automation-utilities": "terminal",
+  "professional-work": "database",
 };
 
 /** Ripiego sui tag quando la categoria non è disponibile. */
@@ -148,16 +149,16 @@ const catClass = category ? `cov-cat--${category}` : "cov-cat--default";
   }
 
   /* ── Trame per categoria ────────────────────────────────────── */
-  /* Formazione cybersecurity: griglia tecnica (il "quaderno a quadretti") */
-  .cov-cat--cybersecurity-learning .cov-grid,
+  /* Cybersecurity: griglia tecnica (il "quaderno a quadretti") */
+  .cov-cat--cybersecurity .cov-grid,
   .cov-cat--default .cov-grid {
     background-image:
       linear-gradient(to right, currentColor 1px, transparent 1px),
       linear-gradient(to bottom, currentColor 1px, transparent 1px);
     background-size: 26px 26px;
   }
-  /* Sicurezza delle reti: matrice di nodi */
-  .cov-cat--network-security .cov-grid {
+  /* Laboratori interattivi: matrice di nodi */
+  .cov-cat--interactive-labs .cov-grid {
     background-image: radial-gradient(currentColor 1.5px, transparent 1.6px);
     background-size: 20px 20px;
     opacity: 0.16;
@@ -179,6 +180,13 @@ const catClass = category ? `cov-cat--${category}` : "cov-cat--default";
       transparent 1px 14px
     );
     opacity: 0.12;
+  }
+  /* Progetti professionali: trama incrociata, più "tessuto" che schema */
+  .cov-cat--professional-work .cov-grid {
+    background-image:
+      repeating-linear-gradient(45deg, currentColor 0 1px, transparent 1px 16px),
+      repeating-linear-gradient(-45deg, currentColor 0 1px, transparent 1px 16px);
+    opacity: 0.1;
   }
 
   .cov-glyph {

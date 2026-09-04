@@ -13,21 +13,22 @@ export function slugOf(id: string): string {
  * contenuto, card e filtri condividono la stessa fonte di verità.
  */
 export const PROJECT_CATEGORIES = [
+  { key: "cybersecurity", it: "Cybersecurity", en: "Cybersecurity" },
   {
-    key: "cybersecurity-learning",
-    it: "Formazione cybersecurity",
-    en: "Cybersecurity learning",
-  },
-  {
-    key: "network-security",
-    it: "Sicurezza delle reti",
-    en: "Network security",
+    key: "interactive-labs",
+    it: "Laboratori interattivi",
+    en: "Interactive labs",
   },
   { key: "sdr-radio", it: "SDR e radio", en: "SDR & radio" },
   {
     key: "automation-utilities",
     it: "Automazione e utility",
     en: "Automation & utilities",
+  },
+  {
+    key: "professional-work",
+    it: "Progetti professionali",
+    en: "Professional work",
   },
 ] as const;
 
