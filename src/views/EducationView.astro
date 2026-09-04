@@ -37,7 +37,7 @@ const desc =
 
   <section class="section section--tight" id="istruzione">
     <div class="container">
-      <SectionHeader eyebrow="Education" title={t("section.education")} intro={cur.education.lead} />
+      <SectionHeader title={t("section.education")} intro={cur.education.lead} />
       <ol class="edu-timeline" role="list" data-reveal-group>
         {
           cur.education.items.map((ed) => (
@@ -80,7 +80,7 @@ const desc =
     font-size: var(--step-1);
   }
   .cv-org {
-    color: var(--accent);
+    color: var(--accent-text);
     font-weight: 550;
     margin: 0.15rem 0 0.6rem;
   }

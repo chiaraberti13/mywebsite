@@ -27,7 +27,6 @@ const desc =
         ]}
       />
       <SectionHeader
-        eyebrow="Certifications"
         title={t("section.certifications")}
         intro={cert.lead}
         level="h1"
@@ -85,7 +84,7 @@ const desc =
     font-size: var(--step-1);
   }
   .cv-org {
-    color: var(--accent);
+    color: var(--accent-text);
     font-weight: 550;
     margin: 0.15rem 0 0.6rem;
   }
@@ -102,7 +101,7 @@ const desc =
     height: 2.6rem;
     border-radius: 12px;
     background: var(--accent-soft);
-    color: var(--accent);
+    color: var(--accent-text);
     border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
     transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), background 0.25s ease;
   }
@@ -120,7 +119,7 @@ const desc =
     transition: color 0.2s ease;
   }
   .cert-verify:hover {
-    color: var(--accent);
+    color: var(--accent-text);
   }
   .cert-desc {
     font-size: 0.92rem;
@@ -133,7 +132,7 @@ const desc =
   .beyond-title {
     font-family: var(--font-mono);
     font-size: var(--step-0);
-    color: var(--accent);
+    color: var(--accent-text);
     margin-bottom: 0.9rem;
   }
   .beyond-text {

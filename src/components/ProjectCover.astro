@@ -3,8 +3,16 @@
  * Copertina di progetto.
  * - Se il progetto ha `cover` (immagine in /public) la usa.
  * - Altrimenti genera una copertina decorativa on-brand: gradiente ocra +
- *   pattern seminato dallo slug + glyph di dominio ricavato dai tag.
+ *   trama e glyph decisi dalla CATEGORIA del progetto.
  *   Nessuna immagine esterna, tutto deterministico e coerente coi token.
+ *
+ * Perché la categoria e non più lo slug: le sei varianti seminate dallo
+ * slug cambiavano solo angolo del gradiente e posizione del bagliore, e a
+ * occhio erano indistinguibili — cinque card affiancate erano cinque
+ * rettangoli beige identici. Legando trama e glyph alla categoria, la
+ * copertina diventa un codice visivo leggibile: guardando la griglia si
+ * riconosce il dominio prima di leggere. La famiglia cromatica resta
+ * l'ocra del sito: cambia la trama, non il marchio.
  */
 import Icon from "./Icon.astro";
 
@@ -12,35 +20,47 @@ interface Props {
   tags: string[];
   cover?: string;
   seed: string;
+  /** Chiave di categoria del progetto (vedi PROJECT_CATEGORIES) */
+  category?: string;
   /** Copertina grande per il progetto in evidenza */
   large?: boolean;
 }
-const { tags, cover, seed, large = false } = Astro.props;
+const { tags, cover, seed, category, large = false } = Astro.props;
 
-/** Icona di dominio: la prima regola che combacia con un tag qualsiasi. */
-const iconRules: [RegExp, string, string][] = [
-  [/reti|network|osi/i, "network", "Reti"],
-  [/sdr/i, "radio", "SDR"],
-  [/image/i, "image", "Imaging"],
-  [/pentest|cybersecurity/i, "shieldCheck", "Security"],
-  [/privacy/i, "lock", "Privacy"],
-  [/full-?stack/i, "layers", "Full-stack"],
-  [/algoritm/i, "braces", "Algoritmi"],
-  [/shell|automazione|puppeteer|node/i, "terminal", "Automation"],
-  [/python|fastapi/i, "cpu", "Python"],
-  [/php|javascript|typescript/i, "braces", "Code"],
+/** Glyph di dominio per categoria: fonte primaria, stabile e dichiarata. */
+const categoryGlyph: Record<string, string> = {
+  "cybersecurity-learning": "shieldCheck",
+  "network-security": "network",
+  "sdr-radio": "radio",
+  "automation-utilities": "terminal",
+};
+
+/** Ripiego sui tag quando la categoria non è disponibile. */
+const iconRules: [RegExp, string][] = [
+  [/reti|network|osi/i, "network"],
+  [/sdr/i, "radio"],
+  [/image/i, "image"],
+  [/pentest|cybersecurity/i, "shieldCheck"],
+  [/privacy/i, "lock"],
+  [/full-?stack/i, "layers"],
+  [/algoritm/i, "braces"],
+  [/shell|automazione|puppeteer|node/i, "terminal"],
+  [/python|fastapi/i, "cpu"],
+  [/php|javascript|typescript/i, "braces"],
 ];
 const joined = tags.join(" ");
-const matched = iconRules.find(([re]) => re.test(joined));
-const glyph = matched?.[1] ?? "code";
+const glyph =
+  (category && categoryGlyph[category]) ??
+  iconRules.find(([re]) => re.test(joined))?.[1] ??
+  "code";
 
-/** Hash stabile dallo slug: sceglie una delle varianti di sfondo.
-    Niente style inline (bloccato dalla CSP stretta): la variante è una
-    classe, definita nel foglio di stile con hash calcolato da Astro. */
+/** Hash stabile dallo slug: due progetti della stessa categoria non hanno
+    il gradiente esattamente identico. Niente style inline (bloccato dalla
+    CSP stretta): la variante è una classe definita nel foglio di stile. */
 let hash = 0;
 for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
-const variant = (hash % 6) + 1; // cov-v1 … cov-v6
-const primaryTag = tags[0] ?? matched?.[2] ?? "Project";
+const variant = (hash % 3) + 1; // cov-v1 … cov-v3
+const catClass = category ? `cov-cat--${category}` : "cov-cat--default";
 ---
 {
   cover ? (
@@ -52,16 +72,16 @@ const primaryTag = tags[0] ?? matched?.[2] ?? "Project";
       class:list={[
         "project-cover project-cover--gen",
         `cov-v${variant}`,
+        catClass,
         { "is-large": large },
       ]}
       aria-hidden="true"
     >
-      <span class="cov-grid" />
       <span class="cov-blob" />
+      <span class="cov-grid" />
       <span class="cov-glyph">
         <Icon name={glyph} size={large ? 132 : 84} />
       </span>
-      <span class="cov-tag">{primaryTag}</span>
     </div>
   )
 }
@@ -70,7 +90,7 @@ const primaryTag = tags[0] ?? matched?.[2] ?? "Project";
   .project-cover {
     position: relative;
     display: block;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 21 / 9;
     background: var(--surface-2);
     overflow: hidden;
   }
@@ -86,7 +106,7 @@ const primaryTag = tags[0] ?? matched?.[2] ?? "Project";
 
   /* ── Copertina generata ─────────────────────────────────────── */
   .project-cover--gen {
-    /* valori di default, sovrascritti dalle varianti cov-v1…6 */
+    /* valori di default, sovrascritti dalle varianti cov-v1…3 */
     --cov-angle: 150deg;
     --cov-x: 40%;
     --cov-y: 28%;
@@ -98,22 +118,16 @@ const primaryTag = tags[0] ?? matched?.[2] ?? "Project";
     );
     color: var(--accent);
   }
-  /* Varianti seminate dallo slug (nessuno stile inline: CSP-safe) */
-  .cov-v1 { --cov-angle: 120deg; --cov-x: 26%; --cov-y: 22%; }
-  .cov-v2 { --cov-angle: 155deg; --cov-x: 68%; --cov-y: 18%; }
-  .cov-v3 { --cov-angle: 200deg; --cov-x: 32%; --cov-y: 60%; }
-  .cov-v4 { --cov-angle: 235deg; --cov-x: 72%; --cov-y: 52%; }
-  .cov-v5 { --cov-angle: 175deg; --cov-x: 48%; --cov-y: 30%; }
-  .cov-v6 { --cov-angle: 110deg; --cov-x: 60%; --cov-y: 66%; }
+  .cov-v1 { --cov-angle: 120deg; --cov-x: 28%; --cov-y: 26%; }
+  .cov-v2 { --cov-angle: 175deg; --cov-x: 62%; --cov-y: 22%; }
+  .cov-v3 { --cov-angle: 220deg; --cov-x: 45%; --cov-y: 58%; }
 
   /* ── Gerarchia visiva della copertina (z-index) ─────────────────
-     Un'unica scala esplicita: per cambiare cosa sta sopra/sotto basta
-     riordinare questi valori. Dal fondo alla cima:
+     Dal fondo alla cima:
        sfondo gradiente  → livello 0 (il div .project-cover--gen)
        glow accento      → livello 1 (.cov-blob)
-       griglia tecnica   → livello 2 (.cov-grid)
+       trama di dominio  → livello 2 (.cov-grid)
        glyph di dominio  → livello 3 (.cov-glyph)  ← elemento in primo piano
-       chip categoria    → livello 4 (.cov-tag)    ← sempre in cima
      (l'eventuale freccia di hover vive in ProjectCard, sopra tutto.)
      ──────────────────────────────────────────────────────────── */
   .cov-blob {
@@ -121,7 +135,7 @@ const primaryTag = tags[0] ?? matched?.[2] ?? "Project";
     z-index: 1;
     left: var(--cov-x);
     top: var(--cov-y);
-    width: 60%;
+    width: 62%;
     aspect-ratio: 1;
     translate: -50% -50%;
     background: radial-gradient(circle, var(--accent-soft) 0%, transparent 68%);
@@ -130,12 +144,43 @@ const primaryTag = tags[0] ?? matched?.[2] ?? "Project";
     position: absolute;
     z-index: 2;
     inset: 0;
+    opacity: 0.1;
+  }
+
+  /* ── Trame per categoria ────────────────────────────────────── */
+  /* Formazione cybersecurity: griglia tecnica (il "quaderno a quadretti") */
+  .cov-cat--cybersecurity-learning .cov-grid,
+  .cov-cat--default .cov-grid {
     background-image:
       linear-gradient(to right, currentColor 1px, transparent 1px),
       linear-gradient(to bottom, currentColor 1px, transparent 1px);
     background-size: 26px 26px;
-    opacity: 0.08;
   }
+  /* Sicurezza delle reti: matrice di nodi */
+  .cov-cat--network-security .cov-grid {
+    background-image: radial-gradient(currentColor 1.5px, transparent 1.6px);
+    background-size: 20px 20px;
+    opacity: 0.16;
+  }
+  /* SDR e radio: onde concentriche */
+  .cov-cat--sdr-radio .cov-grid {
+    background-image: repeating-radial-gradient(
+      circle at 50% 50%,
+      currentColor 0 1px,
+      transparent 1px 22px
+    );
+    opacity: 0.13;
+  }
+  /* Automazione e utility: flusso diagonale */
+  .cov-cat--automation-utilities .cov-grid {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      currentColor 0 1px,
+      transparent 1px 14px
+    );
+    opacity: 0.12;
+  }
+
   .cov-glyph {
     position: absolute;
     z-index: 3;
@@ -147,20 +192,5 @@ const primaryTag = tags[0] ?? matched?.[2] ?? "Project";
   }
   .cov-glyph :global(svg) {
     filter: drop-shadow(0 6px 18px var(--accent-soft));
-  }
-  .cov-tag {
-    position: absolute;
-    z-index: 4;
-    left: 0.9rem;
-    bottom: 0.8rem;
-    padding: 0.28rem 0.6rem;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    background: color-mix(in srgb, var(--surface) 78%, transparent);
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.03em;
-    color: var(--muted);
-    backdrop-filter: blur(4px);
   }
 </style>

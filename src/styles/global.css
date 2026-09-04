@@ -207,6 +207,13 @@ p {
 main {
   flex: 1;
 }
+/* Spazio riservato alla barra CTA fissa di mobile/tablet, così l'ultima
+   riga del footer non le finisce sotto. */
+@media (max-width: 959px) {
+  body {
+    padding-bottom: 4.25rem;
+  }
+}
 .section {
   padding-block: var(--space-section);
 }
@@ -280,7 +287,7 @@ main {
 }
 .btn--ghost:hover {
   border-color: var(--accent);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -338,6 +345,23 @@ main {
 }
 :root[data-theme="dark"] .tag {
   color: var(--accent-hover);
+}
+
+/* Variante neutra: quando in una stessa card convivono chip di natura
+   diversa (tecnologie, categoria, stato) e sono tutti gialli, il colore
+   smette di significare qualcosa. Le tecnologie diventano neutre e il
+   giallo resta riservato a ciò che è uno stato o una categoria. */
+.tag--neutral {
+  background: transparent;
+  color: var(--muted);
+  border-color: var(--border);
+}
+.tag--neutral:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+:root[data-theme="dark"] .tag--neutral {
+  color: var(--muted);
 }
 
 /* Griglie riutilizzabili */
@@ -413,11 +437,13 @@ main {
    Stato iniziale attivo solo con JS (.reveal-ready) e solo se
    l'utente non ha richiesto meno movimento. */
 @media (prefers-reduced-motion: no-preference) {
+  /* Spostamento e durata ridotti: 42px in 0,75s facevano arrivare il
+     contenuto "in ritardo" rispetto all'occhio quando si scorre veloce. */
   .reveal-ready [data-reveal] {
     opacity: 0;
-    transform: translateY(42px);
-    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translateY(18px);
+    transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: opacity, transform;
   }
   .reveal-ready [data-reveal].is-visible {
@@ -428,9 +454,9 @@ main {
   /* Gruppi: i figli entrano in cascata (stagger) */
   .reveal-ready [data-reveal-group] > * {
     opacity: 0;
-    transform: translateY(38px);
-    transition: opacity 0.6s ease,
-      transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    transform: translateY(16px);
+    transition: opacity 0.38s ease,
+      transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
       translate 0.25s ease;
   }
   .reveal-ready [data-reveal-group].is-visible > * {
@@ -481,5 +507,132 @@ main {
   }
   main {
     animation: pageIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STAMPA / SALVA COME PDF
+   Un sito-CV viene stampato: senza queste regole finivano in pagina
+   header sticky, barra di lettura, navigazione del footer e copertine
+   decorative — e soprattutto tutto ciò che non era ancora entrato in
+   viewport restava a `opacity: 0`, cioè invisibile sul foglio.
+   ═══════════════════════════════════════════════════════════════ */
+@media print {
+  /* 1. Il contenuto non ancora "rivelato" deve comunque stamparsi. */
+  .reveal-ready [data-reveal],
+  .reveal-ready [data-reveal-group] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    box-shadow: none !important;
+  }
+
+  /* 2. Colori: sempre tema chiaro, inchiostro nero su carta bianca. */
+  :root,
+  :root[data-theme="dark"] {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #ffffff;
+    --text: #000000;
+    --muted: #333333;
+    --border: #bbbbbb;
+    --accent: #7a5e0e;
+    --accent-text: #7a5e0e;
+    --accent-soft: transparent;
+    color-scheme: light;
+  }
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 11pt;
+    line-height: 1.45;
+  }
+
+  /* 3. Via la cornice dell'interfaccia: non serve su carta. */
+  .site-header,
+  .site-footer,
+  .read-progress,
+  .skip-link,
+  .hero-visual,
+  .hero-glow,
+  .hero-mesh,
+  .hero-scroll,
+  .hero-socials,
+  .theme-toggle,
+  .lang-switch,
+  .menu-btn,
+  .mobile-menu,
+  .proj-filters,
+  .project-cover,
+  .project-cover-link,
+  .featured-cover,
+  .footer-top,
+  .see-all,
+  .cta-band,
+  .mobile-cta,
+  .breadcrumb {
+    display: none !important;
+  }
+  body {
+    padding-bottom: 0 !important;
+  }
+
+  /* 4. Niente pagine sprecate: sezioni compatte e blocchi non spezzati. */
+  .section,
+  .section--tight {
+    padding-block: 0.6cm !important;
+  }
+  .container {
+    max-width: none;
+    padding-inline: 0;
+  }
+  .card,
+  .timeline-item,
+  .edu-item,
+  figure,
+  blockquote,
+  pre {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: 1px solid var(--border);
+  }
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+  h1 { font-size: 20pt; }
+  h2 { font-size: 15pt; }
+  h3 { font-size: 12pt; }
+
+  /* 5. I link su carta perdono la destinazione: la si esplicita.
+        Solo per gli URL esterni — ancore e mailto restano puliti. */
+  .prose a[href^="http"]::after,
+  .cert-verify[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #555;
+    word-break: break-all;
+  }
+
+  /* 6. La griglia a colonne si appiattisce: su A4 non c'è spazio. */
+  .about-grid,
+  .contact-grid,
+  .values-layout,
+  .apt-meta {
+    display: block !important;
+  }
+  .grid--2,
+  .grid--3,
+  .skills-grid,
+  .credential-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
