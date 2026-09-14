@@ -28,7 +28,11 @@ const desc = content[lang].hero.subheadline;
   <div class="hr container"></div>
 
   <section class="section section--proof" aria-label={lang === "it" ? "Risultati principali" : "Key results"}>
-    <div class="container" data-reveal>
+    {/* Niente `data-reveal` qui: l'ingresso lo gestisce ora la cascata
+        interna a <Stats> (`data-reveal-group`). Tenerli entrambi avrebbe
+        significato far comparire prima il contenitore e poi, dentro di
+        esso, di nuovo le cinque voci: due animazioni per la stessa cosa. */}
+    <div class="container">
       <Stats lang={lang} />
     </div>
   </section>

@@ -239,28 +239,39 @@ const aria =
     border: 2px solid var(--accent);
   }
 
-  /* Animazione di ingresso del radar */
+  /* Animazione di ingresso del radar.
+
+     Lo stato iniziale nascosto è condizionato a `html.reveal-ready`, la
+     classe che il sito aggiunge solo quando il JavaScript è vivo (e che
+     rimuove da sola dopo 2,5 s se il modulo non è mai arrivato).
+     Senza questa condizione il grafico partiva a `opacity: 0` sempre, e
+     chi visitava il sito con JavaScript disattivato — o con la rete che
+     aveva perso il file degli script — vedeva un riquadro vuoto al posto
+     del profilo attitudinale. Ora il caso peggiore è "niente animazione,
+     grafico subito visibile", che è il comportamento giusto. */
   @media (prefers-reduced-motion: no-preference) {
-    .radar-grid,
-    .radar-labels {
+    :global(html.reveal-ready) .radar-grid,
+    :global(html.reveal-ready) .radar-labels {
       opacity: 0;
       transition: opacity 0.6s ease;
     }
-    .radar-labels {
+    :global(html.reveal-ready) .radar-labels {
       transition-delay: 0.25s;
     }
-    .radar-data {
+    :global(html.reveal-ready) .radar-data {
       opacity: 0;
       transform: scale(0.15);
       transform-origin: 310px 205px;
       transform-box: view-box;
       transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease;
     }
-    .radar.in .radar-grid,
-    .radar.in .radar-labels {
+    /* Prefissate anch'esse, così la specificità resta più alta delle
+       regole di stato iniziale qui sopra e l'ordine di vittoria è certo. */
+    :global(html.reveal-ready) .radar.in .radar-grid,
+    :global(html.reveal-ready) .radar.in .radar-labels {
       opacity: 1;
     }
-    .radar.in .radar-data {
+    :global(html.reveal-ready) .radar.in .radar-data {
       opacity: 1;
       transform: scale(1);
     }

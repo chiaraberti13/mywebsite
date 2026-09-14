@@ -69,6 +69,16 @@ export const site = {
 
   /** Percorso del CV scaricabile (mettere il file in /public) */
   cvFile: "/cv-chiara-berti.pdf",
+
+  /**
+   * Colore della barra del browser (Android/Chrome, Safari iOS) per ciascun
+   * tema. Devono coincidere con --bg di global.css: se differiscono, sul
+   * telefono si vede una riga di colore diverso sopra la pagina.
+   */
+  themeColor: {
+    light: "#faf9f6",
+    dark: "#0f0f11",
+  },
 } as const;
 
 export type Site = typeof site;

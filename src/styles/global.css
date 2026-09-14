@@ -495,11 +495,26 @@ main {
 @media (prefers-reduced-motion: no-preference) {
   /* Spostamento e durata ridotti: 42px in 0,75s facevano arrivare il
      contenuto "in ritardo" rispetto all'occhio quando si scorre veloce. */
+  /* Il ritardo della cascata vive in una VARIABILE e viene applicato solo
+     alle due proprietà dell'ingresso (opacità e spostamento).
+
+     Prima era un `transition-delay` secco: essendo una proprietà come le
+     altre, restava attaccato all'elemento anche dopo la rivelazione e
+     ritardava OGNI transizione successiva. Effetto concreto: passando il
+     mouse sulla sesta card di una griglia, il sollevamento partiva 0,36
+     secondi dopo il puntatore — l'interfaccia sembrava incollata.
+
+     Seconda correzione, nelle liste qui sotto: queste regole hanno
+     specificità più alta di `.card` e ne sostituivano in blocco la
+     `transition`, azzerando quelle di bordo e ombra. Le proprietà di hover
+     vanno quindi ripetute qui, senza ritardo. */
   .reveal-ready [data-reveal] {
+    --reveal-delay: 0s;
     opacity: 0;
     transform: translateY(18px);
-    transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay),
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay),
+      translate 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     /* `will-change` chiede alla scheda grafica un livello dedicato per
        questo elemento. Utile PRIMA dell'animazione, uno spreco dopo: su una
        pagina con venti blocchi da rivelare restavano venti livelli promossi
@@ -513,25 +528,27 @@ main {
     will-change: auto;
   }
 
-  /* Gruppi: i figli entrano in cascata (stagger) */
+  /* Gruppi: i figli entrano in cascata (stagger).
+     Niente `will-change` qui: un gruppo può avere dieci o venti figli e
+     promuoverli tutti a livello dedicato costa più di quanto renda. */
   .reveal-ready [data-reveal-group] > * {
+    --reveal-delay: 0s;
     opacity: 0;
     transform: translateY(16px);
-    transition: opacity 0.38s ease,
-      transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
-      translate 0.25s ease;
+    transition: opacity 0.38s ease var(--reveal-delay),
+      transform 0.42s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay),
+      translate 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   }
   .reveal-ready [data-reveal-group].is-visible > * {
     opacity: 1;
     transform: none;
-    will-change: auto;
   }
-  .reveal-ready [data-reveal-group].is-visible > *:nth-child(2) { transition-delay: 0.06s; }
-  .reveal-ready [data-reveal-group].is-visible > *:nth-child(3) { transition-delay: 0.12s; }
-  .reveal-ready [data-reveal-group].is-visible > *:nth-child(4) { transition-delay: 0.18s; }
-  .reveal-ready [data-reveal-group].is-visible > *:nth-child(5) { transition-delay: 0.24s; }
-  .reveal-ready [data-reveal-group].is-visible > *:nth-child(6) { transition-delay: 0.30s; }
-  .reveal-ready [data-reveal-group].is-visible > *:nth-child(n + 7) { transition-delay: 0.36s; }
+  .reveal-ready [data-reveal-group] > *:nth-child(2) { --reveal-delay: 0.06s; }
+  .reveal-ready [data-reveal-group] > *:nth-child(3) { --reveal-delay: 0.12s; }
+  .reveal-ready [data-reveal-group] > *:nth-child(4) { --reveal-delay: 0.18s; }
+  .reveal-ready [data-reveal-group] > *:nth-child(5) { --reveal-delay: 0.24s; }
+  .reveal-ready [data-reveal-group] > *:nth-child(6) { --reveal-delay: 0.30s; }
+  .reveal-ready [data-reveal-group] > *:nth-child(n + 7) { --reveal-delay: 0.36s; }
 }
 
 /* Con "riduci movimento": niente scorrimento, ma un fade morbido resta
@@ -581,9 +598,18 @@ main {
    viewport restava a `opacity: 0`, cioè invisibile sul foglio.
    ═══════════════════════════════════════════════════════════════ */
 @media print {
-  /* 1. Il contenuto non ancora "rivelato" deve comunque stamparsi. */
+  /* 1. Il contenuto non ancora "rivelato" deve comunque stamparsi.
+        `.stat` e il radar del profilo attitudinale sono elencati a parte
+        perché non passano dal sistema `[data-reveal]`: partono nascosti e
+        contano su un'animazione propria. Sulla carta le animazioni sono
+        disattivate (punto sotto), quindi senza questa riga quelle due
+        sezioni uscivano dalla stampante completamente bianche. */
   .reveal-ready [data-reveal],
-  .reveal-ready [data-reveal-group] > * {
+  .reveal-ready [data-reveal-group] > *,
+  .stat,
+  .radar-grid,
+  .radar-labels,
+  .radar-data {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
