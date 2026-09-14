@@ -1,0 +1,1039 @@
+---
+/**
+ * Scena del hero: una finestra di terminale che racconta il metodo in tre
+ * fasi — understand → automate → secure — su una rete di competenze
+ * interconnesse.
+ *
+ * COM'È COMPOSTA (dall'alto in basso):
+ *   1. barra della finestra   → i tre pallini + il prompt + la spia "live"
+ *   2. mappa della rete (SVG) → sei nodi collegati a un nucleo centrale
+ *   3. log del terminale      → quattro righe che si scrivono da sole
+ *   4. striscia delle fasi    → tre PULSANTI veri (understand/automate/secure)
+ *
+ * ACCESSIBILITÀ
+ *   La mappa e il log sono decorativi (`aria-hidden`): non contengono
+ *   informazioni che non siano già scritte nella colonna di testo accanto.
+ *   Le tre fasi invece sono `<button>` reali con `aria-pressed`, quindi
+ *   raggiungibili da tastiera: un controllo interattivo non deve MAI finire
+ *   dentro un ramo `aria-hidden`.
+ *
+ * SENZA JAVASCRIPT / CON "RIDUCI MOVIMENTO"
+ *   Il markup è già renderizzato allo stato finale (fase `secure`): nodi,
+ *   collegamenti, scudo e log sono visibili e leggibili. Il JS non aggiunge
+ *   informazione, aggiunge movimento.
+ */
+import { useTranslations } from "@/i18n/ui";
+import type { Locale } from "@/config/site";
+
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+/** Le tre fasi, nell'ordine narrativo. Le parole restano in inglese:
+    sono il claim del sito ed è così che compaiono nei comandi. */
+const phases = ["understand", "automate", "secure"] as const;
+
+/** Righe mostrate a riposo (fase `secure`, l'esito del percorso).
+    Stesse righe che il JS riscrive lettera per lettera quando può. */
+const restingLog = [
+  { kind: "cmd", text: "hardening.py --baseline CIS --apply" },
+  { kind: "out", text: "9 patched · 3 services off · 12 keys rotated" },
+  { kind: "cmd", text: "verify --tls --headers --auth" },
+  { kind: "ok", text: "all checks passed · monitoring armed" },
+] as const;
+---
+
+<div class="term" data-phase="2">
+  {/* ── 1. Barra della finestra ─────────────────────────────── */}
+  <div class="term-bar" aria-hidden="true">
+    <span class="term-dots"><i></i><i></i><i></i></span>
+    <span class="term-path">chiara@lab:~/recon</span>
+    <span class="term-live"><i class="term-live-dot"></i>live</span>
+  </div>
+
+  {/* ── 2. La rete di competenze ────────────────────────────── */}
+  <div class="term-stage">
+    <svg
+      class="net"
+      viewBox="0 0 400 300"
+      role="presentation"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <defs>
+        <pattern id="netGrid" width="25" height="25" patternUnits="userSpaceOnUse">
+          <path d="M25 0H0V25" fill="none" stroke="currentColor" stroke-width="1" opacity="0.12" />
+        </pattern>
+        <radialGradient id="netCore" cx="50%" cy="50%" r="58%">
+          <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.3" />
+          <stop offset="100%" stop-color="var(--accent)" stop-opacity="0" />
+        </radialGradient>
+      </defs>
+
+      <rect x="0" y="0" width="400" height="300" fill="url(#netGrid)" />
+      <circle cx="200" cy="150" r="120" fill="url(#netCore)" />
+
+      {/* Collegamenti. `pathLength="1"` normalizza il tratteggio: un'unica
+          regola di disegno vale per linee di lunghezza diversa. */}
+      <g class="net-links">
+        <line class="lk lk-1" pathLength="1" x1="200" y1="150" x2="70" y2="58" />
+        <line class="lk lk-2" pathLength="1" x1="200" y1="150" x2="44" y2="172" />
+        <line class="lk lk-3" pathLength="1" x1="200" y1="150" x2="332" y2="62" />
+        <line class="lk lk-4" pathLength="1" x1="200" y1="150" x2="104" y2="252" />
+        <line class="lk lk-5" pathLength="1" x1="200" y1="150" x2="358" y2="178" />
+        <line class="lk lk-6" pathLength="1" x1="200" y1="150" x2="292" y2="256" />
+        <line class="lk lk-rim" pathLength="1" x1="70" y1="58" x2="332" y2="62" />
+        <line class="lk lk-rim" pathLength="1" x1="44" y1="172" x2="104" y2="252" />
+        <line class="lk lk-rim" pathLength="1" x1="358" y1="178" x2="292" y2="256" />
+      </g>
+
+      {/* I nodi. `data-node` è l'aggancio per l'interazione col puntatore:
+          al passaggio il nodo si illumina e la sua etichetta compare. */}
+      <g class="net-nodes">
+        <g class="nd nd-1" data-node="linux" transform="translate(70 58)">
+          <circle class="nd-hit" r="30" />
+          <circle class="nd-halo" r="19" />
+          <circle class="nd-bg" r="19" />
+          <g class="nd-ico" transform="translate(-9.5 -9.5) scale(0.79)">
+            <rect x="3" y="4" width="18" height="16" rx="2" /><path d="m7 9 3 3-3 3M13 15h4" />
+          </g>
+        </g>
+        <g class="nd nd-2" data-node="code" transform="translate(44 172)">
+          <circle class="nd-hit" r="30" />
+          <circle class="nd-halo" r="18" />
+          <circle class="nd-bg" r="18" />
+          <g class="nd-ico" transform="translate(-9 -9) scale(0.75)">
+            <path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 6l-3 12" />
+          </g>
+        </g>
+        <g class="nd nd-3" data-node="network" transform="translate(332 62)">
+          <circle class="nd-hit" r="30" />
+          <circle class="nd-halo" r="19" />
+          <circle class="nd-bg" r="19" />
+          <g class="nd-ico" transform="translate(-9.5 -9.5) scale(0.79)">
+            <circle cx="12" cy="5" r="2.5" /><circle cx="5" cy="19" r="2.5" /><circle cx="19" cy="19" r="2.5" /><path d="M12 7.5 6.6 16.6M12 7.5l5.4 9.1M6.8 19h10.4" />
+          </g>
+        </g>
+        <g class="nd nd-4" data-node="automation" transform="translate(104 252)">
+          <circle class="nd-hit" r="30" />
+          <circle class="nd-halo" r="18" />
+          <circle class="nd-bg" r="18" />
+          <g class="nd-ico" transform="translate(-9 -9) scale(0.75)">
+            <path d="M20 11.5a8 8 0 1 0-.7 4.5" /><path d="M20 4.5V12h-6" />
+          </g>
+        </g>
+        <g class="nd nd-5" data-node="cloud" transform="translate(358 178)">
+          <circle class="nd-hit" r="30" />
+          <circle class="nd-halo" r="18" />
+          <circle class="nd-bg" r="18" />
+          <g class="nd-ico" transform="translate(-9 -9) scale(0.75)">
+            <path d="M7 19a4.5 4.5 0 0 1-.3-9A6 6 0 0 1 18 10.5a4.25 4.25 0 0 1-.5 8.5Z" />
+          </g>
+        </g>
+        <g class="nd nd-6" data-node="offensive" transform="translate(292 256)">
+          <circle class="nd-hit" r="30" />
+          <circle class="nd-halo" r="18" />
+          <circle class="nd-bg" r="18" />
+          <g class="nd-ico" transform="translate(-9 -9) scale(0.75)">
+            <path d="M5 21V4" /><path d="M5 5h12l-2.5 3.5L17 12H5" />
+          </g>
+        </g>
+      </g>
+
+      {/* Pacchetti: viaggiano dai nodi al nucleo durante `automate`. */}
+      <g class="net-pulses">
+        <circle class="ps ps-1" r="3.2" />
+        <circle class="ps ps-2" r="3.2" />
+        <circle class="ps ps-3" r="3.2" />
+        <circle class="ps ps-4" r="3.2" />
+        <circle class="ps ps-5" r="3.2" />
+        <circle class="ps ps-6" r="3.2" />
+      </g>
+
+      {/* Il nucleo: prima una scintilla (la curiosità), poi lo scudo. */}
+      <g class="net-core">
+        <circle class="core-ripple" cx="200" cy="150" r="10" />
+        <rect class="core-frame" x="157" y="107" width="86" height="86" rx="18" />
+        <circle class="core-disc" cx="200" cy="150" r="34" />
+        <g class="core-ico" transform="translate(184 134) scale(1.34)">
+          <path d="M12 3 5 6v5c0 4.5 3 7.6 7 9 4-1.4 7-4.5 7-9V6l-7-3Z" />
+          <path d="m9 12 2 2 4-4" />
+        </g>
+      </g>
+
+      {/* Linea di scansione: l'ispezione continua della fase `secure`. */}
+      <line class="net-scan" x1="0" x2="400" y1="0" y2="0" />
+    </svg>
+
+    {/* Etichetta del nodo sotto il puntatore. Vive fuori dall'SVG così può
+        usare il font del sito senza scalature strane. */}
+    <span class="net-tip" aria-hidden="true" hidden></span>
+  </div>
+
+  {/* ── 3. Il log ───────────────────────────────────────────── */}
+  <div class="term-log" aria-hidden="true">
+    {
+      restingLog.map((line) => (
+        <p class:list={["ln", `ln--${line.kind}`]}>
+          <span class="ln-mark">{line.kind === "cmd" ? "$" : line.kind === "ok" ? "✓" : "·"}</span>
+          <span class="ln-txt">{line.text}</span>
+        </p>
+      ))
+    }
+    <span class="term-caret" hidden></span>
+  </div>
+
+  {/* ── 4. Le tre fasi: pulsanti veri, non decorazione ──────── */}
+  <div class="term-phases" role="group" aria-label={t("hero.demo")}>
+    {
+      phases.map((phase, i) => (
+        <>
+          {i > 0 && <span class="ph-sep" aria-hidden="true">→</span>}
+          <button
+            type="button"
+            class="ph"
+            data-phase={i}
+            aria-pressed={i === 2 ? "true" : "false"}
+            aria-label={`${t("hero.demoPhase")} ${phase}`}
+          >
+            <span class="ph-bar" aria-hidden="true"></span>
+            {phase}
+          </button>
+        </>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  /* ══════════════════════════════════════════════════════════════
+     LA FINESTRA
+     Niente `aspect-ratio` sul contenitore: l'altezza nasce dai suoi
+     quattro pezzi. Su telefono il pannello si accorcia da solo invece
+     di imporre un rettangolo alto e mezzo vuoto.
+     ══════════════════════════════════════════════════════════════ */
+  .term {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    font-family: var(--font-mono);
+  }
+
+  /* ── 1. Barra della finestra ───────────────────────────────── */
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+  .term-dots {
+    display: inline-flex;
+    gap: 0.3rem;
+    flex: none;
+  }
+  .term-dots i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--border-strong);
+  }
+  .term-dots i:nth-child(3) {
+    background: var(--accent);
+  }
+  .term-path {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .term-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-inline-start: auto;
+    flex: none;
+    padding: 0.1rem 0.45rem;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent-text);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .term-live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* ── 2. Il palcoscenico della rete ─────────────────────────── */
+  .term-stage {
+    position: relative;
+    color: var(--accent-line);
+    background:
+      radial-gradient(28rem 18rem at 20% 0%, var(--accent-soft), transparent 60%),
+      linear-gradient(160deg, var(--surface) 0%, var(--surface-2) 100%);
+  }
+  .net {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .net-links line {
+    stroke: var(--accent-line);
+    stroke-width: 1.4;
+    fill: none;
+    opacity: 0.45;
+    transition: opacity 0.25s ease, stroke-width 0.25s ease;
+  }
+  .net-links .lk-rim {
+    opacity: 0.16;
+  }
+  .nd-hit {
+    fill: transparent;
+    /* L'area sensibile è più grande del pallino disegnato: su telefono
+       un bersaglio da 19px di raggio è al limite, 30px è comodo. */
+    cursor: pointer;
+  }
+  .nd-bg {
+    fill: var(--surface);
+    stroke: var(--accent-line);
+    stroke-width: 1.5;
+    transition: stroke-width 0.25s ease;
+  }
+  .nd-ico {
+    fill: none;
+    stroke: var(--accent-line);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .nd-halo {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.4;
+    opacity: 0;
+  }
+  .core-frame {
+    fill: none;
+    stroke: var(--accent-line);
+    stroke-width: 1.2;
+    opacity: 0.4;
+    transform-box: fill-box;
+    transform-origin: center;
+    rotate: 18deg;
+  }
+  .core-disc {
+    fill: var(--surface);
+    stroke: var(--accent-line);
+    stroke-width: 1.5;
+  }
+  .core-ico {
+    fill: none;
+    stroke: var(--accent-line);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .core-ripple,
+  .ps,
+  .net-scan {
+    opacity: 0;
+  }
+  .core-ripple {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.6;
+  }
+  .ps {
+    fill: var(--accent);
+  }
+  .net-scan {
+    stroke: var(--accent);
+    stroke-width: 1.4;
+  }
+
+  /* Etichetta del nodo sotto il puntatore */
+  .net-tip {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    translate: -50% -170%;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--accent-text);
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    pointer-events: none;
+    box-shadow: var(--shadow);
+  }
+
+  /* ── 3. Il log ─────────────────────────────────────────────── */
+  .term-log {
+    position: relative;
+    display: grid;
+    /* Quattro righe di altezza FISSA: il testo che si scrive non fa
+       "saltare" il pannello né la pagina sotto di esso. */
+    grid-template-rows: repeat(4, 1.45rem);
+    align-content: start;
+    gap: 0.1rem;
+    padding: 0.7rem 0.8rem;
+    border-top: 1px solid var(--border);
+    background: var(--surface-2);
+    font-size: 0.68rem;
+    line-height: 1.45rem;
+  }
+  .ln {
+    display: flex;
+    gap: 0.45rem;
+    min-width: 0;
+    color: var(--muted);
+  }
+  .ln-mark {
+    flex: none;
+    width: 0.7rem;
+    color: var(--accent-text);
+  }
+  .ln-txt {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ln--cmd .ln-txt {
+    color: var(--text);
+  }
+  .ln--ok .ln-mark {
+    color: var(--success);
+  }
+  .term-caret {
+    position: absolute;
+    width: 0.45rem;
+    height: 0.9rem;
+    background: var(--accent);
+    translate: 0 0.25rem;
+  }
+
+  /* ── 4. Le fasi ────────────────────────────────────────────── */
+  .term-phases {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15rem;
+    padding: 0.45rem 0.5rem;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .ph {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0.45rem 0.2rem 0.5rem;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.25s ease, background 0.25s ease;
+  }
+  .ph:hover {
+    color: var(--text);
+    background: var(--surface-2);
+  }
+  .ph[aria-pressed="true"] {
+    color: var(--accent-text);
+    font-weight: 650;
+  }
+  /* Barretta di avanzamento sotto la fase attiva: mostra quanto manca
+     al passaggio alla successiva. */
+  .ph-bar {
+    position: absolute;
+    left: 0.35rem;
+    right: 0.35rem;
+    bottom: 0.15rem;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+  .ph[aria-pressed="true"] .ph-bar {
+    transform: scaleX(1);
+  }
+  .ph-sep {
+    flex: none;
+    /* Ocra al 70% di opacità misurava ~2,6:1 su fondo chiaro: la freccia
+       che lega le tre fasi è il filo del racconto, deve leggersi. In neutro
+       pieno arriva a 7,25:1 e per giunta lascia l'accento alla sola fase
+       attiva, dove serve davvero. */
+    color: var(--muted);
+    font-size: 0.7rem;
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     GLI STATI DELLA SCENA
+     Ogni fase accende quello che le compete. Le regole stanno qui,
+     il JS si limita a cambiare `data-phase`: nessuna manipolazione di
+     stile dal codice, nessun fotogramma calcolato a mano.
+     ══════════════════════════════════════════════════════════════ */
+
+  /* Nodo sotto il puntatore (o in fase di "scoperta") */
+  .nd.is-hot .nd-bg {
+    stroke-width: 2.6;
+  }
+  .nd.is-hot .nd-halo {
+    opacity: 0.55;
+  }
+  .lk.is-hot {
+    opacity: 1;
+    stroke-width: 2.2;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* ── Ingresso: nodi e collegamenti si costruiscono ─────────
+       Parte una volta sola, quando la scena entra nel viewport. */
+    .term.is-live .nd {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: ndIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .term.is-live .nd-1 { animation-delay: 0.35s; }
+    .term.is-live .nd-2 { animation-delay: 0.5s; }
+    .term.is-live .nd-3 { animation-delay: 0.65s; }
+    .term.is-live .nd-4 { animation-delay: 0.8s; }
+    .term.is-live .nd-5 { animation-delay: 0.95s; }
+    .term.is-live .nd-6 { animation-delay: 1.1s; }
+    @keyframes ndIn {
+      0%   { opacity: 0; scale: 0.3; }
+      70%  { opacity: 1; scale: 1.14; }
+      100% { opacity: 1; scale: 1; }
+    }
+    .term.is-live .lk {
+      stroke-dasharray: 1;
+      animation: lkDraw 0.5s ease-out both;
+    }
+    .term.is-live .lk-1 { animation-delay: 0.55s; }
+    .term.is-live .lk-2 { animation-delay: 0.7s; }
+    .term.is-live .lk-3 { animation-delay: 0.85s; }
+    .term.is-live .lk-4 { animation-delay: 1s; }
+    .term.is-live .lk-5 { animation-delay: 1.15s; }
+    .term.is-live .lk-6 { animation-delay: 1.3s; }
+    .term.is-live .lk-rim { animation-delay: 1.5s; }
+    @keyframes lkDraw {
+      from { stroke-dashoffset: 1; }
+      to   { stroke-dashoffset: 0; }
+    }
+    .term.is-live .net-core {
+      transform-box: view-box;
+      transform-origin: 200px 150px;
+      animation: coreIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) 1.55s both;
+    }
+    @keyframes coreIn {
+      0%   { opacity: 0; scale: 0.3; }
+      65%  { opacity: 1; scale: 1.1; }
+      100% { opacity: 1; scale: 1; }
+    }
+
+    /* Spia "live" della barra: respira sempre, costa niente. */
+    .term.is-live .term-live-dot {
+      animation: livePulse 2.2s ease-in-out infinite;
+    }
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--accent-soft); }
+      50%      { opacity: 0.55; box-shadow: 0 0 0 4px var(--accent-soft); }
+    }
+
+    /* Cursore lampeggiante del log */
+    .term.is-live .term-caret {
+      animation: caretBlink 1s steps(2, start) infinite;
+    }
+    @keyframes caretBlink {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0; }
+    }
+
+    /* Barretta di avanzamento della fase attiva: la durata arriva dal JS
+       come variabile CSS, così tempi della grafica e tempi del log non
+       possono sfasarsi. */
+    .term.is-live .ph[aria-pressed="true"] .ph-bar {
+      animation: phBar var(--ph-dur, 8s) linear both;
+    }
+    @keyframes phBar {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+
+    /* ── FASE 0 · understand ────────────────────────────────────
+       Ricognizione: un impulso parte dal nucleo e i nodi si accendono
+       a turno, come host che rispondono a una scansione. */
+    .term.is-live[data-phase="0"] .core-ripple {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: ripple 2.6s ease-out infinite;
+    }
+    @keyframes ripple {
+      0%   { opacity: 0.6; scale: 0.5; }
+      100% { opacity: 0; scale: 3.4; }
+    }
+    .term.is-live[data-phase="0"] .nd-halo {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: discover 3.9s ease-in-out infinite;
+    }
+    .term.is-live[data-phase="0"] .nd-1 .nd-halo { animation-delay: 0s; }
+    .term.is-live[data-phase="0"] .nd-2 .nd-halo { animation-delay: 0.32s; }
+    .term.is-live[data-phase="0"] .nd-3 .nd-halo { animation-delay: 0.64s; }
+    .term.is-live[data-phase="0"] .nd-4 .nd-halo { animation-delay: 0.96s; }
+    .term.is-live[data-phase="0"] .nd-5 .nd-halo { animation-delay: 1.28s; }
+    .term.is-live[data-phase="0"] .nd-6 .nd-halo { animation-delay: 1.6s; }
+    @keyframes discover {
+      0%        { opacity: 0.65; scale: 1; }
+      22%, 100% { opacity: 0; scale: 1.75; }
+    }
+
+    /* ── FASE 1 · automate ──────────────────────────────────────
+       I pacchetti risalgono dai nodi al nucleo, in fila e senza sosta:
+       è la pipeline che gira da sola. */
+    .term.is-live[data-phase="1"] .ps {
+      animation-duration: 2.4s;
+      animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1);
+      animation-iteration-count: infinite;
+    }
+    .term.is-live[data-phase="1"] .ps-1 { animation-name: ps1; animation-delay: 0s; }
+    .term.is-live[data-phase="1"] .ps-2 { animation-name: ps2; animation-delay: 0.2s; }
+    .term.is-live[data-phase="1"] .ps-3 { animation-name: ps3; animation-delay: 0.4s; }
+    .term.is-live[data-phase="1"] .ps-4 { animation-name: ps4; animation-delay: 0.6s; }
+    .term.is-live[data-phase="1"] .ps-5 { animation-name: ps5; animation-delay: 0.8s; }
+    .term.is-live[data-phase="1"] .ps-6 { animation-name: ps6; animation-delay: 1s; }
+    @keyframes ps1 {
+      0%   { translate: 70px 58px;   opacity: 0; }
+      12%  { opacity: 1; }
+      72%  { opacity: 1; }
+      80%, 100% { translate: 200px 150px; opacity: 0; }
+    }
+    @keyframes ps2 {
+      0%   { translate: 44px 172px;  opacity: 0; }
+      12%  { opacity: 1; }
+      72%  { opacity: 1; }
+      80%, 100% { translate: 200px 150px; opacity: 0; }
+    }
+    @keyframes ps3 {
+      0%   { translate: 332px 62px;  opacity: 0; }
+      12%  { opacity: 1; }
+      72%  { opacity: 1; }
+      80%, 100% { translate: 200px 150px; opacity: 0; }
+    }
+    @keyframes ps4 {
+      0%   { translate: 104px 252px; opacity: 0; }
+      12%  { opacity: 1; }
+      72%  { opacity: 1; }
+      80%, 100% { translate: 200px 150px; opacity: 0; }
+    }
+    @keyframes ps5 {
+      0%   { translate: 358px 178px; opacity: 0; }
+      12%  { opacity: 1; }
+      72%  { opacity: 1; }
+      80%, 100% { translate: 200px 150px; opacity: 0; }
+    }
+    @keyframes ps6 {
+      0%   { translate: 292px 256px; opacity: 0; }
+      12%  { opacity: 1; }
+      72%  { opacity: 1; }
+      80%, 100% { translate: 200px 150px; opacity: 0; }
+    }
+    /* La cornice del nucleo gira lentamente: la pipeline è in moto. */
+    .term.is-live[data-phase="1"] .core-frame {
+      animation: frameSpin 14s linear infinite;
+    }
+    @keyframes frameSpin {
+      from { rotate: 18deg; }
+      to   { rotate: 378deg; }
+    }
+
+    /* ── FASE 2 · secure ────────────────────────────────────────
+       Lo scudo respira e una linea di scansione ispeziona la rete. */
+    .term.is-live[data-phase="2"] .net-core {
+      transform-box: view-box;
+      transform-origin: 200px 150px;
+      animation: coreBreathe 4.5s ease-in-out infinite;
+    }
+    @keyframes coreBreathe {
+      0%, 100% { scale: 1; }
+      50%      { scale: 1.045; }
+    }
+    .term.is-live[data-phase="2"] .net-scan {
+      animation: scan 4.5s linear infinite;
+    }
+    @keyframes scan {
+      0%   { transform: translateY(0); opacity: 0; }
+      10%  { opacity: 0.55; }
+      90%  { opacity: 0.55; }
+      100% { transform: translateY(300px); opacity: 0; }
+    }
+
+    /* Parallasse leggera: i livelli si spostano di poco e con intensità
+       diversa. --px/--py arrivano dallo script (intervallo -1…1). */
+    .net-links,
+    .net-nodes,
+    .net-core {
+      transition: translate 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .term-stage:hover .net-links {
+      translate: calc(var(--px, 0) * 5px) calc(var(--py, 0) * 5px);
+    }
+    .term-stage:hover .net-nodes {
+      translate: calc(var(--px, 0) * 10px) calc(var(--py, 0) * 10px);
+    }
+    .term-stage:hover .net-core {
+      translate: calc(var(--px, 0) * -6px) calc(var(--py, 0) * -6px);
+    }
+  }
+
+  /* Fuori dal viewport si ferma TUTTO: i browser non sospendono da soli
+     le animazioni CSS non visibili e questa scena ne ha diverse infinite.
+     È una pausa, non un riavvio: rientrando riprende da dov'era. */
+  .term.is-idle .net,
+  .term.is-idle .net *,
+  .term.is-idle .term-live-dot,
+  .term.is-idle .term-caret,
+  .term.is-idle .ph-bar {
+    animation-play-state: paused !important;
+  }
+
+  /* ── Telefono ──────────────────────────────────────────────── */
+  @media (max-width: 560px) {
+    .term-log {
+      /* Tre righe invece di quattro: sopra la piega lo spazio verticale
+         è la risorsa più scarsa. Il JS legge questo numero dal DOM. */
+      grid-template-rows: repeat(3, 1.4rem);
+      font-size: 0.64rem;
+      line-height: 1.4rem;
+    }
+    .term-log .ln:nth-child(4) {
+      display: none;
+    }
+    .ph {
+      letter-spacing: 0.04em;
+      font-size: 0.62rem;
+    }
+    .term-path {
+      font-size: 0.64rem;
+    }
+  }
+</style>
+
+<script>
+  /**
+   * Regia della scena. Tutto ciò che segue è MIGLIORAMENTO PROGRESSIVO:
+   * senza JS il pannello resta allo stato finale già renderizzato in HTML.
+   *
+   * Lo script fa tre cose e basta:
+   *   1. avvia il ciclo delle fasi (e lo ferma fuori dal viewport)
+   *   2. scrive il log lettera per lettera
+   *   3. gestisce nodo-sotto-il-puntatore e parallasse
+   */
+  type LineKind = "cmd" | "out" | "ok";
+  type Line = { kind: LineKind; text: string };
+
+  const SCRIPTS: Line[][] = [
+    [
+      { kind: "cmd", text: "nmap -sV --top-ports 1000 10.10.0.0/24" },
+      { kind: "out", text: "6 hosts up · 14 services fingerprinted" },
+      { kind: "cmd", text: "whatweb -a 3 10.10.0.12" },
+      { kind: "out", text: "nginx/1.24 · TLS 1.3 · HSTS preload" },
+    ],
+    [
+      { kind: "cmd", text: "./pipeline.sh --collect --normalize --report" },
+      { kind: "out", text: "6/6 hosts processed · 0 manual steps" },
+      { kind: "cmd", text: "crontab -l | grep report" },
+      { kind: "out", text: "0 3 * * *  →  /var/reports/daily.json" },
+    ],
+    [
+      { kind: "cmd", text: "hardening.py --baseline CIS --apply" },
+      { kind: "out", text: "9 patched · 3 services off · 12 keys rotated" },
+      { kind: "cmd", text: "verify --tls --headers --auth" },
+      { kind: "ok", text: "all checks passed · monitoring armed" },
+    ],
+  ];
+
+  /** Etichetta mostrata al passaggio sul nodo. */
+  const NODE_LABELS: Record<string, string> = {
+    linux: "Linux · shell",
+    code: "Development",
+    network: "Networking",
+    automation: "Automation",
+    cloud: "Cloud · deploy",
+    offensive: "Offensive security",
+  };
+
+  const MARKS: Record<LineKind, string> = { cmd: "$", out: "·", ok: "✓" };
+  const PHASE_MS = 9000;
+
+  const termEl = document.querySelector<HTMLElement>(".term");
+  if (termEl) {
+    /* Ricopiato in una costante interna: TypeScript perde il restringimento
+       di tipo dentro le funzioni dichiarate qui sotto, e `termEl` tornerebbe
+       "possibilmente null" a ogni uso. */
+    const term = termEl;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const stage = term.querySelector<HTMLElement>(".term-stage");
+    const log = term.querySelector<HTMLElement>(".term-log");
+    const caret = term.querySelector<HTMLElement>(".term-caret");
+    const tip = term.querySelector<HTMLElement>(".net-tip");
+    const buttons = Array.from(term.querySelectorAll<HTMLButtonElement>(".ph"));
+    const rows = Array.from(log?.querySelectorAll<HTMLElement>(".ln") ?? []);
+
+    let phase = 2;
+    let visible = false;
+    let started = false;
+    let phaseTimer = 0;
+    let typeTimer = 0;
+
+    term.style.setProperty("--ph-dur", `${PHASE_MS}ms`);
+
+    /* ── Log ───────────────────────────────────────────────────── */
+
+    function paintRow(row: HTMLElement, line: Line, chars: number) {
+      row.className = `ln ln--${line.kind}`;
+      const mark = row.querySelector<HTMLElement>(".ln-mark");
+      const txt = row.querySelector<HTMLElement>(".ln-txt");
+      if (mark) mark.textContent = chars > 0 ? MARKS[line.kind] : "";
+      if (txt) txt.textContent = line.text.slice(0, chars);
+    }
+
+    function clearRow(row: HTMLElement) {
+      const mark = row.querySelector<HTMLElement>(".ln-mark");
+      const txt = row.querySelector<HTMLElement>(".ln-txt");
+      if (mark) mark.textContent = "";
+      if (txt) txt.textContent = "";
+    }
+
+    /** Posiziona il cursore in fondo alla riga in scrittura. */
+    function moveCaret(row: HTMLElement | null) {
+      if (!caret) return;
+      if (!row || !log) {
+        caret.hidden = true;
+        return;
+      }
+      const txt = row.querySelector<HTMLElement>(".ln-txt");
+      if (!txt) return;
+      const r = txt.getBoundingClientRect();
+      const base = log.getBoundingClientRect();
+      caret.hidden = false;
+      caret.style.left = `${r.right - base.left + 2}px`;
+      caret.style.top = `${r.top - base.top}px`;
+    }
+
+    /**
+     * Scrive il copione riga per riga. I comandi si battono a macchina,
+     * gli output compaiono di colpo — come succede davvero in un terminale.
+     */
+    function runScript(lines: Line[]) {
+      window.clearTimeout(typeTimer);
+      rows.forEach(clearRow);
+      if (reduce.matches) {
+        rows.forEach((row, i) => lines[i] && paintRow(row, lines[i], lines[i].text.length));
+        moveCaret(null);
+        return;
+      }
+
+      let index = 0;
+      let chars = 0;
+
+      const step = () => {
+        const line = lines[index];
+        const row = rows[index];
+        /* `offsetParent === null` ⇒ la riga è nascosta (sotto i 560px il
+           log ne mostra tre): inutile scriverci dentro, e il cursore non
+           deve inseguire un elemento senza geometria. */
+        if (!line || !row || row.offsetParent === null) {
+          moveCaret(null);
+          return;
+        }
+        if (line.kind === "cmd") {
+          chars += 1;
+          paintRow(row, line, chars);
+          moveCaret(row);
+          if (chars < line.text.length) {
+            typeTimer = window.setTimeout(step, 18);
+            return;
+          }
+        } else {
+          paintRow(row, line, line.text.length);
+          moveCaret(row);
+        }
+        index += 1;
+        chars = 0;
+        typeTimer = window.setTimeout(step, line.kind === "cmd" ? 320 : 480);
+      };
+
+      typeTimer = window.setTimeout(step, 260);
+    }
+
+    /* ── Fasi ──────────────────────────────────────────────────── */
+
+    function setPhase(next: number) {
+      phase = ((next % SCRIPTS.length) + SCRIPTS.length) % SCRIPTS.length;
+      term.dataset.phase = String(phase);
+      buttons.forEach((b, i) =>
+        b.setAttribute("aria-pressed", i === phase ? "true" : "false"),
+      );
+      /* Riavvia l'animazione della barretta: rimuovere e riapplicare la
+         classe forza il browser a ripartire da zero anche quando la fase
+         viene richiesta di nuovo con un clic. */
+      const bar = buttons[phase]?.querySelector<HTMLElement>(".ph-bar");
+      if (bar) {
+        bar.style.animation = "none";
+        void bar.offsetWidth;
+        bar.style.animation = "";
+      }
+      runScript(SCRIPTS[phase]);
+      schedule();
+    }
+
+    function schedule() {
+      window.clearTimeout(phaseTimer);
+      if (!visible || !started || reduce.matches) return;
+      phaseTimer = window.setTimeout(() => setPhase(phase + 1), PHASE_MS);
+    }
+
+    buttons.forEach((btn, i) =>
+      btn.addEventListener("click", () => {
+        /* Un clic vale come avvio: se la scena non è ancora partita (il
+           pannello è stato raggiunto da tastiera senza scorrimento), parte
+           qui, sulla fase richiesta. */
+        started = true;
+        visible = true;
+        term.classList.add("is-live");
+        term.classList.remove("is-idle");
+        setPhase(i);
+      }),
+    );
+
+    /* ── Nodi interattivi ──────────────────────────────────────── */
+
+    function highlight(node: SVGGElement | null) {
+      term.querySelectorAll(".nd.is-hot").forEach((n) => n.classList.remove("is-hot"));
+      term.querySelectorAll(".lk.is-hot").forEach((l) => l.classList.remove("is-hot"));
+      if (!node || !tip || !stage) {
+        if (tip) tip.hidden = true;
+        return;
+      }
+      node.classList.add("is-hot");
+      /* Il collegamento di un nodo ha lo stesso indice del nodo: nd-3 ↔ lk-3. */
+      const n = Array.from(node.classList).find((c) => /^nd-\d$/.test(c))?.slice(3);
+      if (n) term.querySelector(`.lk-${n}`)?.classList.add("is-hot");
+
+      const key = node.dataset.node ?? "";
+      tip.textContent = NODE_LABELS[key] ?? key;
+      tip.hidden = false;
+      /* Dal sistema di coordinate dell'SVG (400×300) a quello del box. */
+      const m = /translate\(([-\d.]+)\s+([-\d.]+)\)/.exec(
+        node.getAttribute("transform") ?? "",
+      );
+      if (m) {
+        /* Il pannello ritaglia ciò che esce: l'etichetta viene tenuta
+           dentro un margine di sicurezza invece di sparire a metà. */
+        const x = Math.min(80, Math.max(20, (Number(m[1]) / 400) * 100));
+        tip.style.left = `${x}%`;
+        tip.style.top = `${(Number(m[2]) / 300) * 100}%`;
+      }
+    }
+
+    term.querySelectorAll<SVGGElement>(".nd").forEach((node) => {
+      node.addEventListener("pointerenter", () => highlight(node));
+      node.addEventListener("pointerleave", () => highlight(null));
+    });
+    stage?.addEventListener("pointerleave", () => highlight(null));
+
+    /* ── Parallasse (solo puntatori fini) ──────────────────────── */
+
+    if (stage && window.matchMedia("(pointer: fine)").matches && !reduce.matches) {
+      let raf = 0;
+      stage.addEventListener("pointermove", (e) => {
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          const r = stage.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width - 0.5;
+          const py = (e.clientY - r.top) / r.height - 0.5;
+          stage.style.setProperty("--px", String(Math.max(-1, Math.min(1, px * 2))));
+          stage.style.setProperty("--py", String(Math.max(-1, Math.min(1, py * 2))));
+          raf = 0;
+        });
+      });
+      stage.addEventListener("pointerleave", () => {
+        stage.style.setProperty("--px", "0");
+        stage.style.setProperty("--py", "0");
+      });
+    }
+
+    /* ── Avvio e sospensione ─────────────────────────────────────
+       La scena parte SOLO quando entra nel viewport, e non prima.
+       Il motivo è concreto: le animazioni d'ingresso partono da
+       `opacity: 0` con `fill-mode: both`, quindi metterle in pausa prima
+       che siano mai partite le congela da invisibili. Su telefono, dove il
+       pannello nasce sotto la piega, si vedeva un riquadro vuoto.
+       Finché non è visibile resta quindi lo stato di riposo renderizzato
+       in HTML: nodi, scudo e log già leggibili. */
+
+    function suspend() {
+      window.clearTimeout(phaseTimer);
+      window.clearTimeout(typeTimer);
+    }
+
+    function start() {
+      if (started) return;
+      started = true;
+      term.classList.add("is-live");
+      /* Si riparte da `understand`: senza JS la scena mostra già l'esito
+         (`secure`), con JS si racconta il percorso dall'inizio. */
+      setPhase(0);
+    }
+
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver(
+        ([entry]) => {
+          visible = entry.isIntersecting;
+          if (visible) {
+            /* `is-idle` mette in pausa le animazioni CSS: va tolta PRIMA di
+               far ripartire i tempi, altrimenti grafica e log si sfasano. */
+            term.classList.remove("is-idle");
+            if (!started) start();
+            else schedule();
+          } else {
+            if (started) term.classList.add("is-idle");
+            suspend();
+          }
+        },
+        { threshold: 0 },
+      );
+      io.observe(term);
+    } else {
+      start();
+    }
+
+    /* Una scheda in secondo piano non ha bisogno di animare nulla. */
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) suspend();
+      else if (visible && started) schedule();
+    });
+  }
+</script>

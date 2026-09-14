@@ -26,6 +26,13 @@ export const ui = {
     "cta.backHome": "Torna alla home",
     "cta.scrollDown": "Scorri per scoprire",
 
+    /* Terminale dimostrativo del hero: le tre fasi sono pulsanti veri,
+       quindi servono etichette accessibili (l'SVG e il log sono decorativi
+       e restano nascosti alle tecnologie assistive). */
+    "hero.demo": "Dimostrazione: le tre fasi del mio metodo",
+    "hero.demoPhase": "Mostra la fase",
+    "hero.demoNodes": "Rete di competenze",
+
     "theme.toggle": "Cambia tema chiaro/scuro",
     "lang.switch": "English",
     "menu.open": "Apri menu",
@@ -101,6 +108,10 @@ export const ui = {
     "cta.readMore": "Read",
     "cta.backHome": "Back home",
     "cta.scrollDown": "Scroll to explore",
+
+    "hero.demo": "Demo: the three phases of how I work",
+    "hero.demoPhase": "Show phase",
+    "hero.demoNodes": "Skills network",
 
     "theme.toggle": "Toggle light/dark theme",
     "lang.switch": "Italiano",
