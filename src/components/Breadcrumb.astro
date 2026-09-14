@@ -1,5 +1,6 @@
 ---
 import Icon from "./Icon.astro";
+import { jsonLd } from "@/lib/jsonld";
 
 export interface Crumb {
   label: string;
@@ -24,7 +25,7 @@ const crumbLd = {
   })),
 };
 ---
-<script type="application/ld+json" is:inline set:html={JSON.stringify(crumbLd)} />
+<script type="application/ld+json" is:inline set:html={jsonLd(crumbLd)} />
 <nav class:list={["breadcrumb", cls]} aria-label="Breadcrumb">
   <ol role="list">
     {

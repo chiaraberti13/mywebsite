@@ -13,6 +13,7 @@ import "@/styles/global.css";
 import sansLatin from "@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2?url";
 import monoLatin from "@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url";
 import { site } from "@/config/site";
+import { jsonLd } from "@/lib/jsonld";
 import type { Locale } from "@/config/site";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
@@ -41,6 +42,17 @@ const fullTitle =
     ? `${site.name} — Automation Developer & Cybersecurity`
     : `${title} · ${site.name}`;
 
+// I due colori della barra del browser viaggiano come attributi `data-` su
+// <html> (vedi sotto): da lì li leggono sia lo script che imposta il tema
+// prima del primo disegno, sia il pulsante di cambio tema. Un solo punto di
+// verità (site.ts), nessun colore ripetuto a mano dentro il JavaScript.
+//
+// NB: quella spiegazione NON può stare come commento {/* */} fra <!doctype>
+// e <html>. Il compilatore di Astro interpreta un'espressione in quella
+// posizione come inizio del contenuto del documento e scarta l'elemento
+// <html>: la pagina esce senza tag radice e quindi senza attributo `lang`
+// — con danno immediato a SEO e screen reader.
+
 // Dati strutturati: aiutano i motori di ricerca a capire di chi è il sito.
 // Tutti i valori vengono da site.ts, nessun dato inventato.
 const personLd = {
@@ -67,16 +79,28 @@ const personLd = {
 };
 ---
 <!doctype html>
-<html lang={lang} data-theme="light">
+<html
+  lang={lang}
+  data-theme="light"
+  data-bar-light={site.themeColor.light}
+  data-bar-dark={site.themeColor.dark}
+>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
     {/* Un solo theme-color ocra tingeva di giallo la barra del browser anche
         in tema scuro. Ora ogni tema tinge la barra del proprio colore di
-        sfondo: l'interfaccia del telefono si fonde con la pagina. */}
-    <meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0f0f11" media="(prefers-color-scheme: dark)" />
+        sfondo: l'interfaccia del telefono si fonde con la pagina.
+
+        Le due varianti `media` coprono il caso "nessuna scelta esplicita":
+        la barra segue il sistema operativo. Quando invece l'utente sceglie a
+        mano il tema con il pulsante, quelle media query non c'entrano piu'
+        nulla e la barra restava del colore sbagliato (fondo chiaro con sito
+        scuro). Lo script qui sotto, e il pulsante, riscrivono allora il
+        `content` di entrambi i meta con il colore del tema attivo. */}
+    <meta name="theme-color" content={site.themeColor.light} media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content={site.themeColor.dark} media="(prefers-color-scheme: dark)" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="mask-icon" href="/favicon.svg" color="#d7a521" />
 
@@ -109,10 +133,10 @@ const personLd = {
     <meta property="og:locale" content={lang === "it" ? "it_IT" : "en_US"} />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <script type="application/ld+json" is:inline set:html={JSON.stringify(personLd)} />
+    <script type="application/ld+json" is:inline set:html={jsonLd(personLd)} />
 
     <!-- Imposta il tema prima del paint per evitare il flash (CSP: hash whitelisted) -->
-    <script is:inline>(function(){try{var t=localStorage.getItem("theme");if(t){document.documentElement.dataset.theme=t;return}}catch(e){}document.documentElement.dataset.theme=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"})();</script>
+    <script is:inline>(function(){var r=document.documentElement;function bar(t){var c=t==="dark"?r.dataset.barDark:r.dataset.barLight;if(!c)return;var m=document.querySelectorAll('meta[name="theme-color"]');for(var i=0;i<m.length;i++)m[i].setAttribute("content",c)}try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light"){r.dataset.theme=t;bar(t);return}}catch(e){}r.dataset.theme=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"})();</script>
     <!-- Abilita lo stato iniziale delle animazioni di reveal solo con JS.
          Il timer e' la rete di sicurezza per il caso peggiore: se il modulo
          che gestisce le animazioni non arriva mai (rete lenta, errore di
@@ -145,7 +169,21 @@ const personLd = {
           (entries, obs) => {
             fired = true;
             for (const e of entries) {
-              if (e.isIntersecting) {
+              // `isIntersecting`: il blocco e' entrato nello schermo, si
+              // rivela — il caso normale.
+              //
+              // `boundingClientRect.bottom <= 0`: il blocco e' GIA' sopra lo
+              // schermo, cioe' e' stato oltrepassato senza passare davanti
+              // agli occhi. Succede quando il salto e' istantaneo e non
+              // graduale: si apre un link con ancora (/#skills), si ricarica
+              // una pagina che il browser riporta a meta' altezza, si torna
+              // indietro nella cronologia. In quei casi l'osservatore non
+              // vede mai un'intersezione e tutto cio' che sta sopra
+              // resterebbe a opacita' zero: contenuto perso finche' non si
+              // risale. Qui viene semplicemente mostrato, senza animazione
+              // d'ingresso — che per un blocco gia' superato non avrebbe
+              // comunque senso.
+              if (e.isIntersecting || e.boundingClientRect.bottom <= 0) {
                 e.target.classList.add("is-visible");
                 obs.unobserve(e.target);
               }

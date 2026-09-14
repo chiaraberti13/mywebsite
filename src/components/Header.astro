@@ -560,13 +560,27 @@ const aboutGroup = ["about", "aptitude", "values", "skills"];
   // ── Header compatto allo scroll + CTA mobile ─────────────────
   const header = document.querySelector(".site-header");
   const mobileCta = document.getElementById("mobile-cta");
-  const onScroll = () => {
-    header?.classList.toggle("is-compact", window.scrollY > 12);
+  // Lo scroll può emettere decine di eventi al secondo, e ognuno qui
+  // leggeva `scrollY`/`innerHeight` e toccava due volte le classi del DOM:
+  // lavoro di layout fatto anche quando lo schermo non è ancora stato
+  // ridisegnato. Con `requestAnimationFrame` il calcolo avviene al massimo
+  // una volta per fotogramma, cioè esattamente quando serve per restare a
+  // 60 fps. `ticking` evita di accodare più richieste per lo stesso frame.
+  let ticking = false;
+  const apply = () => {
+    ticking = false;
+    const y = window.scrollY;
+    header?.classList.toggle("is-compact", y > 12);
     // Soglia legata all'altezza dello schermo: la CTA compare quando il
     // hero (con il suo pulsante) è ormai scorso via.
-    mobileCta?.classList.toggle("is-visible", window.scrollY > window.innerHeight * 0.7);
+    mobileCta?.classList.toggle("is-visible", y > window.innerHeight * 0.7);
   };
-  onScroll();
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(apply);
+  };
+  apply();
   window.addEventListener("scroll", onScroll, { passive: true });
 
   // ── Scroll-spy: evidenzia la sezione visibile nella nav ──────

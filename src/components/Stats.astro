@@ -21,7 +21,13 @@ const items = lang === "it"
     ];
 ---
 <div class="stats-wrap">
-  <ul class="stats" role="list">
+  {/* `data-reveal-group`: le cinque voci entrano in cascata con lo STESSO
+      meccanismo del resto del sito (IntersectionObserver + CSS condivisa).
+      Prima avevano un'animazione tutta loro che partiva al caricamento
+      della pagina, con due conseguenze: le voci si animavano anche quando
+      erano ancora fuori schermo (spreco), e senza JavaScript restavano a
+      `opacity: 0`, cioè invisibili — la fascia spariva del tutto. */}
+  <ul class="stats" role="list" data-reveal-group>
     {items.map((item) => (
       <li class="card stat">
         <span class="stat-label">{item.label}</span>
@@ -77,19 +83,6 @@ const items = lang === "it"
     color: var(--text);
     overflow-wrap: anywhere;
   }
-  @media (prefers-reduced-motion: no-preference) {
-    .stat {
-      opacity: 0;
-      animation: statIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-    .stat:nth-child(1) { animation-delay: 0.05s; }
-    .stat:nth-child(2) { animation-delay: 0.13s; }
-    .stat:nth-child(3) { animation-delay: 0.21s; }
-    .stat:nth-child(4) { animation-delay: 0.29s; }
-    .stat:nth-child(5) { animation-delay: 0.37s; }
-    @keyframes statIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  }
+  /* L'ingresso in cascata è gestito da `[data-reveal-group]` in global.css:
+     qui non serve più nessuna @keyframes. */
 </style>

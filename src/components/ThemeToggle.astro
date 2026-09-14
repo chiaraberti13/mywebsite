@@ -74,6 +74,28 @@ const t = useTranslations(lang);
 <script>
   const btn = document.getElementById("theme-toggle");
   let switchTimer = 0;
+
+  /**
+   * Allinea il colore della barra del browser (Android/Chrome, Safari iOS)
+   * al tema scelto. I due <meta name="theme-color"> in <head> hanno una
+   * media query legata alle preferenze di SISTEMA: bastano finche' l'utente
+   * non sceglie a mano. Nel momento in cui sceglie — sito scuro con sistema
+   * chiaro, o viceversa — quelle media query puntano al colore sbagliato e
+   * sopra la pagina resta una striscia del tema opposto. Qui si riscrive il
+   * `content` di entrambi, cosi' qualunque sia quello che il browser decide
+   * di usare, il colore e' quello giusto.
+   * I due valori arrivano da site.ts via attributi data- su <html>: nessun
+   * colore scritto a mano dentro il JavaScript.
+   */
+  const paintBrowserBar = (theme: string) => {
+    const root = document.documentElement;
+    const color = theme === "dark" ? root.dataset.barDark : root.dataset.barLight;
+    if (!color) return;
+    document
+      .querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')
+      .forEach((m) => m.setAttribute("content", color));
+  };
+
   btn?.addEventListener("click", () => {
     const root = document.documentElement;
     const next = root.dataset.theme === "dark" ? "light" : "dark";
@@ -89,6 +111,7 @@ const t = useTranslations(lang);
       );
     }
     root.dataset.theme = next;
+    paintBrowserBar(next);
     try {
       localStorage.setItem("theme", next);
     } catch (e) {
