@@ -115,7 +115,7 @@ const desc = content[lang].hero.subheadline;
       <div class="card cta-band" data-reveal>
         <div>
           <h2 class="cta-title">{t("section.contact")}</h2>
-          <p class="muted">{t("contact.orEmail")} <a class="cta-mail" href={`mailto:${site.email}`}>{site.email}</a></p>
+          <p class="muted">{t("contact.orEmail")} <a class="cta-mail u-underline" href={`mailto:${site.email}`}>{site.email}</a></p>
         </div>
         <a class="btn btn--primary" href={localePath(lang, "/contact")}>
           {t("cta.contact")}
@@ -269,7 +269,6 @@ const desc = content[lang].hero.subheadline;
   .cta-mail {
     color: var(--accent-text);
   }
-  .cta-mail:hover {
-    text-decoration: underline;
-  }
+  /* La sottolineatura al hover era istantanea (`text-decoration`, che non
+     si anima). Ora la disegna .u-underline, tracciandola da sinistra. */
 </style>

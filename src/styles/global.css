@@ -10,8 +10,14 @@
   --accent-contrast: #16161a; /* testo leggibile sopra il giallo */
   /* Variante scura dell'accento riservata al TESTO PICCOLO (eyebrow, tag,
      etichette): l'ocra pieno su fondo chiaro sta sotto il rapporto AA 4.5:1.
-     Per icone, bordi e superfici si continua a usare --accent. */
-  --accent-text: #8a6a10;
+     Per icone, bordi e superfici si continua a usare --accent.
+
+     Scurito da #8a6a10: quel valore superava AA sul fondo pagina (4.81:1)
+     ma NON dentro le superfici in --accent-soft, dove il fondo si schiarisce
+     a rgb(245,238,218) e il rapporto scendeva a 4.37:1 — sotto soglia
+     proprio sulla voce di menu della pagina corrente. Ora il caso peggiore
+     misura 4.94:1 e la differenza di tinta e' impercettibile. */
+  --accent-text: #80620f;
 
   /* Superfici e testo — tema CHIARO */
   --bg: #faf9f6;
@@ -99,6 +105,21 @@ html {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+  /* Azzerare la DURATA non basta: lo spostamento avveniva comunque, solo
+     tutto in un fotogramma. Chi chiede meno movimento vedeva quindi bottoni,
+     card e tag "scattare" di 2-3px sotto il puntatore — cioè l'esatto
+     contrario di quanto richiesto, e in una forma più brusca dell'originale.
+     Qui lo spostamento viene proprio annullato: restano colore e bordo, che
+     bastano a segnalare lo stato di hover. */
+  .btn:hover,
+  .btn:active,
+  .card:hover,
+  .card--link:hover,
+  .tag:hover,
+  .reference-links a:hover {
+    transform: none !important;
+    translate: none !important;
   }
 }
 body {
@@ -291,6 +312,41 @@ main {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   LINK TESTUALI — sottolineatura che si traccia
+   Da applicare ai link FUORI dal corpo del testo (footer, CTA), dove
+   il contesto li rende già riconoscibili. Dentro .prose i link
+   mantengono la sottolineatura SEMPRE visibile: lì è l'unico modo,
+   oltre al colore, per distinguerli dal testo (WCAG 1.4.1).
+
+   Tecnica: una riga larga quanto il link, compressa a zero e riaperta
+   con `transform: scaleX()`. Si anima solo una trasformazione, che la
+   scheda grafica gestisce senza ricalcolare il layout della pagina.
+   L'origine cambia fra ingresso e uscita, così la riga entra da
+   sinistra ed esce verso destra invece di "sgonfiarsi" dove è nata.
+   ═══════════════════════════════════════════════════════════════ */
+.u-underline {
+  position: relative;
+}
+.u-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.u-underline:hover::after,
+.u-underline:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* ═══════════════════════════════════════════════════════════════
    CARD & TAG
    ═══════════════════════════════════════════════════════════════ */
 .card {
@@ -444,11 +500,17 @@ main {
     transform: translateY(18px);
     transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
       transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    /* `will-change` chiede alla scheda grafica un livello dedicato per
+       questo elemento. Utile PRIMA dell'animazione, uno spreco dopo: su una
+       pagina con venti blocchi da rivelare restavano venti livelli promossi
+       per sempre, a memoria video occupata. Viene rilasciato qui sotto,
+       appena l'elemento è entrato. */
     will-change: opacity, transform;
   }
   .reveal-ready [data-reveal].is-visible {
     opacity: 1;
     transform: none;
+    will-change: auto;
   }
 
   /* Gruppi: i figli entrano in cascata (stagger) */
@@ -462,6 +524,7 @@ main {
   .reveal-ready [data-reveal-group].is-visible > * {
     opacity: 1;
     transform: none;
+    will-change: auto;
   }
   .reveal-ready [data-reveal-group].is-visible > *:nth-child(2) { transition-delay: 0.06s; }
   .reveal-ready [data-reveal-group].is-visible > *:nth-child(3) { transition-delay: 0.12s; }

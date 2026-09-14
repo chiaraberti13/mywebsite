@@ -38,7 +38,7 @@ const navLinks = (
         {
           navLinks.map((l) => (
             <li>
-              <a class="footer-link" href={localePath(lang, l.path)}>{t(l.key)}</a>
+              <a class="footer-link u-underline" href={localePath(lang, l.path)}>{t(l.key)}</a>
             </li>
           ))
         }
@@ -49,7 +49,7 @@ const navLinks = (
       <p class="footer-heading">{t("section.contact")}</p>
       <ul role="list" class="footer-contact">
         <li>
-          <a class="footer-link" href={`mailto:${site.email}`}>
+          <a class="footer-link u-underline" href={`mailto:${site.email}`}>
             <Icon name="mail" size={16} /> {site.email}
           </a>
         </li>
@@ -63,7 +63,7 @@ const navLinks = (
   <div class="container footer-bottom">
     <p class="muted">© {year} {site.name}. {t("footer.rights")}</p>
     <div class="footer-bottom-right">
-      <a class="footer-privacy" href={localePath(lang, "/privacy")}>{t("footer.privacy")}</a>
+      <a class="footer-privacy u-underline" href={localePath(lang, "/privacy")}>{t("footer.privacy")}</a>
       <button type="button" class="footer-top" id="footer-top">
         {lang === "it" ? "Torna su" : "Back to top"}
         <Icon name="arrowUp" size={15} />
