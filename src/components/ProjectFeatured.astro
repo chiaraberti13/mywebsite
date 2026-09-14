@@ -110,10 +110,32 @@ const techTags = tags.filter(
   .featured-cover {
     display: block;
     overflow: hidden;
+    /* Il separatore fra copertina e testo: sotto gli 820px la scheda è
+       impilata e la linea va sotto, sopra va a lato. */
+    border-bottom: 1px solid var(--border);
   }
   .featured-cover :global(.project-cover) {
-    height: 100%;
     transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @media (min-width: 820px) {
+    .featured-cover {
+      border-bottom: 0;
+      border-inline-end: 1px solid var(--border);
+    }
+    /* Il glyph era DECENTRATO, e non per un errore di allineamento.
+       `.project-cover.is-large` dichiarava `aspect-ratio: 16/10` insieme ad
+       `height: 100%`: con l'altezza imposta dalla riga della griglia, la
+       LARGHEZZA veniva ricavata dal rapporto (altezza × 1,6) e usciva molto
+       più larga della colonna. `overflow: hidden` tagliava l'eccesso a
+       destra, così il centro geometrico della copertina — dov'è il glyph —
+       finiva spostato verso destra rispetto alla parte visibile.
+       In affiancata il riquadro deve prendere le misure DALLA GRIGLIA:
+       larghezza e altezza piene, rapporto d'aspetto disattivato. */
+    .featured-cover :global(.project-cover) {
+      width: 100%;
+      height: 100%;
+      aspect-ratio: auto;
+    }
   }
   .featured:hover .featured-cover :global(.project-cover) {
     transform: scale(1.04);
@@ -131,7 +153,9 @@ const techTags = tags.filter(
   }
   .featured-eyebrow {
     display: inline-flex;
-    align-items: center;
+    /* Su colonna stretta l'occhiello va a capo: la stella deve restare
+       agganciata alla PRIMA riga, non centrarsi fra le due. */
+    align-items: flex-start;
     gap: 0.45rem;
     width: fit-content;
     font-family: var(--font-mono);
@@ -142,6 +166,7 @@ const techTags = tags.filter(
   }
   .featured-star {
     color: var(--accent-text);
+    line-height: inherit;
   }
   .featured-status {
     width: fit-content;

@@ -94,10 +94,14 @@ const catClass = category ? `cov-cat--${category}` : "cov-cat--default";
     aspect-ratio: 21 / 9;
     background: var(--surface-2);
     overflow: hidden;
+    /* Contenitore di query: il glyph si dimensiona sulla LARGHEZZA REALE
+       della copertina, non sul viewport. La stessa copertina funziona così
+       a 340px (card in colonna singola) e a 640px (metà scheda in
+       evidenza) senza scale magiche per ogni breakpoint. */
+    container-type: inline-size;
   }
   .project-cover.is-large {
     aspect-ratio: 16 / 10;
-    height: 100%;
   }
   .project-cover img {
     width: 100%;
@@ -107,21 +111,24 @@ const catClass = category ? `cov-cat--${category}` : "cov-cat--default";
 
   /* ── Copertina generata ─────────────────────────────────────── */
   .project-cover--gen {
-    /* valori di default, sovrascritti dalle varianti cov-v1…3 */
+    /* valore di default, sovrascritto dalle varianti cov-v1…3 */
     --cov-angle: 150deg;
-    --cov-x: 40%;
-    --cov-y: 28%;
     background: linear-gradient(
       var(--cov-angle),
       var(--surface-2) 0%,
       var(--surface) 55%,
       var(--surface-2) 100%
     );
-    color: var(--accent);
+    color: var(--accent-line);
   }
-  .cov-v1 { --cov-angle: 120deg; --cov-x: 28%; --cov-y: 26%; }
-  .cov-v2 { --cov-angle: 175deg; --cov-x: 62%; --cov-y: 22%; }
-  .cov-v3 { --cov-angle: 220deg; --cov-x: 45%; --cov-y: 58%; }
+  /* Le varianti cambiano SOLO l'inclinazione del gradiente. Prima spostavano
+     anche il bagliore (--cov-x/--cov-y): con il glyph al centro e l'alone in
+     alto a sinistra, la copertina della scheda in evidenza sembrava sbilanciata
+     anche quando l'icona era perfettamente centrata. L'alone ora sta dietro al
+     glyph e la varietà fra copertine la fanno l'angolo e la trama di categoria. */
+  .cov-v1 { --cov-angle: 120deg; }
+  .cov-v2 { --cov-angle: 175deg; }
+  .cov-v3 { --cov-angle: 220deg; }
 
   /* ── Gerarchia visiva della copertina (z-index) ─────────────────
      Dal fondo alla cima:
@@ -134,9 +141,9 @@ const catClass = category ? `cov-cat--${category}` : "cov-cat--default";
   .cov-blob {
     position: absolute;
     z-index: 1;
-    left: var(--cov-x);
-    top: var(--cov-y);
-    width: 62%;
+    left: 50%;
+    top: 50%;
+    width: 72%;
     aspect-ratio: 1;
     translate: -50% -50%;
     background: radial-gradient(circle, var(--accent-soft) 0%, transparent 68%);
@@ -195,10 +202,16 @@ const catClass = category ? `cov-cat--${category}` : "cov-cat--default";
     inset: 0;
     display: grid;
     place-items: center;
-    color: var(--accent);
+    color: var(--accent-line);
     opacity: 0.9;
   }
+  /* La dimensione dichiarata su <Icon size> resta come valore di riposo;
+     qui viene ricalcolata sulla larghezza del contenitore, così il glyph
+     occupa sempre la stessa frazione della copertina. Senza questa regola,
+     su telefono un glyph da 132px riempiva quasi tutta l'altezza. */
   .cov-glyph :global(svg) {
+    width: clamp(2.75rem, 22cqi, 8.25rem);
+    height: auto;
     filter: drop-shadow(0 6px 18px var(--accent-soft));
   }
 </style>

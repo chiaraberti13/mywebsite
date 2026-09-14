@@ -17,7 +17,15 @@
      a rgb(245,238,218) e il rapporto scendeva a 4.37:1 — sotto soglia
      proprio sulla voce di menu della pagina corrente. Ora il caso peggiore
      misura 4.94:1 e la differenza di tinta e' impercettibile. */
-  --accent-text: #80620f;
+  --accent-text: #7b5d0d;
+
+  /* Accento per TRATTI e SEGNI che veicolano informazione (punti elenco del
+     hero, trattino dell'occhiello, linee del grafo, glyph delle copertine).
+     Su fondo chiaro l'ocra pieno misura 2,15:1 — sotto il 3:1 richiesto da
+     WCAG 1.4.11 per i contenuti non testuali — e a occhio "sbiadisce".
+     Questa variante misura 3,5:1 sul fondo pagina restando la stessa tinta.
+     Per campiture ampie e decorative si continua a usare --accent. */
+  --accent-line: #a87d10;
 
   /* Superfici e testo — tema CHIARO */
   --bg: #faf9f6;
@@ -25,11 +33,22 @@
   --surface-2: #f4f2ec;
   --text: #16161a;
   --muted: #57565e;
-  --border: #e7e4db;
+  /* Due livelli di bordo, non uno solo.
+     --border        separatori decorativi (divisori, cornici di card)
+     --border-strong confini di COMPONENTI INTERATTIVI (bottoni ghost, campi
+                     del form, chip neutri, barretta della card). Il vecchio
+                     valore unico misurava 1,21:1 sul fondo pagina: il bordo
+                     del bottone "ghost" — che è l'unica cosa che lo rende
+                     riconoscibile come bottone — era praticamente invisibile.
+                     Ora quel caso sta a 3,35:1, sopra la soglia WCAG 1.4.11. */
+  --border: #e0dbce;
+  --border-strong: #8f8876;
 
-  /* Stato / feedback */
-  --danger: #b23b3b;
-  --success: #2f7d54;
+  /* Stato / feedback — scuriti: il verde precedente (#2f7d54) misurava
+     4,3:1 sulla propria campitura al 12% usata nei badge "live", sotto la
+     soglia AA per testo piccolo. */
+  --danger: #9c2e2e;
+  --success: #256444;
 
   /* Tipografia — font "tech" self-hostati (Space Grotesk + JetBrains Mono) */
   --font-sans: "Space Grotesk Variable", ui-sans-serif, system-ui, -apple-system,
@@ -63,15 +82,21 @@
   --accent-contrast: #14140f;
   /* In dark l'accento chiaro su fondo scuro è già ampiamente sopra AA */
   --accent-text: #ecbc44;
+  /* Su fondo scuro l'ocra chiaro sta a 10,8:1: non serve una variante. */
+  --accent-line: #ecbc44;
 
   --bg: #0f0f11;
   --surface: #17171a;
   --surface-2: #1e1e22;
   --text: #f5f4f0;
-  --muted: #a2a1ab;
-  --border: #2a2a30;
+  /* Da #a2a1ab: il caso peggiore (testo secondario dentro una campitura
+     --accent-soft su --surface-2) passa da 4,68:1 a 5,03:1. */
+  --muted: #a8a7b2;
+  --border: #31313a;
+  --border-strong: #6d6d7a;
 
-  --danger: #e07070;
+  /* Il rosso precedente scendeva a 3,83:1 sulle campiture accento: alzato. */
+  --danger: #e88b8b;
   --success: #63c08c;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.4),
     0 12px 32px -16px rgba(0, 0, 0, 0.7);
@@ -255,7 +280,7 @@ main {
   content: "";
   width: 1.6rem;
   height: 2px;
-  background: var(--accent);
+  background: var(--accent-line);
   display: inline-block;
 }
 .muted {
@@ -284,7 +309,7 @@ main {
   line-height: 1;
   padding: 0.8rem 1.25rem;
   border-radius: 999px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   background: var(--btn-bg);
   color: var(--btn-fg);
   cursor: pointer;
@@ -367,7 +392,7 @@ main {
   bottom: 0.9rem;
   width: 3px;
   border-radius: 999px;
-  background: var(--border);
+  background: var(--border-strong);
   pointer-events: none;
   transition: background 0.2s ease;
 }
@@ -410,7 +435,7 @@ main {
 .tag--neutral {
   background: transparent;
   color: var(--muted);
-  border-color: var(--border);
+  border-color: var(--border-strong);
 }
 .tag--neutral:hover {
   border-color: var(--accent);

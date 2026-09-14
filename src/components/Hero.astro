@@ -5,6 +5,7 @@ import { useTranslations, localePath } from "@/i18n/ui";
 import type { Locale } from "@/config/site";
 import SocialLinks from "./SocialLinks.astro";
 import Icon from "./Icon.astro";
+import HeroTerminal from "./HeroTerminal.astro";
 
 interface Props { lang: Locale }
 const { lang } = Astro.props;
@@ -67,124 +68,8 @@ const h = content[lang].hero;
       </a>
     </div>
 
-    <div class="hero-visual" aria-hidden="true">
-      <div class="hero-visual-panel">
-        <svg
-          class="hero-net"
-          viewBox="0 0 400 460"
-          role="presentation"
-          preserveAspectRatio="xMidYMid slice"
-        >
-          <defs>
-            <pattern id="heroGrid" width="28" height="28" patternUnits="userSpaceOnUse">
-              <path d="M28 0H0V28" fill="none" stroke="currentColor" stroke-width="1" opacity="0.10" />
-            </pattern>
-            <radialGradient id="heroCore" cx="50%" cy="42%" r="60%">
-              <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.28" />
-              <stop offset="100%" stop-color="var(--accent)" stop-opacity="0" />
-            </radialGradient>
-          </defs>
-
-          <rect x="0" y="0" width="400" height="460" fill="url(#heroGrid)" />
-          <circle cx="200" cy="205" r="155" fill="url(#heroCore)" />
-
-          <!-- Collegamenti: ogni disciplina porta il proprio contributo
-               al centro. `pathLength="1"` normalizza il tratteggio, così
-               si "disegnano" con un'unica regola. -->
-          <g class="hero-net-links">
-            <line class="lk lk-1" pathLength="1" x1="200" y1="205" x2="78"  y2="98"  />
-            <line class="lk lk-2" pathLength="1" x1="200" y1="205" x2="54"  y2="236" />
-            <line class="lk lk-3" pathLength="1" x1="200" y1="205" x2="322" y2="110" />
-            <line class="lk lk-4" pathLength="1" x1="200" y1="205" x2="120" y2="374" />
-            <line class="lk lk-5" pathLength="1" x1="200" y1="205" x2="346" y2="250" />
-            <line class="lk lk-6" pathLength="1" x1="200" y1="205" x2="300" y2="388" />
-            <line class="lk lk-7 hero-net-link--faint" pathLength="1" x1="78"  y1="98"  x2="322" y2="110" />
-            <line class="lk lk-8 hero-net-link--faint" pathLength="1" x1="54"  y1="236" x2="120" y2="374" />
-            <line class="lk lk-9 hero-net-link--faint" pathLength="1" x1="346" y1="250" x2="300" y2="388" />
-          </g>
-
-          <!-- Le discipline, nell'ordine in cui sono entrate nel percorso:
-               Linux · sviluppo · networking · automazione · cloud · offensive -->
-          <g class="hero-net-nodes">
-            <g class="nd nd-1" transform="translate(78 98)">
-              <circle class="hnode-halo" r="20" />
-              <circle class="hnode-bg" r="20" />
-              <g class="hnode-ico" transform="translate(-10 -10) scale(0.83)">
-                <rect x="3" y="4" width="18" height="16" rx="2" /><path d="m7 9 3 3-3 3M13 15h4" />
-              </g>
-            </g>
-            <g class="nd nd-2" transform="translate(54 236)">
-              <circle class="hnode-halo" r="18" />
-              <circle class="hnode-bg" r="18" />
-              <g class="hnode-ico" transform="translate(-9 -9) scale(0.75)">
-                <path d="m8 8-4 4 4 4M16 8l4 4-4 4M13.5 6l-3 12" />
-              </g>
-            </g>
-            <g class="nd nd-3" transform="translate(322 110)">
-              <circle class="hnode-halo" r="20" />
-              <circle class="hnode-bg" r="20" />
-              <g class="hnode-ico" transform="translate(-10 -10) scale(0.83)">
-                <circle cx="12" cy="5" r="2.5" /><circle cx="5" cy="19" r="2.5" /><circle cx="19" cy="19" r="2.5" /><path d="M12 7.5 6.6 16.6M12 7.5l5.4 9.1M6.8 19h10.4" />
-              </g>
-            </g>
-            <g class="nd nd-4" transform="translate(120 374)">
-              <circle class="hnode-halo" r="19" />
-              <circle class="hnode-bg" r="19" />
-              <g class="hnode-ico" transform="translate(-9.5 -9.5) scale(0.79)">
-                <path d="M20 11.5a8 8 0 1 0-.7 4.5" /><path d="M20 4.5V12h-6" />
-              </g>
-            </g>
-            <g class="nd nd-5" transform="translate(346 250)">
-              <circle class="hnode-halo" r="19" />
-              <circle class="hnode-bg" r="19" />
-              <g class="hnode-ico" transform="translate(-9.5 -9.5) scale(0.79)">
-                <path d="M7 19a4.5 4.5 0 0 1-.3-9A6 6 0 0 1 18 10.5a4.25 4.25 0 0 1-.5 8.5Z" />
-              </g>
-            </g>
-            <g class="nd nd-6" transform="translate(300 388)">
-              <circle class="hnode-halo" r="18" />
-              <circle class="hnode-bg" r="18" />
-              <g class="hnode-ico" transform="translate(-9 -9) scale(0.75)">
-                <path d="M5 21V4" /><path d="M5 5h12l-2.5 3.5L17 12H5" />
-              </g>
-            </g>
-          </g>
-
-          <!-- Impulsi: la conoscenza che ogni disciplina invia al centro.
-               Continuano anche dopo, perché l'apprendimento non si ferma. -->
-          <g class="hero-net-pulses">
-            <circle class="ps ps-1" r="3.5" />
-            <circle class="ps ps-2" r="3.5" />
-            <circle class="ps ps-3" r="3.5" />
-            <circle class="ps ps-4" r="3.5" />
-            <circle class="ps ps-5" r="3.5" />
-            <circle class="ps ps-6" r="3.5" />
-          </g>
-
-          <!-- Il centro: prima una scintilla (la curiosità), poi — solo
-               quando tutte le discipline hanno contribuito — uno scudo. -->
-          <g class="hero-net-core" transform="translate(200 205)">
-            <circle class="core-ripple" r="10" />
-            <circle class="core-spark" r="7" />
-            <g class="core-formed">
-              <rect class="core-frame" x="-40" y="-40" width="80" height="80" rx="14" transform="rotate(18)" />
-              <rect class="core-frame" x="-40" y="-40" width="80" height="80" rx="14" transform="rotate(-16)" />
-              <circle class="core-disc" r="42" />
-              <g class="hnode-ico core-shield" transform="translate(-18 -20) scale(1.5)">
-                <path d="M12 3 5 6v5c0 4.5 3 7.6 7 9 4-1.4 7-4.5 7-9V6l-7-3Z" />
-                <path d="m9 12 2 2 4-4" />
-              </g>
-            </g>
-          </g>
-
-          <!-- Linea di scansione (ispezione / verifica continua) -->
-          <line class="hero-net-scan" x1="0" x2="400" y1="0" y2="0" />
-        </svg>
-
-        <p class="hero-visual-caption">
-          <span class="cw cw-1">understand</span><span class="dot">→</span><span class="cw cw-2">automate</span><span class="dot">→</span><span class="cw cw-3">secure</span>
-        </p>
-      </div>
+    <div class="hero-visual">
+      <HeroTerminal lang={lang} />
     </div>
   </div>
 
@@ -230,7 +115,7 @@ const h = content[lang].hero;
     gap: 0.5rem;
     margin-top: 1rem;
     padding: 0.4rem 0.85rem;
-    border: 1px solid var(--accent);
+    border: 1px solid var(--accent-line);
     border-radius: 999px;
     background: var(--accent-soft);
     font-family: var(--font-mono);
@@ -241,7 +126,7 @@ const h = content[lang].hero;
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--accent);
+    background: var(--accent-line);
     box-shadow: 0 0 0 3px var(--accent-soft);
   }
   .hero-badge-name {
@@ -289,7 +174,9 @@ const h = content[lang].hero;
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 50%;
-    background: var(--accent);
+    /* Segno che veicola informazione (quale area è accesa): serve il 3:1
+       di WCAG 1.4.11, che l'ocra pieno su fondo chiaro non raggiunge. */
+    background: var(--accent-line);
     flex: none;
   }
 
@@ -354,7 +241,7 @@ const h = content[lang].hero;
   .hero-scroll-line {
     width: 1px;
     height: 2.25rem;
-    background: linear-gradient(to bottom, transparent, var(--accent));
+    background: linear-gradient(to bottom, transparent, var(--accent-line));
   }
   .hero-scroll-chevron {
     transform: rotate(90deg);
@@ -370,416 +257,19 @@ const h = content[lang].hero;
   }
 
   /* ── Colonna visiva ────────────────────────────────────────── */
-  .hero-visual {
-    position: relative;
-    justify-self: center;
-    width: 100%;
-    max-width: 26rem;
-  }
-  .hero-visual-panel {
-    position: relative;
-    aspect-ratio: 5 / 6;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background:
-      linear-gradient(145deg, var(--surface) 0%, var(--surface-2) 100%);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    color: var(--accent);
-  }
-  .hero-net {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-  /* Gerarchia di disegno (dal fondo alla cima, come l'ordine nel markup):
-     griglia → glow → collegamenti → nodi → nucleo → scansione. */
-  .hero-net-links line {
-    stroke: var(--accent);
-    stroke-width: 1.4;
-    fill: none;
-    opacity: 0.42;
-  }
-  .hero-net-link--faint {
-    opacity: 0.18;
-  }
-  .hnode-bg {
-    fill: var(--surface);
-    stroke: var(--accent);
-    stroke-width: 1.5;
-  }
-  .hnode-ico {
-    fill: none;
-    stroke: var(--accent);
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  .hnode-halo {
-    fill: none;
-    stroke: var(--accent);
-    stroke-width: 1.4;
-    opacity: 0;
-  }
-  .core-frame {
-    fill: none;
-    stroke: var(--accent);
-    stroke-width: 1.2;
-    opacity: 0.38;
-  }
-  .core-disc {
-    fill: var(--surface);
-    stroke: var(--accent);
-    stroke-width: 1.5;
-  }
-  .core-shield {
-    stroke-width: 1.4;
-  }
-  .hero-net-scan {
-    stroke: var(--accent);
-    stroke-width: 1.4;
-    opacity: 0;
-  }
-  /* Sospensione di TUTTE le animazioni infinite del hero quando la sezione
-     non è visibile (vedi script): scena del grafo, luce sulle aree di
-     competenza, chevron di scorrimento. Elencate una per una invece di un
-     `*` globale, così le animazioni d'ingresso (che sono `both` e devono
-     poter finire) non restano bloccate al loro fotogramma iniziale. */
-  .hero.is-paused .hero-net,
-  .hero.is-paused .hero-net *,
-  .hero.is-paused .hero-roles .role,
-  .hero.is-paused .hero-roles .role::before,
-  .hero.is-paused .hero-scroll-chevron {
-    animation-play-state: paused !important;
-  }
-  /* Stato di riposo (nessun JS o "riduci movimento"): la scena è già al
-     suo esito — scintilla assorbita, scudo formato. */
-  .core-spark,
-  .core-ripple,
-  .ps {
-    opacity: 0;
-  }
-  .core-spark {
-    fill: var(--accent);
-  }
-  .core-ripple {
-    fill: none;
-    stroke: var(--accent);
-    stroke-width: 1.6;
-  }
-  .ps {
-    fill: var(--accent);
-  }
-
-  /* ══════════════════════════════════════════════════════════════
-     LA SCENA — il percorso, non solo la sicurezza.
-     Una scintilla (la curiosità) al centro; attorno nascono le
-     discipline; ciascuna manda impulsi verso il centro; solo quando
-     tutte hanno contribuito la scintilla diventa scudo. Poi i
-     collegamenti continuano a pulsare: la sicurezza è un processo,
-     non uno stato.
-     ══════════════════════════════════════════════════════════════ */
-  @media (prefers-reduced-motion: no-preference) {
-    /* ── 1. La scintilla: la voglia di capire ───────────────── */
-    .is-playing .core-spark {
-      animation: sparkLife 8.2s ease-in-out 0.15s both;
-    }
-    @keyframes sparkLife {
-      0%   { opacity: 0; scale: 0.2; }
-      6%   { opacity: 1; scale: 1; }
-      20%  { scale: 1.2; }
-      34%  { scale: 1; }
-      48%  { scale: 1.2; }
-      62%  { scale: 1; }
-      76%  { scale: 1.2; }
-      90%  { opacity: 1; scale: 1.45; }
-      100% { opacity: 0; scale: 2.4; }
-    }
-    .is-playing .core-ripple {
-      transform-box: fill-box;
-      transform-origin: center;
-      animation: coreRipple 1.2s ease-out 0.5s 6 both;
-    }
-    @keyframes coreRipple {
-      0%   { opacity: 0.55; scale: 0.7; }
-      100% { opacity: 0; scale: 3.2; }
-    }
-
-    /* ── 2. Le discipline nascono, una dopo l'altra ─────────── */
-    .is-playing .nd {
-      transform-box: fill-box;
-      transform-origin: center;
-      animation: nodeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-    .is-playing .nd-1 { animation-delay: 0.90s; }
-    .is-playing .nd-2 { animation-delay: 1.32s; }
-    .is-playing .nd-3 { animation-delay: 1.74s; }
-    .is-playing .nd-4 { animation-delay: 2.16s; }
-    .is-playing .nd-5 { animation-delay: 2.58s; }
-    .is-playing .nd-6 { animation-delay: 3.00s; }
-    @keyframes nodeIn {
-      0%   { opacity: 0; scale: 0.35; }
-      70%  { opacity: 1; scale: 1.12; }
-      100% { opacity: 1; scale: 1; }
-    }
-
-    /* ── 3. I collegamenti si tracciano verso il centro ─────── */
-    .is-playing .lk {
-      stroke-dasharray: 1;
-      animation: linkDraw 0.55s ease-out both;
-    }
-    .is-playing .lk-1 { animation-delay: 1.25s; }
-    .is-playing .lk-2 { animation-delay: 1.67s; }
-    .is-playing .lk-3 { animation-delay: 2.09s; }
-    .is-playing .lk-4 { animation-delay: 2.51s; }
-    .is-playing .lk-5 { animation-delay: 2.93s; }
-    .is-playing .lk-6 { animation-delay: 3.35s; }
-    .is-playing .lk-7 { animation-delay: 3.90s; }
-    .is-playing .lk-8 { animation-delay: 4.10s; }
-    .is-playing .lk-9 { animation-delay: 4.30s; }
-    @keyframes linkDraw {
-      0%   { stroke-dashoffset: 1; }
-      100% { stroke-dashoffset: 0; }
-    }
-
-    /* ── 4. Ogni disciplina invia la sua conoscenza al centro.
-           Il ciclo resta infinito: si continua a imparare. ──── */
-    .is-playing .ps {
-      animation-duration: 5s;
-      animation-timing-function: ease-in;
-      animation-iteration-count: infinite;
-      animation-fill-mode: both;
-    }
-    .is-playing .ps-1 { animation-name: ps1; animation-delay: 4.30s; }
-    .is-playing .ps-2 { animation-name: ps2; animation-delay: 4.63s; }
-    .is-playing .ps-3 { animation-name: ps3; animation-delay: 4.96s; }
-    .is-playing .ps-4 { animation-name: ps4; animation-delay: 5.29s; }
-    .is-playing .ps-5 { animation-name: ps5; animation-delay: 5.62s; }
-    .is-playing .ps-6 { animation-name: ps6; animation-delay: 5.95s; }
-    @keyframes ps1 {
-      0% { translate: 78px 98px; opacity: 0; } 6% { opacity: 1; }
-      26% { opacity: 1; } 32% { translate: 200px 205px; opacity: 0; }
-      100% { translate: 200px 205px; opacity: 0; }
-    }
-    @keyframes ps2 {
-      0% { translate: 54px 236px; opacity: 0; } 6% { opacity: 1; }
-      26% { opacity: 1; } 32% { translate: 200px 205px; opacity: 0; }
-      100% { translate: 200px 205px; opacity: 0; }
-    }
-    @keyframes ps3 {
-      0% { translate: 322px 110px; opacity: 0; } 6% { opacity: 1; }
-      26% { opacity: 1; } 32% { translate: 200px 205px; opacity: 0; }
-      100% { translate: 200px 205px; opacity: 0; }
-    }
-    @keyframes ps4 {
-      0% { translate: 120px 374px; opacity: 0; } 6% { opacity: 1; }
-      26% { opacity: 1; } 32% { translate: 200px 205px; opacity: 0; }
-      100% { translate: 200px 205px; opacity: 0; }
-    }
-    @keyframes ps5 {
-      0% { translate: 346px 250px; opacity: 0; } 6% { opacity: 1; }
-      26% { opacity: 1; } 32% { translate: 200px 205px; opacity: 0; }
-      100% { translate: 200px 205px; opacity: 0; }
-    }
-    @keyframes ps6 {
-      0% { translate: 300px 388px; opacity: 0; } 6% { opacity: 1; }
-      26% { opacity: 1; } 32% { translate: 200px 205px; opacity: 0; }
-      100% { translate: 200px 205px; opacity: 0; }
-    }
-
-    /* ── 5. Lo scudo: l'esito, non il punto di partenza ─────── */
-    .is-playing .core-formed {
-      animation: coreForm 0.95s cubic-bezier(0.22, 1, 0.36, 1) 7.75s both;
-    }
-    @keyframes coreForm {
-      0%   { opacity: 0; scale: 0.2; }
-      65%  { opacity: 1; scale: 1.09; }
-      100% { opacity: 1; scale: 1; }
-    }
-
-    /* ── 6. Il processo continua: respiro e pulsazioni lente ── */
-    .is-playing .hero-net-core {
-      transform-box: view-box;
-      transform-origin: 200px 205px;
-      animation: coreBreathe 5s ease-in-out 8.7s infinite;
-    }
-    @keyframes coreBreathe {
-      0%, 100% { transform: translate(200px, 205px) scale(1); }
-      50%      { transform: translate(200px, 205px) scale(1.03); }
-    }
-    .is-playing .hnode-halo {
-      transform-box: fill-box;
-      transform-origin: center;
-      animation: haloPulse 3.4s ease-in-out infinite;
-    }
-    .is-playing .nd-1 .hnode-halo { animation-delay: 8.70s; }
-    .is-playing .nd-2 .hnode-halo { animation-delay: 9.25s; }
-    .is-playing .nd-3 .hnode-halo { animation-delay: 9.80s; }
-    .is-playing .nd-4 .hnode-halo { animation-delay: 10.35s; }
-    .is-playing .nd-5 .hnode-halo { animation-delay: 10.90s; }
-    .is-playing .nd-6 .hnode-halo { animation-delay: 11.45s; }
-    @keyframes haloPulse {
-      0%   { opacity: 0.5; scale: 1; }
-      60%, 100% { opacity: 0; scale: 1.55; }
-    }
-    .is-playing .hero-net-scan {
-      animation: scanMove 6s linear 8.7s infinite;
-    }
-    @keyframes scanMove {
-      0%   { transform: translateY(0); opacity: 0; }
-      8%   { opacity: 0.5; }
-      92%  { opacity: 0.5; }
-      100% { transform: translateY(460px); opacity: 0; }
-    }
-
-    /* Parallasse leggera al movimento del puntatore: i livelli si spostano
-       di poco e con intensità diversa, dando profondità al grafo.
-       --px/--py sono impostati dallo script (range -1…1). */
-    .hero-net-links,
-    .hero-net-nodes,
-    .hero-net-core {
-      transition: translate 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .hero-visual-panel:hover .hero-net-links {
-      translate: calc(var(--px, 0) * 5px) calc(var(--py, 0) * 5px);
-    }
-    .hero-visual-panel:hover .hero-net-nodes {
-      translate: calc(var(--px, 0) * 11px) calc(var(--py, 0) * 11px);
-    }
-
-    /* NB: le regole `.is-playing .cw` che stavano qui erano codice morto.
-       `is-playing` viene applicata all'<svg class="hero-net">, mentre le
-       parole `.cw` vivono nella didascalia, che è SORELLA dell'svg e non sua
-       discendente: il selettore non ha mai potuto corrispondere e la
-       didascalia non si è mai animata. Rimosse invece che riattivate, in
-       coerenza con la riduzione del movimento perpetuo sopra la piega. */
-    .hero-visual-panel:hover .hero-net-core {
-      translate: calc(var(--px, 0) * -6px) calc(var(--py, 0) * -6px);
-    }
-  }
-
-  .hero-visual-caption {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0.9rem;
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .hero-visual-caption .dot {
-    color: var(--accent-text);
-    opacity: 0.75;
-  }
-  .hero-visual-caption .cw {
-    transition: color 0.4s ease;
-  }
-
-  /* ── Ingresso in cascata ───────────────────────────────────── */
-  @media (prefers-reduced-motion: no-preference) {
-    @keyframes heroIn {
-      from { opacity: 0; transform: translateY(18px); }
-      to   { opacity: 1; transform: none; }
-    }
-    .hero-text > * {
-      animation: heroIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-    .hero-text > .hero-eyebrow { animation-delay: 0.06s; }
-    .hero-text > .hero-title   { animation-delay: 0.13s; }
-    .hero-text > .hero-badge   { animation-delay: 0.21s; }
-    .hero-text > .hero-roles   { animation-delay: 0.29s; }
-    .hero-text > .hero-actions { animation-delay: 0.37s; }
-    .hero-text > .hero-socials { animation-delay: 0.45s; }
-    .hero-text > .hero-scroll  { animation-delay: 0.53s; }
-
-    @keyframes heroVisualIn {
-      from { opacity: 0; transform: translateY(24px) scale(0.97); }
-      to   { opacity: 1; transform: none; }
-    }
-    .hero-visual {
-      animation: heroVisualIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
-    }
-  }
-
-  /* ── Alone ocra + mesh per profondità ──────────────────────── */
-  .hero-glow {
-    position: absolute;
-    top: -30%;
-    right: -10%;
-    width: 45rem;
-    height: 45rem;
-    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 60%);
-    pointer-events: none;
-    z-index: 0;
-  }
-  .hero-mesh {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.6;
-    background:
-      radial-gradient(38rem 26rem at 12% 8%, var(--accent-soft), transparent 55%),
-      radial-gradient(30rem 22rem at 88% 92%, var(--accent-soft), transparent 55%);
-  }
-  :root[data-theme="dark"] .hero-mesh {
-    opacity: 0.9;
-  }
-</style>
-
-<script>
-  // Parallasse del grafo competenze al movimento del puntatore.
-  // Solo puntatori fini (no touch) e solo se l'utente non ha chiesto
-  // meno movimento. Scrive variabili CSS via CSSOM (compatibile con la CSP).
-  const panel = document.querySelector<HTMLElement>(".hero-visual-panel");
-  const fine = window.matchMedia("(pointer: fine)").matches;
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  // Avvia la scena narrativa. Senza JS (o con "riduci movimento") la scena
-  // resta al suo stato finale, già comprensibile: nodi, collegamenti e scudo.
-  const scene = document.querySelector<SVGElement>(".hero-net");
-  if (scene && !reduce) {
-    requestAnimationFrame(() => scene.classList.add("is-playing"));
-
-    // Il hero contiene diverse animazioni infinite (impulsi del grafo,
-    // respiro del nucleo, aloni, scansione, la luce sulle aree di
-    // competenza, il chevron). I browser NON sospendono le animazioni CSS
-    // fuori dal viewport: continuavano a girare per tutta la pagina, a
-    // consumo di CPU e batteria. Qui vengono messe in pausa quando la
-    // sezione esce dallo schermo e riprese da dove erano quando rientra
-    // (pausa, non riavvio: l'introduzione narrativa non si ripete a ogni
-    // scroll, e la luce sulle aree non riparte sempre dalla prima).
-    const heroSection = document.querySelector<HTMLElement>(".hero");
-    if (heroSection && "IntersectionObserver" in window) {
-      const io = new IntersectionObserver(
-        ([entry]) => heroSection.classList.toggle("is-paused", !entry.isIntersecting),
-        { threshold: 0 },
-      );
-      io.observe(heroSection);
-    }
-  }
-
-  if (panel && fine && !reduce) {
-    let raf = 0;
-    panel.addEventListener("pointermove", (e) => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        const r = panel.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width - 0.5;
-        const py = (e.clientY - r.top) / r.height - 0.5;
-        panel.style.setProperty("--px", String(Math.max(-1, Math.min(1, px * 2))));
-        panel.style.setProperty("--py", String(Math.max(-1, Math.min(1, py * 2))));
-        raf = 0;
-      });
-    });
-    panel.addEventListener("pointerleave", () => {
-      panel.style.setProperty("--px", "0");
-      panel.style.setProperty("--py", "0");
-    });
+  /* La scena vive tutta in <HeroTerminal>: markup, stili e regia stanno in
+     un unico componente invece che sparsi fra qui e uno <script>
+  // Le animazioni infinite del hero (la luce sulle aree di competenza, il
+  // chevron di scorrimento) continuerebbero a girare anche fuori dallo
+  // schermo: i browser non le sospendono. Qui vengono messe in PAUSA quando
+  // la sezione esce dal viewport e riprese da dove erano quando rientra —
+  // pausa, non riavvio, così la luce non riparte sempre dalla prima voce.
+  const heroSection = document.querySelector<HTMLElement>(".hero");
+  if (heroSection && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      ([entry]) => heroSection.classList.toggle("is-paused", !entry.isIntersecting),
+      { threshold: 0 },
+    );
+    io.observe(heroSection);
   }
 </script>
