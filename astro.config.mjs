@@ -47,6 +47,16 @@ export default defineConfig({
         // (e lo segnalano in console). È applicato come header HTTP in
         // vercel.json, insieme a X-Frame-Options.
         "manifest-src 'self'",
+        // Difesa in profondità. `default-src 'self'` già copre queste
+        // direttive, ma le lascerebbe al valore 'self': un'eventuale
+        // injection potrebbe comunque aprire un iframe o avviare un worker
+        // dal nostro stesso dominio. Il sito non usa nulla di tutto questo,
+        // quindi si scende da 'self' a 'none': il margine di manovra di un
+        // attaccante si riduce, la resa del sito non cambia di un pixel.
+        "frame-src 'none'",
+        "child-src 'none'",
+        "worker-src 'none'",
+        "media-src 'none'",
       ],
     },
   },
