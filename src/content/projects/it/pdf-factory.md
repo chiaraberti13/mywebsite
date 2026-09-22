@@ -1,6 +1,6 @@
 ---
 title: "PDF Factory — Schede tecniche in 6 lingue"
-summary: "Pipeline che genera le schede tecniche di prodotto in PDF in sei lingue partendo da un file Excel, e le pubblica online automaticamente via cron, senza intervento manuale."
+summary: "Pipeline che genera automaticamente le schede tecniche di prodotto in PDF, in 6 lingue, a partire da un file Excel e le pubblica online."
 lang: "it"
 date: 2024-03-01
 category: "professional-work"
@@ -10,20 +10,23 @@ tags: ["Node.js", "Automazione", "HTML/CSS", "PDF", "Cron", "Multilingua"]
 links: {}
 ---
 
-Pipeline che genera le schede tecniche di prodotto in **PDF, in 6 lingue**,
-partendo da un file Excel e pubblicandole automaticamente online.
+Pipeline che genera automaticamente le schede tecniche di prodotto in **PDF, in
+6 lingue**, a partire da un file Excel e le pubblica online.
 
-Sviluppata in **Node.js** con approccio HTML/CSS → PDF, ottimizzazione delle
-immagini, gestione sicura delle credenziali e test di regressione. La generazione
-è **eseguita automaticamente tramite cron** su una macchina virtuale dedicata e
-protetta, senza intervento manuale.
+Sviluppata in **Node.js** con approccio HTML/CSS → PDF, include ottimizzazione
+delle immagini, gestione sicura delle credenziali e test di regressione.
+L'esecuzione avviene tramite **cron** su una macchina virtuale dedicata e
+protetta.
 
-Ha modernizzato un precedente componente legacy, rendendo il processo interamente
-automatico e ripetibile.
+Ha modernizzato un precedente componente legacy, rendendo il processo
+completamente automatico e ripetibile.
 
 ## Apporto personale
 
-Analisi del sistema preesistente, progettazione dell'architettura modulare e del
-sistema multilingua, scelta dello stack e delle misure di sicurezza.
+Analisi del sistema preesistente, progettazione della nuova soluzione e
+definizione del flusso di automazione. Ho scelto lo stack tecnologico,
+strutturato la gestione multilingua e definito le principali misure di
+sicurezza e affidabilità, seguendo la trasformazione del processo da una
+soluzione legacy a un sistema completamente automatizzato.
 
 > Progetto realizzato in ambito aziendale: il codice sorgente non è pubblico.
