@@ -312,15 +312,23 @@ const categoryLabels = {
     color: var(--muted);
     font-size: 0.95rem;
   }
-  :global(.dynamic-project-card .project-more) {
+  :global(.dynamic-project-card .project-more),
+  :global(.pinned-featured .project-more) {
     display: inline-flex;
     align-items: center;
+    width: fit-content;
     gap: 0.25rem;
     margin-top: auto;
     padding-top: 0.15rem;
     color: var(--accent-text);
     font-weight: 600;
     font-size: 0.9rem;
+    text-decoration: none;
+    transition: gap 0.2s ease, color 0.2s ease;
+  }
+  :global(.dynamic-project-card .project-more:hover),
+  :global(.pinned-featured .project-more:hover) {
+    gap: 0.5rem;
   }
 
   /* Copertina generata: stessa geometria e linguaggio del ProjectCover originale. */
@@ -702,7 +710,13 @@ const categoryLabels = {
         .join(" · ");
       if (details) body.append(makeText("p", "muted project-summary", details));
 
-      body.append(makeText("span", "project-more", `${openRepo} ›`));
+      const repoLink = document.createElement("a");
+      repoLink.className = "project-more";
+      repoLink.href = repo.url;
+      repoLink.target = "_blank";
+      repoLink.rel = "noopener noreferrer";
+      repoLink.textContent = `${openRepo} ›`;
+      body.append(repoLink);
       article.append(coverLink, body);
       return article;
     };
@@ -745,11 +759,11 @@ const categoryLabels = {
       const actions = document.createElement("div");
       actions.className = "pinned-featured-actions";
       const action = document.createElement("a");
-      action.className = "btn btn--primary";
+      action.className = "project-more";
       action.href = repo.url;
       action.target = "_blank";
       action.rel = "noopener noreferrer";
-      action.textContent = openRepo;
+      action.textContent = `${openRepo} ›`;
       actions.append(action);
       body.append(actions);
 
