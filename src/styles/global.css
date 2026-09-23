@@ -325,13 +325,16 @@ main {
   transform: translateY(0);
 }
 .btn--primary {
-  --btn-bg: var(--accent);
-  --btn-fg: var(--accent-contrast);
-  border-color: var(--accent);
+  /* Stessa campitura leggera del badge Security+ nel hero: il pulsante
+     resta riconoscibile grazie al bordo e al testo nella variante più
+     contrastata dell'accento, senza il precedente blocco ocra pieno. */
+  --btn-bg: var(--accent-soft);
+  --btn-fg: var(--accent-text);
+  border-color: var(--accent-line);
 }
 .btn--primary:hover {
-  --btn-bg: var(--accent-hover);
-  border-color: var(--accent-hover);
+  --btn-bg: color-mix(in srgb, var(--accent) 22%, transparent);
+  border-color: var(--accent);
 }
 .btn--ghost:hover {
   border-color: var(--accent);
