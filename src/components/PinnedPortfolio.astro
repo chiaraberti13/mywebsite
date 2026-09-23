@@ -101,6 +101,9 @@ const categoryLabels = {
   .projects-featured {
     margin-bottom: clamp(1.6rem, 1rem + 2vw, 2.6rem);
   }
+  .projects-featured[hidden] {
+    display: none !important;
+  }
   .pinned-state {
     grid-column: 1 / -1;
     margin: 0;
@@ -433,7 +436,7 @@ const categoryLabels = {
     | "panel-top";
 
   // Geometry copied from the official Lucide icon sources.
-  // Keep Lucide's native stroke-width="2"; size is the only visual scaling applied.
+  // Cover icons use the lighter stroke requested for this portfolio.
   const LUCIDE_MARKUP: Record<LucideIconKey, string> = {
     radar: `
       <path d="M19.07 4.93A10 10 0 0 0 6.99 3.34" />
@@ -759,8 +762,11 @@ const categoryLabels = {
 
     const setCount = () => {
       if (!countEl) return;
-      const visible = Array.from(grid.querySelectorAll<HTMLElement>(".project-card"))
+      const visibleCards = Array.from(grid.querySelectorAll<HTMLElement>(".project-card"))
         .filter((card) => !card.hidden).length;
+      const visibleFeatured =
+        featuredRoot && !featuredRoot.hidden && featuredRoot.dataset.category ? 1 : 0;
+      const visible = visibleCards + visibleFeatured;
       countEl.textContent = visible === 1 ? countOne : countMany.replace("{n}", String(visible));
       if (emptyEl) emptyEl.hidden = visible > 0;
     };
@@ -770,13 +776,19 @@ const categoryLabels = {
         const show = activeFilter === "*" || card.dataset.category === activeFilter;
         card.hidden = !show;
       });
+
+      if (featuredRoot?.dataset.category) {
+        featuredRoot.hidden =
+          activeFilter !== "*" && featuredRoot.dataset.category !== activeFilter;
+      }
+
       setCount();
     };
 
     const buildFilters = (repos: Repo[]) => {
       if (!filterRoot) return;
       const categories = new Set<Category>(
-        repos.slice(1).map((repo) => repo.category),
+        repos.map((repo) => repo.category),
       );
       if (staticProfessionalCards.length) categories.add("professional-work");
 
@@ -831,6 +843,7 @@ const categoryLabels = {
       }
 
       if (featuredRoot) {
+        featuredRoot.dataset.category = repos[0].category;
         featuredRoot.replaceChildren(makeFeatured(repos[0]));
       }
 
