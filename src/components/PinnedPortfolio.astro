@@ -659,11 +659,12 @@ const categoryLabels = {
       return list;
     };
 
-    const makeCard = (repo: Repo) => {
+    const makeCard = (repo: Repo, featuredDuplicate = false) => {
       const article = document.createElement("article");
       article.className = "card card--link project-card dynamic-project-card";
       article.dataset.categories = (repo.categories ?? []).join(" ");
       article.dataset.githubRepo = repo.name.toLowerCase();
+      if (featuredDuplicate) article.dataset.featuredDuplicate = "true";
 
       const coverLink = document.createElement("a");
       coverLink.className = "project-cover-link";
@@ -777,13 +778,16 @@ const categoryLabels = {
     const applyFilter = () => {
       Array.from(grid.querySelectorAll<HTMLElement>(".project-card")).forEach((card) => {
         const categories = (card.dataset.categories ?? "").split(" ").filter(Boolean);
-        const show = activeFilter === "*" || categories.includes(activeFilter);
+        const isFeaturedDuplicate = card.dataset.featuredDuplicate === "true";
+        const show =
+          activeFilter === "*"
+            ? !isFeaturedDuplicate
+            : categories.includes(activeFilter);
         card.hidden = !show;
       });
 
       if (featuredRoot) {
-        const categories = (featuredRoot.dataset.categories ?? "").split(" ").filter(Boolean);
-        featuredRoot.hidden = activeFilter !== "*" && !categories.includes(activeFilter);
+        featuredRoot.hidden = activeFilter !== "*";
       }
 
       setCount();
@@ -866,6 +870,7 @@ const categoryLabels = {
 
       const professionals = staticProfessionalCards.map((card) => card);
       professionals.forEach((card) => card.remove());
+      grid.append(makeCard(repos[0], true));
       repos.slice(1).forEach((repo) => grid.append(makeCard(repo)));
       professionals.forEach((card) => grid.append(card));
 
