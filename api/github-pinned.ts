@@ -47,6 +47,10 @@ function githubHeaders(token?: string): Record<string, string> {
 }
 
 function classifyRepo(repo: GitHubRepo): ProjectCategory {
+  if (repo.name.toLowerCase() === "aegis-nexus") {
+    return "interactive-labs";
+  }
+
   const haystack = [
     repo.name,
     repo.description ?? "",
