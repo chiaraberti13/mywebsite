@@ -2,225 +2,70 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import SectionHeader from "@/components/SectionHeader.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
-import ProjectFeatured from "@/components/ProjectFeatured.astro";
+import GitHubPinned from "@/components/GitHubPinned.astro";
 import { type Locale } from "@/config/site";
 import { useTranslations, localePath } from "@/i18n/ui";
-import { getProjects, slugOf, PROJECT_CATEGORIES, categoryLabel } from "@/lib/content";
+import { getProjects, slugOf } from "@/lib/content";
 
 interface Props { lang: Locale }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const projects = await getProjects(lang);
-const featured = projects.find((project) => project.data.featured);
-const rest = featured ? projects.filter((project) => project.id !== featured.id) : projects;
-const present = new Set(rest.map((project) => project.data.category));
-const filterCats = PROJECT_CATEGORIES.filter((category) => present.has(category.key));
-const allLabel = lang === "it" ? "Tutte" : "All";
+const professional = projects.filter((project) => project.data.category === "professional-work");
+
 const desc =
   lang === "it"
-    ? "Progetti di Chiara Berti tra cybersecurity, laboratori interattivi, SDR, automazione e lavoro professionale."
-    : "Chiara Berti's projects across cybersecurity, interactive labs, SDR, automation and professional work.";
+    ? "Repository GitHub in evidenza e progetti professionali di Chiara Berti."
+    : "Chiara Berti's pinned GitHub repositories and professional projects.";
 const intro =
   lang === "it"
-    ? "Una selezione di progetti tra cybersecurity, laboratori interattivi, radio software-defined, automazione e lavoro realizzato in azienda."
-    : "Selected work across cybersecurity, interactive labs, software-defined radio, automation and projects built on the job.";
+    ? "I repository pubblici sono sincronizzati con i Pinned del mio profilo GitHub: quando cambio la selezione su GitHub, cambia anche qui."
+    : "Public repositories are synced with the Pinned items on my GitHub profile: when I change the selection on GitHub, it changes here too.";
 ---
 <BaseLayout lang={lang} title={t("nav.projects")} description={desc}>
   <section class="section">
     <div class="container">
       <SectionHeader title={t("section.projects")} intro={intro} align="center" level="h1" />
-      {
-        featured && (
-          <div class="projects-featured" data-reveal>
-            <ProjectFeatured
-              project={featured}
-              lang={lang}
-              href={localePath(lang, `/projects/${slugOf(featured.id)}`)}
-            />
-          </div>
-        )
-      }
-      {
-        filterCats.length > 1 && (
-          <div class="proj-filters" role="group" aria-label={t("nav.projects")} data-project-filters>
-            <button type="button" class="filter-pill is-active" data-filter="*" aria-pressed="true">
-              {allLabel}
-            </button>
-            {filterCats.map((category) => (
-              <button type="button" class="filter-pill" data-filter={category.key} aria-pressed="false">
-                {categoryLabel(category.key, lang)}
-              </button>
-            ))}
-            <span class="filter-count" data-filter-count aria-live="polite" />
-          </div>
-        )
-      }
-      <div
-        class="grid grid--3"
-        data-reveal-group
-        data-project-grid
-        data-count-one={t("projects.countOne")}
-        data-count-many={t("projects.countMany")}
-      >
-        {
-          rest.map((project) => (
-            <ProjectCard project={project} href={localePath(lang, `/projects/${slugOf(project.id)}`)} />
-          ))
-        }
-      </div>
-      <p class="proj-empty" data-project-empty hidden>
-        {lang === "it" ? "Nessun progetto per questo filtro." : "No projects for this filter."}
-      </p>
+      <GitHubPinned lang={lang} />
     </div>
   </section>
+
+  {
+    professional.length > 0 && (
+      <section class="section professional-section">
+        <div class="container">
+          <SectionHeader
+            title={lang === "it" ? "Progetti professionali" : "Professional projects"}
+            intro={lang === "it"
+              ? "Progetti realizzati in ambito aziendale: il codice sorgente non è pubblico, ma qui descrivo architettura, automazione, sicurezza e il mio contributo personale."
+              : "Projects built in a corporate context: the source code is not public, but I document the architecture, automation, security choices and my contribution."}
+          />
+          <div class="professional-grid" data-reveal-group>
+            {professional.map((project) => (
+              <ProjectCard
+                project={project}
+                href={localePath(lang, `/projects/${slugOf(project.id)}`)}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
 </BaseLayout>
 
 <style>
-  .projects-featured {
-    margin-bottom: clamp(1.6rem, 1rem + 2vw, 2.6rem);
+  .professional-section {
+    background: var(--surface-2);
   }
-  .proj-filters {
-    position: sticky;
-    top: 3.5rem;
-    z-index: 10;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: clamp(1.4rem, 1rem + 1.5vw, 2rem);
-    padding-block: 0.75rem;
-    background: color-mix(in srgb, var(--bg) 88%, transparent);
-    backdrop-filter: saturate(160%) blur(8px);
+  .professional-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1rem, 0.6rem + 1.5vw, 1.5rem);
   }
-  .filter-pill {
-    font: inherit;
-    font-size: 0.85rem;
-    font-weight: 550;
-    padding: 0.4rem 0.9rem;
-    border-radius: 999px;
-    border: 1px solid var(--border-strong);
-    background: var(--surface);
-    color: var(--muted);
-    cursor: pointer;
-    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-  }
-  .filter-pill:hover {
-    border-color: var(--accent);
-    color: var(--accent-text);
-  }
-  .filter-pill.is-active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: var(--accent-contrast);
-  }
-  .filter-count {
-    margin-left: auto;
-    align-self: center;
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: var(--muted);
-  }
-  .proj-empty {
-    text-align: center;
-    color: var(--muted);
-    padding: 2rem 0;
-  }
-  :global(.project-card.is-hidden) {
-    display: none;
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    :global(.project-card.is-moving) {
-      transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    :global(.project-card.is-entering) {
-      animation: cardIn 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-    @keyframes cardIn {
-      from { opacity: 0; transform: scale(0.94); }
-      to   { opacity: 1; transform: none; }
+  @media (min-width: 760px) {
+    .professional-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 </style>
-
-<script>
-  const root = document.querySelector<HTMLElement>("[data-project-filters]");
-  const grid = document.querySelector<HTMLElement>("[data-project-grid]");
-  const empty = document.querySelector<HTMLElement>("[data-project-empty]");
-  const countEl = document.querySelector<HTMLElement>("[data-filter-count]");
-
-  if (root && grid) {
-    const pills = Array.from(root.querySelectorAll<HTMLButtonElement>(".filter-pill"));
-    const cards = Array.from(grid.querySelectorAll<HTMLElement>(".project-card"));
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const countOne = grid.dataset.countOne ?? "";
-    const countMany = grid.dataset.countMany ?? "";
-
-    const setCount = (n: number) => {
-      if (!countEl) return;
-      countEl.textContent = n === 1 ? countOne : countMany.replace("{n}", String(n));
-    };
-    setCount(cards.length);
-
-    const apply = (filter: string) => {
-      const first = new Map<HTMLElement, DOMRect>();
-      if (!reduce) {
-        cards.forEach((card) => {
-          if (!card.classList.contains("is-hidden")) first.set(card, card.getBoundingClientRect());
-        });
-      }
-
-      let visible = 0;
-      cards.forEach((card) => {
-        const show = filter === "*" || card.dataset.category === filter;
-        const wasHidden = card.classList.contains("is-hidden");
-        card.classList.toggle("is-hidden", !show);
-        if (show) {
-          visible++;
-          if (wasHidden) {
-            card.classList.remove("is-entering");
-            void card.offsetWidth;
-            card.classList.add("is-entering");
-          }
-        }
-      });
-      if (empty) empty.hidden = visible > 0;
-      setCount(visible);
-
-      if (reduce) return;
-
-      cards.forEach((card) => {
-        if (card.classList.contains("is-hidden")) return;
-        const prev = first.get(card);
-        if (!prev) return;
-        const next = card.getBoundingClientRect();
-        const dx = prev.left - next.left;
-        const dy = prev.top - next.top;
-        if (!dx && !dy) return;
-        card.classList.remove("is-moving");
-        card.style.transform = `translate(${dx}px, ${dy}px)`;
-        requestAnimationFrame(() => {
-          card.classList.add("is-moving");
-          card.style.transform = "";
-        });
-      });
-    };
-
-    cards.forEach((card) =>
-      card.addEventListener("transitionend", () => {
-        card.classList.remove("is-moving");
-        card.style.transform = "";
-      }),
-    );
-
-    root.addEventListener("click", (event) => {
-      const button = (event.target as HTMLElement).closest<HTMLButtonElement>(".filter-pill");
-      if (!button) return;
-      const filter = button.dataset.filter ?? "*";
-      pills.forEach((pill) => {
-        const active = pill === button;
-        pill.classList.toggle("is-active", active);
-        pill.setAttribute("aria-pressed", String(active));
-      });
-      apply(filter);
-    });
-  }
-</script>
