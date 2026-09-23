@@ -6,17 +6,15 @@ import Aptitude from "@/components/Aptitude.astro";
 import Skills from "@/components/Skills.astro";
 import SectionHeader from "@/components/SectionHeader.astro";
 import Stats from "@/components/Stats.astro";
-import ProjectCard from "@/components/ProjectCard.astro";
+import GitHubPinned from "@/components/GitHubPinned.astro";
 import Icon from "@/components/Icon.astro";
 import { site, type Locale } from "@/config/site";
 import { content } from "@/data/content";
 import { useTranslations, localePath } from "@/i18n/ui";
-import { getFeaturedProjects, slugOf } from "@/lib/content";
 
 interface Props { lang: Locale }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-const featured = (await getFeaturedProjects(lang)).slice(0, 3);
 /* Tutte le credenziali, non più le prime tre: la home ne tagliava due
    (Pre Security e PHP Developer Fundamentals) rispetto all'elenco completo
    del CV e della pagina Certificazioni. */
@@ -59,29 +57,23 @@ const desc = content[lang].hero.subheadline;
   </div>
 
 
-  {
-    featured.length > 0 && (
-      <section class="section band">
-        <div class="container">
-          <SectionHeader title={t("section.projects")} />
-          <div class="grid grid--3" data-reveal-group>
-            {featured.map((p) => (
-              <ProjectCard
-                project={p}
-                href={localePath(lang, `/projects/${slugOf(p.id)}`)}
-              />
-            ))}
-          </div>
-          <p class="see-all">
-            <a class="btn btn--ghost" href={localePath(lang, "/projects")}>
-              {t("cta.viewProjects")}
-              <Icon name="chevronRight" size={18} />
-            </a>
-          </p>
-        </div>
-      </section>
-    )
-  }
+  <section class="section band">
+    <div class="container">
+      <SectionHeader
+        title={t("section.projects")}
+        intro={lang === "it"
+          ? "I repository che scelgo di mettere in evidenza su GitHub: la selezione segue automaticamente i Pinned del mio profilo."
+          : "The repositories I choose to highlight on GitHub: this selection automatically follows the Pinned items on my profile."}
+      />
+      <GitHubPinned lang={lang} limit={3} />
+      <p class="see-all">
+        <a class="btn btn--ghost" href={localePath(lang, "/projects")}>
+          {t("cta.viewProjects")}
+          <Icon name="chevronRight" size={18} />
+        </a>
+      </p>
+    </div>
+  </section>
 
   <section class="section credentials-section">
     <div class="container">
