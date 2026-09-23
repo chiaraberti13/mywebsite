@@ -1,0 +1,242 @@
+---
+import type { Locale } from "@/config/site";
+
+interface Props {
+  lang: Locale;
+  limit?: number;
+}
+
+const { lang, limit = 6 } = Astro.props;
+const loading = lang === "it" ? "Caricamento repository GitHub…" : "Loading GitHub repositories…";
+const unavailable =
+  lang === "it"
+    ? "I repository GitHub non sono disponibili in questo momento."
+    : "GitHub repositories are temporarily unavailable.";
+const openRepo = lang === "it" ? "Apri repository" : "Open repository";
+const starsLabel = lang === "it" ? "stelle" : "stars";
+const forksLabel = lang === "it" ? "fork" : "forks";
+---
+<div
+  class="github-pinned"
+  data-github-pinned
+  data-lang={lang}
+  data-limit={limit}
+  data-unavailable={unavailable}
+  data-open-repo={openRepo}
+  data-stars-label={starsLabel}
+  data-forks-label={forksLabel}
+>
+  <p class="github-pinned-state muted" role="status">{loading}</p>
+</div>
+
+<noscript>
+  <p class="muted">
+    {lang === "it"
+      ? "Abilita JavaScript per visualizzare i repository GitHub in evidenza."
+      : "Enable JavaScript to view the pinned GitHub repositories."}
+  </p>
+</noscript>
+
+<style>
+  .github-pinned {
+    min-height: 8rem;
+  }
+  .github-pinned-state {
+    margin: 0;
+    padding: 1.25rem 0;
+    text-align: center;
+  }
+  :global(.github-pinned-grid) {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1rem, 0.7rem + 1vw, 1.4rem);
+  }
+  @media (min-width: 680px) {
+    :global(.github-pinned-grid) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1020px) {
+    :global(.github-pinned-grid) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  :global(.github-repo-card) {
+    position: relative;
+    min-width: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+  }
+  :global(.github-repo-card:hover) {
+    transform: translateY(-3px);
+    border-color: var(--accent-line);
+    box-shadow: var(--shadow);
+  }
+  :global(.github-repo-link) {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: clamp(1.15rem, 0.9rem + 1vw, 1.5rem);
+    color: inherit;
+    text-decoration: none;
+  }
+  :global(.github-repo-head) {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.8rem;
+  }
+  :global(.github-repo-name) {
+    margin: 0;
+    font-size: var(--step-1);
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+  :global(.github-repo-arrow) {
+    flex: none;
+    color: var(--accent-text);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+  }
+  :global(.github-repo-description) {
+    flex: 1;
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  :global(.github-repo-meta) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem 0.9rem;
+    margin-top: auto;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--muted);
+  }
+  :global(.github-repo-language) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  :global(.github-repo-language::before) {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent-line);
+  }
+  :global(.github-repo-topics) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  :global(.github-repo-topic) {
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+  }
+</style>
+
+<script>
+  type Repo = {
+    name: string;
+    description: string | null;
+    url: string;
+    language: string | null;
+    stars: number;
+    forks: number;
+    topics: string[];
+  };
+
+  const text = (tag: string, className: string, value: string) => {
+    const el = document.createElement(tag);
+    el.className = className;
+    el.textContent = value;
+    return el;
+  };
+
+  document.querySelectorAll<HTMLElement>("[data-github-pinned]").forEach(async (root) => {
+    const limit = Math.max(1, Number(root.dataset.limit ?? 6));
+    const unavailable = root.dataset.unavailable ?? "GitHub repositories unavailable";
+    const openRepo = root.dataset.openRepo ?? "Open repository";
+    const starsLabel = root.dataset.starsLabel ?? "stars";
+    const forksLabel = root.dataset.forksLabel ?? "forks";
+
+    try {
+      const response = await fetch("/api/github-pinned", {
+        headers: { Accept: "application/json" },
+      });
+      if (!response.ok) throw new Error(String(response.status));
+
+      const payload = (await response.json()) as { repositories?: Repo[] };
+      const repos = (payload.repositories ?? []).slice(0, limit);
+      if (!repos.length) throw new Error("empty");
+
+      const grid = document.createElement("div");
+      grid.className = "github-pinned-grid";
+
+      repos.forEach((repo) => {
+        const article = document.createElement("article");
+        article.className = "github-repo-card";
+
+        const link = document.createElement("a");
+        link.className = "github-repo-link";
+        link.href = repo.url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.setAttribute("aria-label", `${openRepo}: ${repo.name}`);
+
+        const head = document.createElement("div");
+        head.className = "github-repo-head";
+        head.append(
+          text("h3", "github-repo-name", repo.name),
+          text("span", "github-repo-arrow", "GitHub ↗"),
+        );
+        link.append(head);
+
+        link.append(text("p", "github-repo-description", repo.description ?? ""));
+
+        const meta = document.createElement("div");
+        meta.className = "github-repo-meta";
+        if (repo.language) {
+          meta.append(text("span", "github-repo-language", repo.language));
+        }
+        if (repo.stars > 0) {
+          meta.append(text("span", "github-repo-stars", `★ ${repo.stars} ${starsLabel}`));
+        }
+        if (repo.forks > 0) {
+          meta.append(text("span", "github-repo-forks", `⑂ ${repo.forks} ${forksLabel}`));
+        }
+        link.append(meta);
+
+        const topics = (repo.topics ?? []).slice(0, 4);
+        if (topics.length) {
+          const list = document.createElement("ul");
+          list.className = "github-repo-topics";
+          topics.forEach((topic) => list.append(text("li", "github-repo-topic", topic)));
+          link.append(list);
+        }
+
+        article.append(link);
+        grid.append(article);
+      });
+
+      root.replaceChildren(grid);
+    } catch {
+      const state = text("p", "github-pinned-state muted", unavailable);
+      state.setAttribute("role", "status");
+      root.replaceChildren(state);
+    }
+  });
+</script>
