@@ -1,0 +1,674 @@
+---
+import type { CollectionEntry } from "astro:content";
+import type { Locale } from "@/config/site";
+import ProjectCard from "./ProjectCard.astro";
+
+interface Props {
+  lang: Locale;
+  mode?: "home" | "projects";
+  limit?: number;
+  professional?: CollectionEntry<"projects">[];
+}
+
+const {
+  lang,
+  mode = "projects",
+  limit = mode === "home" ? 3 : 6,
+  professional = [],
+} = Astro.props;
+
+const allLabel = lang === "it" ? "Tutte" : "All";
+const loading = lang === "it" ? "Caricamento progetti…" : "Loading projects…";
+const unavailable =
+  lang === "it"
+    ? "I progetti non sono disponibili in questo momento."
+    : "Projects are temporarily unavailable.";
+const countOne = lang === "it" ? "1 progetto" : "1 project";
+const countMany = lang === "it" ? "{n} progetti" : "{n} projects";
+const featuredLabel = lang === "it" ? "In evidenza" : "Featured";
+const openRepo = lang === "it" ? "Apri repository" : "Open repository";
+const categoryLabels = {
+  cybersecurity: { it: "Cybersecurity", en: "Cybersecurity" },
+  "interactive-labs": { it: "Laboratori interattivi", en: "Interactive labs" },
+  "sdr-radio": { it: "SDR e radio", en: "SDR & radio" },
+  "automation-utilities": { it: "Automazione e utility", en: "Automation & utilities" },
+  "professional-work": { it: "Progetti professionali", en: "Professional work" },
+};
+---
+<div
+  class:list={["pinned-portfolio", { "is-home": mode === "home" }]}
+  data-pinned-portfolio
+  data-mode={mode}
+  data-limit={limit}
+  data-lang={lang}
+  data-loading={loading}
+  data-unavailable={unavailable}
+  data-count-one={countOne}
+  data-count-many={countMany}
+  data-all-label={allLabel}
+  data-featured-label={featuredLabel}
+  data-open-repo={openRepo}
+  data-label-cybersecurity={categoryLabels.cybersecurity[lang]}
+  data-label-interactive-labs={categoryLabels["interactive-labs"][lang]}
+  data-label-sdr-radio={categoryLabels["sdr-radio"][lang]}
+  data-label-automation-utilities={categoryLabels["automation-utilities"][lang]}
+  data-label-professional-work={categoryLabels["professional-work"][lang]}
+>
+  {
+    mode === "projects" && (
+      <div class="projects-featured" data-pinned-feature>
+        <p class="pinned-state muted" role="status">{loading}</p>
+      </div>
+    )
+  }
+
+  {
+    mode === "projects" && (
+      <div class="proj-filters" role="group" aria-label={lang === "it" ? "Filtra progetti" : "Filter projects"} data-project-filters hidden>
+        <span class="filter-count" data-filter-count aria-live="polite" />
+      </div>
+    )
+  }
+
+  <div
+    class="grid grid--3"
+    data-project-grid
+    data-reveal-group
+  >
+    {
+      mode === "projects" &&
+      professional.map((project) => (
+        <ProjectCard
+          project={project}
+          href={`/projects/${project.id.split("/").pop()}`}
+        />
+      ))
+    }
+    <p class="pinned-state muted" data-grid-loading role="status">{loading}</p>
+  </div>
+
+  {
+    mode === "projects" && (
+      <p class="proj-empty" data-project-empty hidden>
+        {lang === "it" ? "Nessun progetto per questo filtro." : "No projects for this filter."}
+      </p>
+    )
+  }
+</div>
+
+<style>
+  .projects-featured {
+    margin-bottom: clamp(1.6rem, 1rem + 2vw, 2.6rem);
+  }
+  .pinned-state {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 1.25rem 0;
+    text-align: center;
+  }
+  .proj-filters {
+    position: sticky;
+    top: 3.5rem;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: clamp(1.4rem, 1rem + 1.5vw, 2rem);
+    padding-block: 0.75rem;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: saturate(160%) blur(8px);
+  }
+  .filter-count {
+    margin-left: auto;
+    align-self: center;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  .proj-empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 2rem 0;
+  }
+
+  :global(.filter-pill) {
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 550;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  }
+  :global(.filter-pill:hover) {
+    border-color: var(--accent);
+    color: var(--accent-text);
+  }
+  :global(.filter-pill.is-active) {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-contrast);
+  }
+
+  /* Layout identico al vecchio ProjectFeatured. */
+  :global(.pinned-featured) {
+    position: relative;
+    display: grid;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  @media (min-width: 820px) {
+    :global(.pinned-featured) {
+      grid-template-columns: 1.05fr 0.95fr;
+      align-items: stretch;
+    }
+  }
+  :global(.pinned-featured-cover) {
+    display: block;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+  }
+  @media (min-width: 820px) {
+    :global(.pinned-featured-cover) {
+      border-bottom: 0;
+      border-inline-end: 1px solid var(--border);
+    }
+    :global(.pinned-featured-cover .project-cover) {
+      width: 100%;
+      height: 100%;
+      aspect-ratio: auto;
+    }
+  }
+  :global(.pinned-featured-body) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: clamp(1.5rem, 1rem + 2.5vw, 2.75rem);
+  }
+  :global(.pinned-featured-eyebrow) {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    width: fit-content;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-text);
+  }
+  :global(.pinned-featured-title) {
+    margin: 0;
+    font-size: var(--step-2);
+    line-height: 1.1;
+  }
+  :global(.pinned-featured-title a) {
+    color: inherit;
+    text-decoration: none;
+  }
+  :global(.pinned-featured-summary) {
+    color: var(--muted);
+    max-width: 52ch;
+    margin: 0;
+  }
+  :global(.pinned-featured-tags),
+  :global(.dynamic-project-tags) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    margin: 0.15rem 0 0;
+    padding: 0;
+  }
+  :global(.pinned-featured-actions) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.6rem;
+  }
+
+  /* Card dinamiche con lo stesso DOM/CSS delle vecchie ProjectCard. */
+  :global(.dynamic-project-card) {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+  }
+  :global(.dynamic-project-card[hidden]) {
+    display: none !important;
+  }
+  :global(.dynamic-project-card .project-cover-link) {
+    position: relative;
+    display: block;
+    overflow: hidden;
+  }
+  :global(.dynamic-project-card .project-cover-arrow) {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.7rem;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--accent-contrast);
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 4;
+  }
+  :global(.dynamic-project-card:hover .project-cover-arrow),
+  :global(.dynamic-project-card:focus-within .project-cover-arrow) {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  :global(.dynamic-project-card .project-body) {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: clamp(1.2rem, 1rem + 1vw, 1.6rem);
+  }
+  :global(.dynamic-project-card .project-meta) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  :global(.dynamic-project-card .project-category) {
+    width: fit-content;
+    padding: 0.22rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+  }
+  :global(.dynamic-project-card .project-title) {
+    margin: 0;
+    font-size: var(--step-1);
+  }
+  :global(.dynamic-project-card .project-title a) {
+    color: inherit;
+    text-decoration: none;
+  }
+  :global(.dynamic-project-card .project-summary) {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  :global(.dynamic-project-card .project-more) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: auto;
+    padding-top: 0.15rem;
+    color: var(--accent-text);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  /* Copertina generata: stessa geometria e linguaggio del ProjectCover originale. */
+  :global(.project-cover) {
+    position: relative;
+    display: block;
+    aspect-ratio: 21 / 9;
+    background: var(--surface-2);
+    overflow: hidden;
+  }
+  :global(.project-cover.is-large) {
+    aspect-ratio: 16 / 10;
+  }
+  :global(.project-cover--gen) {
+    background: linear-gradient(150deg, var(--surface-2) 0%, var(--surface) 55%, var(--surface-2) 100%);
+    color: var(--accent-line);
+  }
+  :global(.cov-blob) {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    top: 50%;
+    width: 72%;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    background: radial-gradient(circle, var(--accent-soft) 0%, transparent 68%);
+  }
+  :global(.cov-grid) {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    opacity: 0.12;
+  }
+  :global(.cov-cat--cybersecurity .cov-grid) {
+    background-image:
+      linear-gradient(to right, currentColor 1px, transparent 1px),
+      linear-gradient(to bottom, currentColor 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+  :global(.cov-cat--interactive-labs .cov-grid) {
+    background-image: radial-gradient(currentColor 1.5px, transparent 1.6px);
+    background-size: 20px 20px;
+  }
+  :global(.cov-cat--sdr-radio .cov-grid) {
+    background-image: repeating-radial-gradient(circle at 50% 50%, currentColor 0 1px, transparent 1px 22px);
+  }
+  :global(.cov-cat--automation-utilities .cov-grid) {
+    background-image: repeating-linear-gradient(-45deg, currentColor 0 1px, transparent 1px 14px);
+  }
+  :global(.cov-glyph) {
+    position: absolute;
+    z-index: 3;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--accent-line);
+    font-family: var(--font-mono);
+    font-size: clamp(2.3rem, 9vw, 4.8rem);
+    font-weight: 700;
+    letter-spacing: -0.08em;
+    opacity: 0.9;
+  }
+  :global(.project-cover.is-large .cov-glyph) {
+    font-size: clamp(3rem, 8vw, 7rem);
+  }
+</style>
+
+<script>
+  type Category =
+    | "cybersecurity"
+    | "interactive-labs"
+    | "sdr-radio"
+    | "automation-utilities"
+    | "professional-work";
+
+  type Repo = {
+    name: string;
+    description: string | null;
+    url: string;
+    homepage: string | null;
+    language: string | null;
+    stars: number;
+    forks: number;
+    topics: string[];
+    category: Category;
+  };
+
+  const makeText = (tag: string, className: string, value: string) => {
+    const el = document.createElement(tag);
+    el.className = className;
+    el.textContent = value;
+    return el;
+  };
+
+  const makeCover = (repo: Repo, large = false) => {
+    const cover = document.createElement("div");
+    cover.className = `project-cover project-cover--gen cov-cat--${repo.category}${large ? " is-large" : ""}`;
+    const blob = document.createElement("span");
+    blob.className = "cov-blob";
+    const grid = document.createElement("span");
+    grid.className = "cov-grid";
+    const glyph = document.createElement("span");
+    glyph.className = "cov-glyph";
+    const glyphs: Record<Category, string> = {
+      cybersecurity: "SEC",
+      "interactive-labs": "LAB",
+      "sdr-radio": "SDR",
+      "automation-utilities": ">_",
+      "professional-work": "DB",
+    };
+    glyph.textContent = glyphs[repo.category];
+    cover.append(blob, grid, glyph);
+    return cover;
+  };
+
+  document.querySelectorAll<HTMLElement>("[data-pinned-portfolio]").forEach(async (root) => {
+    const mode = root.dataset.mode ?? "projects";
+    const limit = Math.max(1, Number(root.dataset.limit ?? 6));
+    const grid = root.querySelector<HTMLElement>("[data-project-grid]");
+    const featuredRoot = root.querySelector<HTMLElement>("[data-pinned-feature]");
+    const filterRoot = root.querySelector<HTMLElement>("[data-project-filters]");
+    const countEl = root.querySelector<HTMLElement>("[data-filter-count]");
+    const emptyEl = root.querySelector<HTMLElement>("[data-project-empty]");
+    const loadingEl = root.querySelector<HTMLElement>("[data-grid-loading]");
+    if (!grid) return;
+
+    const categoryLabel = (category: Category) => {
+      const key = category.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase());
+      return root.dataset[`label${key.charAt(0).toUpperCase() + key.slice(1)}`] ?? category;
+    };
+    const featuredLabel = root.dataset.featuredLabel ?? "Featured";
+    const openRepo = root.dataset.openRepo ?? "Open repository";
+    const countOne = root.dataset.countOne ?? "1 project";
+    const countMany = root.dataset.countMany ?? "{n} projects";
+    const allLabel = root.dataset.allLabel ?? "All";
+    let activeFilter = "*";
+
+    const makeTags = (repo: Repo, className: string) => {
+      const topics = (repo.topics ?? []).slice(0, 5);
+      if (!topics.length) return null;
+      const list = document.createElement("ul");
+      list.className = className;
+      topics.forEach((topic) => {
+        const li = document.createElement("li");
+        li.className = "tag tag--neutral";
+        li.textContent = topic;
+        list.append(li);
+      });
+      return list;
+    };
+
+    const makeCard = (repo: Repo) => {
+      const article = document.createElement("article");
+      article.className = "card card--link project-card dynamic-project-card";
+      article.dataset.category = repo.category;
+      article.dataset.githubRepo = repo.name.toLowerCase();
+
+      const coverLink = document.createElement("a");
+      coverLink.className = "project-cover-link";
+      coverLink.href = repo.url;
+      coverLink.target = "_blank";
+      coverLink.rel = "noopener noreferrer";
+      coverLink.append(makeCover(repo));
+      coverLink.append(makeText("span", "project-cover-arrow", "↗"));
+
+      const body = document.createElement("div");
+      body.className = "project-body";
+      const meta = document.createElement("div");
+      meta.className = "project-meta";
+      meta.append(makeText("p", "project-category", categoryLabel(repo.category)));
+      body.append(meta);
+
+      const title = document.createElement("h3");
+      title.className = "project-title";
+      const titleLink = document.createElement("a");
+      titleLink.href = repo.url;
+      titleLink.target = "_blank";
+      titleLink.rel = "noopener noreferrer";
+      titleLink.textContent = repo.name;
+      title.append(titleLink);
+      body.append(title);
+
+      body.append(makeText("p", "project-summary", repo.description ?? ""));
+      const tags = makeTags(repo, "dynamic-project-tags");
+      if (tags) body.append(tags);
+
+      const details = [repo.language, repo.stars > 0 ? `★ ${repo.stars}` : null]
+        .filter(Boolean)
+        .join(" · ");
+      if (details) body.append(makeText("p", "muted project-summary", details));
+
+      body.append(makeText("span", "project-more", `${openRepo} ›`));
+      article.append(coverLink, body);
+      return article;
+    };
+
+    const makeFeatured = (repo: Repo) => {
+      const article = document.createElement("article");
+      article.className = "pinned-featured";
+
+      const coverLink = document.createElement("a");
+      coverLink.className = "pinned-featured-cover";
+      coverLink.href = repo.url;
+      coverLink.target = "_blank";
+      coverLink.rel = "noopener noreferrer";
+      coverLink.append(makeCover(repo, true));
+
+      const body = document.createElement("div");
+      body.className = "pinned-featured-body";
+      body.append(
+        makeText(
+          "p",
+          "pinned-featured-eyebrow",
+          `★ ${featuredLabel} · ${categoryLabel(repo.category)}`,
+        ),
+      );
+
+      const title = document.createElement("h2");
+      title.className = "pinned-featured-title";
+      const link = document.createElement("a");
+      link.href = repo.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = repo.name;
+      title.append(link);
+      body.append(title);
+
+      body.append(makeText("p", "pinned-featured-summary", repo.description ?? ""));
+      const tags = makeTags(repo, "pinned-featured-tags");
+      if (tags) body.append(tags);
+
+      const actions = document.createElement("div");
+      actions.className = "pinned-featured-actions";
+      const action = document.createElement("a");
+      action.className = "btn btn--primary";
+      action.href = repo.url;
+      action.target = "_blank";
+      action.rel = "noopener noreferrer";
+      action.textContent = openRepo;
+      actions.append(action);
+      body.append(actions);
+
+      article.append(coverLink, body);
+      return article;
+    };
+
+    const staticProfessionalCards = Array.from(
+      grid.querySelectorAll<HTMLElement>(".project-card:not(.dynamic-project-card)"),
+    );
+    staticProfessionalCards.forEach((card) => {
+      card.dataset.category = "professional-work";
+    });
+
+    const setCount = () => {
+      if (!countEl) return;
+      const visible = Array.from(grid.querySelectorAll<HTMLElement>(".project-card"))
+        .filter((card) => !card.hidden).length;
+      countEl.textContent = visible === 1 ? countOne : countMany.replace("{n}", String(visible));
+      if (emptyEl) emptyEl.hidden = visible > 0;
+    };
+
+    const applyFilter = () => {
+      Array.from(grid.querySelectorAll<HTMLElement>(".project-card")).forEach((card) => {
+        const show = activeFilter === "*" || card.dataset.category === activeFilter;
+        card.hidden = !show;
+      });
+      setCount();
+    };
+
+    const buildFilters = (repos: Repo[]) => {
+      if (!filterRoot) return;
+      const categories = new Set<Category>(
+        repos.slice(1).map((repo) => repo.category),
+      );
+      if (staticProfessionalCards.length) categories.add("professional-work");
+
+      const oldButtons = Array.from(filterRoot.querySelectorAll("button"));
+      oldButtons.forEach((button) => button.remove());
+
+      const makeButton = (key: string, label: string) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `filter-pill${key === "*" ? " is-active" : ""}`;
+        button.dataset.filter = key;
+        button.setAttribute("aria-pressed", String(key === "*"));
+        button.textContent = label;
+        return button;
+      };
+
+      filterRoot.prepend(makeButton("*", allLabel));
+      categories.forEach((category) => {
+        filterRoot.insertBefore(makeButton(category, categoryLabel(category)), countEl);
+      });
+      filterRoot.hidden = categories.size < 1;
+    };
+
+    filterRoot?.addEventListener("click", (event) => {
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>(".filter-pill");
+      if (!button) return;
+      activeFilter = button.dataset.filter ?? "*";
+      filterRoot.querySelectorAll<HTMLButtonElement>(".filter-pill").forEach((pill) => {
+        const active = pill === button;
+        pill.classList.toggle("is-active", active);
+        pill.setAttribute("aria-pressed", String(active));
+      });
+      applyFilter();
+    });
+
+    try {
+      const response = await fetch(`/api/github-pinned?t=${Date.now()}`, {
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+      });
+      if (!response.ok) throw new Error(String(response.status));
+      const payload = (await response.json()) as { repositories?: Repo[] };
+      const repos = (payload.repositories ?? []).slice(0, limit);
+      if (!repos.length) throw new Error("empty");
+
+      loadingEl?.remove();
+
+      if (mode === "home") {
+        staticProfessionalCards.forEach((card) => card.remove());
+        repos.forEach((repo) => grid.append(makeCard(repo)));
+        return;
+      }
+
+      if (featuredRoot) {
+        featuredRoot.replaceChildren(makeFeatured(repos[0]));
+      }
+
+      const professionals = staticProfessionalCards.map((card) => card);
+      professionals.forEach((card) => card.remove());
+      repos.slice(1).forEach((repo) => grid.append(makeCard(repo)));
+      professionals.forEach((card) => grid.append(card));
+
+      buildFilters(repos);
+      applyFilter();
+    } catch {
+      loadingEl?.remove();
+      if (featuredRoot) {
+        featuredRoot.replaceChildren(
+          makeText("p", "pinned-state muted", root.dataset.unavailable ?? "Projects unavailable"),
+        );
+      }
+      if (mode === "home") {
+        grid.replaceChildren(
+          makeText("p", "pinned-state muted", root.dataset.unavailable ?? "Projects unavailable"),
+        );
+      } else {
+        buildFilters([]);
+        applyFilter();
+      }
+    }
+  });
+</script>
