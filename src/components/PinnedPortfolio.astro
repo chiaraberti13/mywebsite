@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import type { Locale } from "@/config/site";
+import { localePath } from "@/i18n/ui";
 import ProjectCard from "./ProjectCard.astro";
 
 interface Props {
@@ -80,7 +81,7 @@ const categoryLabels = {
       professional.map((project) => (
         <ProjectCard
           project={project}
-          href={`/projects/${project.id.split("/").pop()}`}
+          href={localePath(lang, `/projects/${project.id.split("/").pop()}`)}
         />
       ))
     }
