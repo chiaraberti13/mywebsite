@@ -374,14 +374,60 @@ const categoryLabels = {
     display: grid;
     place-items: center;
     color: var(--accent-line);
-    font-family: var(--font-mono);
-    font-size: clamp(2.3rem, 9vw, 4.8rem);
-    font-weight: 700;
-    letter-spacing: -0.08em;
-    opacity: 0.9;
+    opacity: 0.94;
   }
-  :global(.project-cover.is-large .cov-glyph) {
-    font-size: clamp(3rem, 8vw, 7rem);
+  :global(.cov-glyph::before) {
+    content: "";
+    position: absolute;
+    width: clamp(5.6rem, 31cqi, 8.8rem);
+    aspect-ratio: 1;
+    border: 1px solid color-mix(in srgb, var(--accent-line) 26%, transparent);
+    border-radius: 30%;
+    transform: rotate(45deg);
+    opacity: 0.52;
+  }
+  :global(.cov-glyph::after) {
+    content: "";
+    position: absolute;
+    width: clamp(7.4rem, 40cqi, 11.6rem);
+    aspect-ratio: 1;
+    border: 1px dashed color-mix(in srgb, var(--accent-line) 18%, transparent);
+    border-radius: 50%;
+    opacity: 0.48;
+  }
+  :global(.cov-glyph svg) {
+    position: relative;
+    z-index: 2;
+    width: clamp(4.4rem, 24cqi, 7.1rem);
+    height: auto;
+    overflow: visible;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.65;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 8px 18px var(--accent-soft));
+  }
+  :global(.project-cover.is-large .cov-glyph svg) {
+    width: clamp(5.8rem, 22cqi, 9.6rem);
+  }
+  :global(.cov-glyph .icon-soft) {
+    opacity: 0.42;
+  }
+  :global(.cov-glyph .icon-accent) {
+    stroke-width: 2.15;
+  }
+  :global(.cov-glyph .icon-node) {
+    fill: var(--surface);
+    stroke-width: 1.8;
+  }
+  :global(.cov-glyph--signal::after),
+  :global(.cov-glyph--radio-decoder::after) {
+    transform: scaleX(1.18);
+  }
+  :global(.cov-glyph--honeypot::before),
+  :global(.cov-glyph--observability::before) {
+    border-radius: 50%;
   }
 </style>
 
@@ -412,6 +458,170 @@ const categoryLabels = {
     return el;
   };
 
+  type VisualKey =
+    | "honeypot"
+    | "topology"
+    | "exam-matrix"
+    | "observability"
+    | "spectrum"
+    | "signal"
+    | "ear-signal"
+    | "radio-decoder"
+    | "workflow-forge"
+    | "document-pipeline"
+    | "configurator"
+    | "document-check"
+    | "code-document"
+    | "browser-code"
+    | "cyber-core"
+    | "automation-core";
+
+  const SVG_NS = "http://www.w3.org/2000/svg";
+
+  const ICON_MARKUP: Record<VisualKey, string> = {
+    honeypot: `
+      <path class="icon-soft" d="M12 3.2c3.9 0 7.2 1.8 9.2 4.7-2 2.9-5.3 4.7-9.2 4.7S4.8 10.8 2.8 7.9C4.8 5 8.1 3.2 12 3.2Z"/>
+      <circle class="icon-node" cx="12" cy="7.9" r="2.1"/>
+      <path class="icon-accent" d="M12 11.2v3.2m0 0-3.6 2.1m3.6-2.1 3.6 2.1"/>
+      <circle class="icon-node" cx="8.4" cy="16.5" r="1.5"/>
+      <circle class="icon-node" cx="15.6" cy="16.5" r="1.5"/>
+      <path class="icon-soft" d="M6 20.4h12M4.3 22h15.4"/>
+    `,
+    topology: `
+      <path class="icon-soft" d="M4 6.4 12 2l8 4.4-8 4.4L4 6.4Zm0 5 8 4.4 8-4.4M4 16.4l8 4.4 8-4.4"/>
+      <circle class="icon-node" cx="4" cy="6.4" r="1.25"/>
+      <circle class="icon-node" cx="12" cy="2" r="1.25"/>
+      <circle class="icon-node" cx="20" cy="6.4" r="1.25"/>
+      <circle class="icon-node" cx="12" cy="10.8" r="1.25"/>
+      <path class="icon-accent" d="M8.2 13.7 12 11.6l3.8 2.1"/>
+    `,
+    "exam-matrix": `
+      <rect class="icon-soft" x="3" y="3" width="18" height="18" rx="3"/>
+      <path d="M7 8h3M7 12h3M7 16h3M14 8h3M14 12h3"/>
+      <path class="icon-accent" d="m13.6 16 1.7 1.7 3.5-4"/>
+      <circle class="icon-node" cx="8.5" cy="8" r=".8"/>
+      <circle class="icon-node" cx="15.5" cy="8" r=".8"/>
+    `,
+    observability: `
+      <path class="icon-soft" d="M2.7 12s3.5-5.1 9.3-5.1 9.3 5.1 9.3 5.1-3.5 5.1-9.3 5.1S2.7 12 2.7 12Z"/>
+      <circle class="icon-node" cx="12" cy="12" r="2.7"/>
+      <path class="icon-accent" d="M12 4V2.2M5.8 5.8 4.5 4.5M18.2 5.8l1.3-1.3M4.2 12H2.3M21.7 12h-1.9"/>
+      <path d="M9.7 20.3h4.6"/>
+    `,
+    spectrum: `
+      <path class="icon-soft" d="M3 19h18M5 16v-3m3 3V8m3 8V5m3 11V9m3 7v-5m3 5v-2"/>
+      <path class="icon-accent" d="M4 7c2.2-2 4.1-2 6 0s3.8 2 5.7 0 3.6-2 5.3-.5"/>
+      <circle class="icon-node" cx="11" cy="5" r="1.2"/>
+    `,
+    signal: `
+      <path class="icon-soft" d="M2.5 12h3l2-5 3.1 10 2.6-7 2.1 4h6.2"/>
+      <path class="icon-accent" d="M6.2 5.2a8 8 0 0 1 11.6 0M8.5 7.6a4.8 4.8 0 0 1 7 0"/>
+      <circle class="icon-node" cx="12" cy="10.2" r="1.15"/>
+      <path d="M12 11.4V20"/>
+    `,
+    "ear-signal": `
+      <path class="icon-accent" d="M14.8 18.2c-1 2.1-2.3 3-4 3-2.7 0-4.6-1.9-4.6-4.5 0-2.1 1-3.3 2.2-4.4 1.5-1.3 2.5-2.4 2.5-4.3 0-2 1.4-3.7 3.6-3.7 2.4 0 4.1 1.8 4.1 4.2"/>
+      <path d="M12.4 12.5c.5-.8 1.1-1.3 2-1.3 1.1 0 1.8.8 1.8 1.8 0 1.4-1.4 2-2 3.1"/>
+      <path class="icon-soft" d="M18.4 8.1c1.2 1 1.9 2.3 1.9 3.9s-.7 2.9-1.9 3.9M20.6 5.8c1.8 1.7 2.9 3.8 2.9 6.2s-1.1 4.5-2.9 6.2"/>
+      <circle class="icon-node" cx="14.4" cy="13" r=".75"/>
+    `,
+    "radio-decoder": `
+      <path class="icon-soft" d="M4 18V9l8-5 8 5v9"/>
+      <path class="icon-accent" d="M12 4V1.8M8 11h8M8 14h5"/>
+      <rect x="6" y="8" width="12" height="11" rx="2"/>
+      <path d="M9 18v2.2m6-2.2v2.2"/>
+      <circle class="icon-node" cx="16.2" cy="14.2" r="1.1"/>
+    `,
+    "workflow-forge": `
+      <path class="icon-soft" d="M5 6h5l2 3h7M5 18h5l2-3h7"/>
+      <circle class="icon-node" cx="5" cy="6" r="1.5"/>
+      <circle class="icon-node" cx="5" cy="18" r="1.5"/>
+      <circle class="icon-node" cx="19" cy="9" r="1.5"/>
+      <circle class="icon-node" cx="19" cy="15" r="1.5"/>
+      <path class="icon-accent" d="M12 9v6m-2-3h4"/>
+      <path d="m9.8 4.4 2.2 2.2 2.2-2.2"/>
+    `,
+    "document-pipeline": `
+      <path class="icon-soft" d="M5 3h9l5 5v13H5V3Z"/>
+      <path d="M14 3v5h5M8 12h6M8 16h5"/>
+      <path class="icon-accent" d="M2 9h3m-1.5-1.5L5 9 3.5 10.5M19 15h3m-1.5-1.5L22 15l-1.5 1.5"/>
+    `,
+    configurator: `
+      <path class="icon-soft" d="M4 6h16M4 12h16M4 18h16"/>
+      <circle class="icon-node" cx="9" cy="6" r="2"/>
+      <circle class="icon-node" cx="15" cy="12" r="2"/>
+      <circle class="icon-node" cx="7" cy="18" r="2"/>
+      <path class="icon-accent" d="M9 3v6M15 9v6M7 15v6"/>
+    `,
+    "document-check": `
+      <path class="icon-soft" d="M6 3h8l4 4v14H6V3Z"/>
+      <path d="M14 3v5h5M9 12h5M9 16h3"/>
+      <path class="icon-accent" d="m13.8 17.2 1.6 1.6 3.2-3.8"/>
+    `,
+    "code-document": `
+      <path class="icon-soft" d="M6 3h8l4 4v14H6V3Z"/>
+      <path d="M14 3v5h5"/>
+      <path class="icon-accent" d="m11 12-2 2 2 2m3-4 2 2-2 2"/>
+      <path d="m13.3 11.2-2.6 5.6"/>
+    `,
+    "browser-code": `
+      <rect class="icon-soft" x="3" y="4" width="18" height="16" rx="2.5"/>
+      <path d="M3 8h18M6 6h.01M9 6h.01"/>
+      <path class="icon-accent" d="m10 12-2 2 2 2m4-4 2 2-2 2"/>
+    `,
+    "cyber-core": `
+      <path class="icon-soft" d="M12 2.5 19 6v5.5c0 4.5-2.8 7.7-7 10-4.2-2.3-7-5.5-7-10V6l7-3.5Z"/>
+      <path class="icon-accent" d="M12 7v10M8 10h8M8.8 15.2l6.4-6.4"/>
+      <circle class="icon-node" cx="12" cy="12" r="1.4"/>
+    `,
+    "automation-core": `
+      <circle class="icon-soft" cx="12" cy="12" r="7.5"/>
+      <path class="icon-accent" d="M12 4.5V2M12 22v-2.5M4.5 12H2M22 12h-2.5M6.7 6.7 5 5M19 19l-1.7-1.7M17.3 6.7 19 5M5 19l1.7-1.7"/>
+      <path d="m9 12 2 2 4-4"/>
+    `,
+  };
+
+  const resolveVisual = (repo: Repo): VisualKey => {
+    const name = repo.name.toLowerCase();
+    const haystack = [repo.name, repo.description ?? "", ...(repo.topics ?? [])]
+      .join(" ")
+      .toLowerCase();
+
+    if (name.includes("aegis-nexus") || /(honeypot|attack map|threat intel|ioc|soc)/.test(haystack)) return "honeypot";
+    if (name.includes("osi-cyber-explorer") || /(osi|topology|ccna|network explorer|networking)/.test(haystack)) return "topology";
+    if (name.includes("comptia-security") || /(exam|quiz|study|certification|trainer)/.test(haystack)) return "exam-matrix";
+    if (name.includes("olympus-security") || /(observability|monitoring|osint|argus)/.test(haystack)) return "observability";
+    if (name.includes("rfnm-sdrpp") || /(spectrum|rfnm|sdrpp)/.test(haystack)) return "spectrum";
+    if (name === "sdr-plus" || /(waveform|signal chain)/.test(haystack)) return "signal";
+    if (name.includes("tetraear")) return "ear-signal";
+    if (name.includes("osmotetra") || /(tetra decoder|radio decoder|decoder)/.test(haystack)) return "radio-decoder";
+    if (name.includes("utility-forge") || /(forge|workflow|utility suite|toolchain)/.test(haystack)) return "workflow-forge";
+    if (name.includes("scheda-tecnica") || /(datasheet|technical sheet|pdf pipeline)/.test(haystack)) return "document-pipeline";
+    if (name.includes("configuratore-online") || /(configurator|configuration)/.test(haystack)) return "configurator";
+    if (name === "dichiarazioni") return "document-check";
+    if (name.includes("dichiarazioni_php")) return "code-document";
+    if (name === "mywebsite" || /(portfolio|website|astro)/.test(haystack)) return "browser-code";
+
+    if (repo.category === "cybersecurity") return "cyber-core";
+    if (repo.category === "interactive-labs") return "topology";
+    if (repo.category === "sdr-radio") return "signal";
+    return "automation-core";
+  };
+
+  const makeRepoIcon = (repo: Repo) => {
+    const visual = resolveVisual(repo);
+    const svg = document.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("focusable", "false");
+    svg.innerHTML = ICON_MARKUP[visual];
+
+    const glyph = document.createElement("span");
+    glyph.className = `cov-glyph cov-glyph--${visual}`;
+    glyph.append(svg);
+    return glyph;
+  };
+
   const makeCover = (repo: Repo, large = false) => {
     const cover = document.createElement("div");
     cover.className = `project-cover project-cover--gen cov-cat--${repo.category}${large ? " is-large" : ""}`;
@@ -419,17 +629,7 @@ const categoryLabels = {
     blob.className = "cov-blob";
     const grid = document.createElement("span");
     grid.className = "cov-grid";
-    const glyph = document.createElement("span");
-    glyph.className = "cov-glyph";
-    const glyphs: Record<Category, string> = {
-      cybersecurity: "SEC",
-      "interactive-labs": "LAB",
-      "sdr-radio": "SDR",
-      "automation-utilities": ">_",
-      "professional-work": "DB",
-    };
-    glyph.textContent = glyphs[repo.category];
-    cover.append(blob, grid, glyph);
+    cover.append(blob, grid, makeRepoIcon(repo));
     return cover;
   };
 
