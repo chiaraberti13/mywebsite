@@ -46,10 +46,26 @@ function githubHeaders(token?: string): Record<string, string> {
   };
 }
 
+const REPO_CATEGORY_OVERRIDES: Record<string, ProjectCategory> = {
+  "aegis-nexus": "interactive-labs",
+  "osi-cyber-explorer": "interactive-labs",
+  "comptia-security-sy0-701": "interactive-labs",
+  "olympus-security": "cybersecurity",
+  "rfnm-sdrpp-setup": "sdr-radio",
+  "sdr-plus": "sdr-radio",
+  "tetraearubuntu": "sdr-radio",
+  "osmotetraubuntu": "sdr-radio",
+  "utility-forge": "automation-utilities",
+  "configuratore-online": "automation-utilities",
+  "scheda-tecnica": "automation-utilities",
+  "dichiarazioni": "automation-utilities",
+  "dichiarazioni_php": "automation-utilities",
+  "mywebsite": "automation-utilities",
+};
+
 function classifyRepo(repo: GitHubRepo): ProjectCategory {
-  if (repo.name.toLowerCase() === "aegis-nexus") {
-    return "interactive-labs";
-  }
+  const explicitCategory = REPO_CATEGORY_OVERRIDES[repo.name.toLowerCase()];
+  if (explicitCategory) return explicitCategory;
 
   const haystack = [
     repo.name,
