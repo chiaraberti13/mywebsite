@@ -8,10 +8,8 @@ import { useTranslations } from "@/i18n/ui";
 interface Props {
   project: CollectionEntry<"projects">;
   href: string;
-  repoKey?: string;
-  hidden?: boolean;
 }
-const { project, href, repoKey, hidden = false } = Astro.props;
+const { project, href } = Astro.props;
 const { title, summary, tags, cover, links, status, lang, category: categoryKey } = project.data;
 const statusLabels =
   lang === "it"
@@ -59,12 +57,7 @@ const techTags = tags.filter(
   (tag) => tag.toLowerCase() !== category.toLowerCase(),
 );
 ---
-<article
-  class="card card--link project-card"
-  data-category={categoryKey}
-  data-github-repo={repoKey}
-  hidden={hidden}
->
+<article class="card card--link project-card" data-category={categoryKey}>
   <a href={href} class="project-cover-link" tabindex="-1" aria-hidden="true">
     <ProjectCover tags={tags} cover={cover} seed={slugOf(project.id)} category={categoryKey} />
     <span class="project-cover-arrow" aria-hidden="true">
