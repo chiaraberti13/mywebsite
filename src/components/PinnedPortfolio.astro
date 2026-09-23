@@ -14,7 +14,7 @@ interface Props {
 const {
   lang,
   mode = "projects",
-  limit = mode === "home" ? 3 : 20,
+  limit = mode === "home" ? 3 : 6,
   professional = [],
 } = Astro.props;
 
@@ -832,8 +832,7 @@ const categoryLabels = {
     });
 
     try {
-      const scope = mode === "projects" ? "projects" : "pinned";
-      const response = await fetch(`/api/github-pinned?scope=${scope}&t=${Date.now()}`, {
+      const response = await fetch(`/api/github-pinned?t=${Date.now()}`, {
         headers: { Accept: "application/json" },
         cache: "no-store",
       });
