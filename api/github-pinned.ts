@@ -3,6 +3,16 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 const GITHUB_USER = "chiaraberti13";
 const MAX_PINNED = 6;
 
+const PROJECT_REPOSITORIES = [
+  "AEGIS-NEXUS",
+  "OSI-CYBER-EXPLORER",
+  "COMPTIA-SECURITY-SY0-701",
+  "OLYMPUS-SECURITY",
+  "OsmoTetraUbuntu",
+  "TetraEarUbuntu",
+  "UTILITY-FORGE",
+] as const;
+
 type GitHubRepo = {
   name: string;
   description: string | null;
@@ -195,28 +205,39 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const token = process.env.GITHUB_TOKEN?.trim();
 
   try {
-    let pinnedNames: string[] = [];
-
-    if (token) {
-      try {
-        pinnedNames = await pinnedFromGraphQL(token);
-      } catch {
-        pinnedNames = [];
-      }
-    }
-
-    if (!pinnedNames.length) {
-      pinnedNames = await pinnedFromPublicProfile();
-    }
-
-    if (!pinnedNames.length) {
-      return res.status(502).json({ error: "Pinned repositories unavailable" });
-    }
+    const rawScope = Array.isArray(req.query.scope) ? req.query.scope[0] : req.query.scope;
+    const scope = rawScope === "projects" ? "projects" : "pinned";
 
     const repos = await listOwnedRepos(token);
     const byName = new Map(repos.map((repo) => [repo.name.toLowerCase(), repo]));
 
-    const pinned: PublicRepo[] = pinnedNames.flatMap((name) => {
+    let repositoryNames: readonly string[];
+
+    if (scope === "projects") {
+      repositoryNames = PROJECT_REPOSITORIES;
+    } else {
+      let pinnedNames: string[] = [];
+
+      if (token) {
+        try {
+          pinnedNames = await pinnedFromGraphQL(token);
+        } catch {
+          pinnedNames = [];
+        }
+      }
+
+      if (!pinnedNames.length) {
+        pinnedNames = await pinnedFromPublicProfile();
+      }
+
+      if (!pinnedNames.length) {
+        return res.status(502).json({ error: "Pinned repositories unavailable" });
+      }
+
+      repositoryNames = pinnedNames;
+    }
+
+    const selected: PublicRepo[] = repositoryNames.flatMap((name) => {
       const repo = byName.get(name.toLowerCase());
       if (!repo) return [];
       return [{
@@ -238,7 +259,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     return res.status(200).json({
       user: GITHUB_USER,
-      repositories: pinned,
+      scope,
+      repositories: selected,
       refreshedAt: new Date().toISOString(),
     });
   } catch (error) {
