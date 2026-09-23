@@ -416,8 +416,12 @@ const categoryLabels = {
   type LucideIconKey =
     | "radar"
     | "network"
+    | "globe"
     | "notebook-text"
+    | "notebook-pen"
     | "scan-eye"
+    | "shield-keyhole"
+    | "pencil-sparkles"
     | "radio-tower"
     | "audio-lines"
     | "ear"
@@ -448,6 +452,11 @@ const categoryLabels = {
       <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3" />
       <path d="M12 12V8" />
     `,
+    globe: `
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+      <path d="M2 12h20" />
+    `,
     "notebook-text": `
       <path d="M2 6h4" />
       <path d="M2 10h4" />
@@ -458,6 +467,14 @@ const categoryLabels = {
       <path d="M9.5 12H16" />
       <path d="M9.5 16H14" />
     `,
+    "notebook-pen": `
+      <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4" />
+      <path d="M2 6h4" />
+      <path d="M2 10h4" />
+      <path d="M2 14h4" />
+      <path d="M2 18h4" />
+      <path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z" />
+    `,
     "scan-eye": `
       <path d="M3 7V5a2 2 0 0 1 2-2h2" />
       <path d="M17 3h2a2 2 0 0 1 2 2v2" />
@@ -465,6 +482,21 @@ const categoryLabels = {
       <path d="M7 21H5a2 2 0 0 1-2-2v-2" />
       <circle cx="12" cy="12" r="1" />
       <path d="M18.944 12.33a1 1 0 0 0 0-.66 7.5 7.5 0 0 0-13.888 0 1 1 0 0 0 0 .66 7.5 7.5 0 0 0 13.888 0" />
+    `,
+    "shield-keyhole": `
+      <path d="M12 13v3" />
+      <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 01-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 011-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 011.52 0C14.51 3.81 17 5 19 5a1 1 0 011 1z" />
+      <circle cx="12" cy="11" r="2" />
+    `,
+    "pencil-sparkles": `
+      <path d="M10 3H8" />
+      <path d="m15.007 5.008 3.987 3.986" />
+      <path d="M20 15v4" />
+      <path d="M21.174 6.813a2.82 2.82 0 0 0-3.986-3.987L3.842 16.175a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+      <path d="M22 17h-4" />
+      <path d="M4 5v4" />
+      <path d="M6 7H2" />
+      <path d="M9 2v2" />
     `,
     "radio-tower": `
       <path d="M4.9 16.1C1 12.2 1 5.8 4.9 1.9" />
@@ -530,14 +562,18 @@ const categoryLabels = {
       .toLowerCase();
 
     if (name.includes("aegis-nexus") || /(honeypot|attack map|threat intel|ioc|soc)/.test(haystack)) return "radar";
-    if (name.includes("osi-cyber-explorer") || /(osi|topology|ccna|networking)/.test(haystack)) return "network";
-    if (name.includes("comptia-security") || /(exam|quiz|study|certification|trainer)/.test(haystack)) return "notebook-text";
-    if (name.includes("olympus-security") || /(observability|monitoring|osint|argus)/.test(haystack)) return "scan-eye";
+    if (name.includes("osi-cyber-explorer")) return "globe";
+    if (/(osi|topology|ccna|networking)/.test(haystack)) return "network";
+    if (name.includes("comptia-security")) return "notebook-pen";
+    if (/(exam|quiz|study|certification|trainer)/.test(haystack)) return "notebook-text";
+    if (name.includes("olympus-security")) return "shield-keyhole";
+    if (/(observability|monitoring|osint|argus)/.test(haystack)) return "scan-eye";
     if (name.includes("rfnm-sdrpp") || /(spectrum|rfnm|sdrpp)/.test(haystack)) return "radio-tower";
     if (name === "sdr-plus" || /(waveform|signal chain|sdr)/.test(haystack)) return "audio-lines";
     if (name.includes("tetraear")) return "ear";
     if (name.includes("osmotetra") || /(tetra decoder|radio decoder|decoder)/.test(haystack)) return "radio-tower";
-    if (name.includes("utility-forge") || /(forge|workflow|utility suite|toolchain)/.test(haystack)) return "workflow";
+    if (name.includes("utility-forge")) return "pencil-sparkles";
+    if (/(forge|workflow|utility suite|toolchain)/.test(haystack)) return "workflow";
     if (name.includes("scheda-tecnica") || /(datasheet|technical sheet|pdf pipeline)/.test(haystack)) return "file-stack";
     if (name.includes("configuratore-online") || /(configurator|configuration)/.test(haystack)) return "sliders-horizontal";
     if (name === "dichiarazioni") return "square-check-big";
