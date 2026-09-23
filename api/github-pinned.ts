@@ -17,6 +17,12 @@ type GitHubRepo = {
   updated_at: string;
 };
 
+type ProjectCategory =
+  | "cybersecurity"
+  | "interactive-labs"
+  | "sdr-radio"
+  | "automation-utilities";
+
 type PublicRepo = {
   name: string;
   description: string | null;
@@ -26,6 +32,7 @@ type PublicRepo = {
   stars: number;
   forks: number;
   topics: string[];
+  category: ProjectCategory;
   archived: boolean;
   fork: boolean;
   updatedAt: string;
@@ -37,6 +44,30 @@ function githubHeaders(token?: string): Record<string, string> {
     "User-Agent": "chiaraberti-portfolio",
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
+}
+
+function classifyRepo(repo: GitHubRepo): ProjectCategory {
+  const haystack = [
+    repo.name,
+    repo.description ?? "",
+    ...(repo.topics ?? []),
+  ]
+    .join(" ")
+    .toLowerCase();
+
+  if (/(sdr|software[- ]defined radio|radio|tetra|osmo)/.test(haystack)) {
+    return "sdr-radio";
+  }
+
+  if (/(comptia|ccna|exam|quiz|trainer|learning[- ]platform|study|education|interactive|lab)/.test(haystack)) {
+    return "interactive-labs";
+  }
+
+  if (/(cyber|security|pentest|penetration|honeypot|soc|threat|osint|vulnerab|red[- ]team|blue[- ]team|detection|ioc)/.test(haystack)) {
+    return "cybersecurity";
+  }
+
+  return "automation-utilities";
 }
 
 async function pinnedFromGraphQL(token: string): Promise<string[]> {
@@ -178,6 +209,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         stars: repo.stargazers_count,
         forks: repo.forks_count,
         topics: repo.topics ?? [],
+        category: classifyRepo(repo),
         archived: repo.archived,
         fork: repo.fork,
         updatedAt: repo.updated_at,
