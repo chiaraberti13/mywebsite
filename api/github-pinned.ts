@@ -104,14 +104,14 @@ async function pinnedFromPublicProfile(): Promise<string[]> {
   if (!response.ok) throw new Error(`GitHub profile: ${response.status}`);
 
   const html = await response.text();
-  const markers = [
-    html.search(/Pinned/i),
+  const specificMarkers = [
     html.search(/pinned-item-list-item/i),
     html.search(/js-pinned-items-reorder-container/i),
   ].filter((index) => index >= 0);
-  if (!markers.length) return [];
+  const genericMarker = html.search(/>\s*Pinned\s*</i);
+  if (!specificMarkers.length && genericMarker < 0) return [];
 
-  const start = Math.min(...markers);
+  const start = specificMarkers.length ? Math.min(...specificMarkers) : genericMarker;
   const endCandidates = [
     html.indexOf("Contribution activity", start),
     html.indexOf("contribution-activity", start),
