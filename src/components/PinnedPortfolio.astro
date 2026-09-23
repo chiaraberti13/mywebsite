@@ -791,13 +791,22 @@ const categoryLabels = {
 
     const buildFilters = (repos: Repo[]) => {
       if (!filterRoot) return;
-      const categories = new Set<Category>(
+      const availableCategories = new Set<Category>(
         repos.flatMap((repo) => repo.categories ?? []),
       );
       if (staticProfessionalCards.length) {
-        categories.add("automation-utilities");
-        categories.add("professional-work");
+        availableCategories.add("automation-utilities");
+        availableCategories.add("professional-work");
       }
+
+      const categoryOrder: Category[] = [
+        "interactive-labs",
+        "cybersecurity",
+        "sdr-radio",
+        "automation-utilities",
+        "professional-work",
+      ];
+      const categories = categoryOrder.filter((category) => availableCategories.has(category));
 
       const oldButtons = Array.from(filterRoot.querySelectorAll("button"));
       oldButtons.forEach((button) => button.remove());
@@ -816,7 +825,7 @@ const categoryLabels = {
       categories.forEach((category) => {
         filterRoot.insertBefore(makeButton(category, categoryLabel(category)), countEl);
       });
-      filterRoot.hidden = categories.size < 1;
+      filterRoot.hidden = categories.length < 1;
     };
 
     filterRoot?.addEventListener("click", (event) => {
