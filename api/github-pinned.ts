@@ -137,7 +137,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  res.setHeader("Cache-Control", "public, s-maxage=300, stale-while-revalidate=3600");
+  res.setHeader("Cache-Control", "no-store, max-age=0");
+  res.setHeader("CDN-Cache-Control", "no-store");
+  res.setHeader("Vercel-CDN-Cache-Control", "no-store");
   res.setHeader("Content-Type", "application/json; charset=utf-8");
 
   const token = process.env.GITHUB_TOKEN?.trim();
