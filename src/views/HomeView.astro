@@ -6,21 +6,15 @@ import Aptitude from "@/components/Aptitude.astro";
 import Skills from "@/components/Skills.astro";
 import SectionHeader from "@/components/SectionHeader.astro";
 import Stats from "@/components/Stats.astro";
-import ProjectCard from "@/components/ProjectCard.astro";
+import PinnedPortfolio from "@/components/PinnedPortfolio.astro";
 import Icon from "@/components/Icon.astro";
 import { site, type Locale } from "@/config/site";
 import { content } from "@/data/content";
 import { useTranslations, localePath } from "@/i18n/ui";
-import { getProjects } from "@/lib/content";
 
 interface Props { lang: Locale }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-const repoKey = (url?: string) => {
-  if (!url) return undefined;
-  return url.replace(/\/+$/, "").split("/").pop()?.toLowerCase();
-};
-const publicProjects = (await getProjects(lang)).filter((project) => Boolean(project.data.links.github));
 /* Tutte le credenziali, non più le prime tre: la home ne tagliava due
    (Pre Security e PHP Developer Fundamentals) rispetto all'elenco completo
    del CV e della pagina Certificazioni. */
@@ -63,31 +57,18 @@ const desc = content[lang].hero.subheadline;
   </div>
 
 
-  {
-    publicProjects.length > 0 && (
-      <section class="section band">
-        <div class="container">
-          <SectionHeader title={t("section.projects")} />
-          <div class="grid grid--3" data-reveal-group data-home-pinned-grid>
-            {publicProjects.map((project, index) => (
-              <ProjectCard
-                project={project}
-                href={project.data.links.github!}
-                repoKey={repoKey(project.data.links.github)}
-                hidden={index >= 3}
-              />
-            ))}
-          </div>
-          <p class="see-all">
-            <a class="btn btn--ghost" href={localePath(lang, "/projects")}>
-              {t("cta.viewProjects")}
-              <Icon name="chevronRight" size={18} />
-            </a>
-          </p>
-        </div>
-      </section>
-    )
-  }
+  <section class="section band">
+    <div class="container">
+      <SectionHeader title={t("section.projects")} />
+      <PinnedPortfolio lang={lang} mode="home" limit={3} />
+      <p class="see-all">
+        <a class="btn btn--ghost" href={localePath(lang, "/projects")}>
+          {t("cta.viewProjects")}
+          <Icon name="chevronRight" size={18} />
+        </a>
+      </p>
+    </div>
+  </section>
 
   <section class="section credentials-section">
     <div class="container">
@@ -282,45 +263,5 @@ const desc = content[lang].hero.subheadline;
   /* La sottolineatura al hover era istantanea (`text-decoration`, che non
      si anima). Ora la disegna .u-underline, tracciandola da sinistra. */
 </style>
-<script>
-  const homeGrid = document.querySelector<HTMLElement>("[data-home-pinned-grid]");
-  if (homeGrid) {
-    const cards = Array.from(homeGrid.querySelectorAll<HTMLElement>(".project-card"));
-    const byRepo = new Map(
-      cards
-        .filter((card) => Boolean(card.dataset.githubRepo))
-        .map((card) => [card.dataset.githubRepo!, card]),
-    );
 
-    const syncHomePinned = async () => {
-      try {
-        const response = await fetch(`/api/github-pinned?t=${Date.now()}`, {
-          headers: { Accept: "application/json" },
-          cache: "no-store",
-        });
-        if (!response.ok) return;
-        const payload = (await response.json()) as {
-          repositories?: Array<{ name: string }>;
-        };
-        const order = (payload.repositories ?? [])
-          .map((repo) => repo.name.toLowerCase())
-          .filter((key) => byRepo.has(key))
-          .slice(0, 3);
-        if (!order.length) return;
-
-        cards.forEach((card) => {
-          card.hidden = !order.includes(card.dataset.githubRepo ?? "");
-        });
-        order.forEach((key) => {
-          const card = byRepo.get(key);
-          if (card) homeGrid.append(card);
-        });
-      } catch {
-        // Mantiene il fallback statico già renderizzato.
-      }
-    };
-
-    void syncHomePinned();
-  }
-</script>
 
