@@ -63,6 +63,7 @@ export interface PageContent {
   aptitude: {
     lead: string;
     axes: string[];
+    scores: number[];
     workingOnLabel: string;
     workingOn: { title: string; text: string }[];
     learning: { title: string; text: string; pathLabel: string; path: string[] };
@@ -304,6 +305,7 @@ export const content: Record<Locale, PageContent> = {
         "Adattabilità",
         "Energia e azione",
       ],
+      scores: [5, 5, 4, 3, 4, 4],
       workingOnLabel: "Aree in sviluppo attivo",
       workingOn: [
         {
@@ -327,17 +329,16 @@ export const content: Record<Locale, PageContent> = {
       { name: "Inglese", level: "Comprensione tecnica scritta buona; livello base nel parlato, in fase di potenziamento" },
     ],
     interests: [
-      "Innovazione e tecnologia",
-      "Automazione dei processi",
-      "Arte",
-      "Fotografia",
-      "Cinema",
-      "Teatro",
+      "Calcio",
       "Musica",
       "Sport",
-      "Calcio a 5",
-      "Calcio",
       "Pets",
+      "Cinema",
+      "Fotografia",
+      "Innovazione e tecnologia",
+      "Arte",
+      "Automazione dei processi",
+      "Teatro",
     ],
   },
 
@@ -570,6 +571,7 @@ export const content: Record<Locale, PageContent> = {
         "Adaptability",
         "Energy & drive",
       ],
+      scores: [5, 5, 4, 3, 4, 4],
       workingOnLabel: "Areas in active development",
       workingOn: [
         {
@@ -593,17 +595,16 @@ export const content: Record<Locale, PageContent> = {
       { name: "English", level: "Good written technical comprehension; basic spoken, currently being improved" },
     ],
     interests: [
-      "Innovation & technology",
-      "Process automation",
-      "Art",
-      "Photography",
-      "Cinema",
-      "Theatre",
+      "Football",
       "Music",
       "Sport",
-      "Five-a-side football",
-      "Football",
       "Pets",
+      "Cinema",
+      "Photography",
+      "Innovation & technology",
+      "Art",
+      "Process automation",
+      "Theatre",
     ],
   },
 };
