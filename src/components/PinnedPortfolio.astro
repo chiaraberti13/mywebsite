@@ -407,6 +407,7 @@ const categoryLabels = {
     forks: number;
     topics: string[];
     category: Category;
+    categories: Category[];
   };
 
   const makeText = (tag: string, className: string, value: string) => {
@@ -661,7 +662,7 @@ const categoryLabels = {
     const makeCard = (repo: Repo) => {
       const article = document.createElement("article");
       article.className = "card card--link project-card dynamic-project-card";
-      article.dataset.category = repo.category;
+      article.dataset.categories = (repo.categories ?? []).join(" ");
       article.dataset.githubRepo = repo.name.toLowerCase();
 
       const coverLink = document.createElement("a");
@@ -676,8 +677,10 @@ const categoryLabels = {
       body.className = "project-body";
       const meta = document.createElement("div");
       meta.className = "project-meta";
-      meta.append(makeText("p", "project-category", categoryLabel(repo.category)));
-      body.append(meta);
+      (repo.categories ?? []).forEach((category) => {
+        meta.append(makeText("p", "project-category", categoryLabel(category)));
+      });
+      if (meta.childElementCount) body.append(meta);
 
       const title = document.createElement("h3");
       title.className = "project-title";
@@ -720,7 +723,7 @@ const categoryLabels = {
         makeText(
           "p",
           "pinned-featured-eyebrow",
-          `★ ${featuredLabel} · ${categoryLabel(repo.category)}`,
+          `★ ${featuredLabel}${repo.categories?.length ? ` · ${repo.categories.map(categoryLabel).join(" · ")}` : ""}`,
         ),
       );
 
@@ -757,7 +760,7 @@ const categoryLabels = {
       grid.querySelectorAll<HTMLElement>(".project-card:not(.dynamic-project-card)"),
     );
     staticProfessionalCards.forEach((card) => {
-      card.dataset.category = "professional-work";
+      card.dataset.categories = "automation-utilities professional-work";
     });
 
     const setCount = () => {
@@ -765,7 +768,7 @@ const categoryLabels = {
       const visibleCards = Array.from(grid.querySelectorAll<HTMLElement>(".project-card"))
         .filter((card) => !card.hidden).length;
       const visibleFeatured =
-        featuredRoot && !featuredRoot.hidden && featuredRoot.dataset.category ? 1 : 0;
+        featuredRoot && !featuredRoot.hidden && featuredRoot.querySelector(".pinned-featured") ? 1 : 0;
       const visible = visibleCards + visibleFeatured;
       countEl.textContent = visible === 1 ? countOne : countMany.replace("{n}", String(visible));
       if (emptyEl) emptyEl.hidden = visible > 0;
@@ -773,13 +776,14 @@ const categoryLabels = {
 
     const applyFilter = () => {
       Array.from(grid.querySelectorAll<HTMLElement>(".project-card")).forEach((card) => {
-        const show = activeFilter === "*" || card.dataset.category === activeFilter;
+        const categories = (card.dataset.categories ?? "").split(" ").filter(Boolean);
+        const show = activeFilter === "*" || categories.includes(activeFilter);
         card.hidden = !show;
       });
 
-      if (featuredRoot?.dataset.category) {
-        featuredRoot.hidden =
-          activeFilter !== "*" && featuredRoot.dataset.category !== activeFilter;
+      if (featuredRoot) {
+        const categories = (featuredRoot.dataset.categories ?? "").split(" ").filter(Boolean);
+        featuredRoot.hidden = activeFilter !== "*" && !categories.includes(activeFilter);
       }
 
       setCount();
@@ -788,9 +792,12 @@ const categoryLabels = {
     const buildFilters = (repos: Repo[]) => {
       if (!filterRoot) return;
       const categories = new Set<Category>(
-        repos.map((repo) => repo.category),
+        repos.flatMap((repo) => repo.categories ?? []),
       );
-      if (staticProfessionalCards.length) categories.add("professional-work");
+      if (staticProfessionalCards.length) {
+        categories.add("automation-utilities");
+        categories.add("professional-work");
+      }
 
       const oldButtons = Array.from(filterRoot.querySelectorAll("button"));
       oldButtons.forEach((button) => button.remove());
@@ -843,7 +850,7 @@ const categoryLabels = {
       }
 
       if (featuredRoot) {
-        featuredRoot.dataset.category = repos[0].category;
+        featuredRoot.dataset.categories = (repos[0].categories ?? []).join(" ");
         featuredRoot.replaceChildren(makeFeatured(repos[0]));
       }
 
