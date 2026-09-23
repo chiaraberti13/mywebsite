@@ -50,7 +50,13 @@ const iconRules: [RegExp, string][] = [
   [/php|javascript|typescript/i, "braces"],
 ];
 const joined = tags.join(" ");
+const projectGlyph: Record<string, string> = {
+  "pris-mea": "fileBox",
+  "pdf-factory": "fileInput",
+};
+
 const glyph =
+  projectGlyph[seed] ??
   (category && categoryGlyph[category]) ??
   iconRules.find(([re]) => re.test(joined))?.[1] ??
   "code";
@@ -81,7 +87,7 @@ const catClass = category ? `cov-cat--${category}` : "cov-cat--default";
       <span class="cov-blob" />
       <span class="cov-grid" />
       <span class="cov-glyph">
-        <Icon name={glyph} size={large ? 132 : 84} />
+        <Icon name={glyph} size={large ? 132 : 84} strokeWidth={1} />
       </span>
     </div>
   )
