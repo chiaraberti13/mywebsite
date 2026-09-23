@@ -33,6 +33,7 @@ type PublicRepo = {
   forks: number;
   topics: string[];
   category: ProjectCategory;
+  categories: ProjectCategory[];
   archived: boolean;
   fork: boolean;
   updatedAt: string;
@@ -46,26 +47,24 @@ function githubHeaders(token?: string): Record<string, string> {
   };
 }
 
-const REPO_CATEGORY_OVERRIDES: Record<string, ProjectCategory> = {
-  "aegis-nexus": "interactive-labs",
-  "osi-cyber-explorer": "interactive-labs",
-  "comptia-security-sy0-701": "interactive-labs",
-  "olympus-security": "cybersecurity",
-  "rfnm-sdrpp-setup": "sdr-radio",
-  "sdr-plus": "sdr-radio",
-  "tetraearubuntu": "sdr-radio",
-  "osmotetraubuntu": "sdr-radio",
-  "utility-forge": "automation-utilities",
-  "configuratore-online": "automation-utilities",
-  "scheda-tecnica": "automation-utilities",
-  "dichiarazioni": "automation-utilities",
-  "dichiarazioni_php": "automation-utilities",
-  "mywebsite": "automation-utilities",
+const REPO_FILTER_CATEGORIES: Record<string, ProjectCategory[]> = {
+  "aegis-nexus": ["interactive-labs", "cybersecurity"],
+  "osi-cyber-explorer": ["interactive-labs", "cybersecurity"],
+  "comptia-security-sy0-701": ["interactive-labs", "cybersecurity"],
+  "olympus-security": ["interactive-labs", "cybersecurity"],
+  "osmotetraubuntu": ["sdr-radio"],
+  "tetraearubuntu": ["sdr-radio"],
+  "utility-forge": ["automation-utilities"],
 };
 
+function filterCategories(repo: GitHubRepo): ProjectCategory[] {
+  return REPO_FILTER_CATEGORIES[repo.name.toLowerCase()] ?? [];
+}
+
 function classifyRepo(repo: GitHubRepo): ProjectCategory {
-  const explicitCategory = REPO_CATEGORY_OVERRIDES[repo.name.toLowerCase()];
-  if (explicitCategory) return explicitCategory;
+  const name = repo.name.toLowerCase();
+  const explicit = filterCategories(repo)[0];
+  if (explicit) return explicit;
 
   const haystack = [
     repo.name,
@@ -230,6 +229,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         forks: repo.forks_count,
         topics: repo.topics ?? [],
         category: classifyRepo(repo),
+        categories: filterCategories(repo),
         archived: repo.archived,
         fork: repo.fork,
         updatedAt: repo.updated_at,
