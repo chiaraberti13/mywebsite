@@ -15,18 +15,18 @@ const professional = projects.filter((project) => project.data.category === "pro
 
 const desc =
   lang === "it"
-    ? "Repository GitHub in evidenza e progetti professionali di Chiara Berti."
-    : "Chiara Berti's pinned GitHub repositories and professional projects.";
+    ? "Progetti di Chiara Berti tra cybersecurity, networking, automazione e sviluppo."
+    : "Chiara Berti's projects across cybersecurity, networking, automation and development.";
 const intro =
   lang === "it"
-    ? "I repository pubblici sono sincronizzati con i Pinned del mio profilo GitHub: quando cambio la selezione su GitHub, cambia anche qui."
-    : "Public repositories are synced with the Pinned items on my GitHub profile: when I change the selection on GitHub, it changes here too.";
+    ? "Una selezione di progetti che racconta il mio percorso tra cybersecurity, networking, automazione e sviluppo."
+    : "A selection of projects reflecting my path across cybersecurity, networking, automation and development.";
 ---
 <BaseLayout lang={lang} title={t("nav.projects")} description={desc}>
   <section class="section">
     <div class="container">
       <SectionHeader title={t("section.projects")} intro={intro} align="center" level="h1" />
-      <GitHubPinned lang={lang} />
+      <GitHubPinned lang={lang} featuredFirst />
     </div>
   </section>
 
